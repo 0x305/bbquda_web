@@ -10,6 +10,8 @@ from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 import uuid
 import datetime
+from django.utils.translation import gettext as _
+
 
 
 def upload_csv_file(instance, filename):
