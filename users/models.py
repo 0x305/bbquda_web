@@ -30,6 +30,7 @@ class MyAccountManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
+
 class CustomUser(AbstractUser):
     email = models.EmailField(verbose_name = "email", max_length=254, unique = True)
     first_name = models.CharField(max_length =30,blank=True, null=True)
@@ -41,4 +42,3 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
-  
