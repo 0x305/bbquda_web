@@ -8,6 +8,8 @@ from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
+import uuid
+import datetime
 
 
 def upload_csv_file(instance, filename):
@@ -31,6 +33,9 @@ def csv_file_validator(value):
 class CSVUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
     file = models.FileField(upload_to=upload_csv_file, validators=[csv_file_validator])
-   
+    name = models.CharField("File Name", max_length=50, null=True)
+    date = models.DateField(_("Date"), default=datetime.date.today)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
     def __str__(self):
         return self.user.username
