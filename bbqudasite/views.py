@@ -1,9 +1,12 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 import pandas as pd
 import os
-
+from users.forms import RegistrationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
 #Currently playing with the latitude paramter to make sure i can read a csv file properly
@@ -63,3 +66,24 @@ def formhtml(request):
 
     else:
         messages.error(request, 'Please provide a .log or .csv formatted file')
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            profile = form.save(commit=False) 
+            profile.save()
+            login(request, profile)
+            next = request.POST.get('next', '/') #redirect to where user wanted to go
+
+            return HttpResponseRedirect(next)           
+    else:
+        form = RegistrationForm()
+
+    return render(request, 'register.html', {'form': form})
+
+@login_required
+def logoutView(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')

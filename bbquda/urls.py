@@ -14,9 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, reverse, reverse_lazy
+from django.conf.urls import url
+from bbqudasite import views
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
+
+
 
 urlpatterns = [
     path('', include('bbqudasite.urls')),
     path('admin/', admin.site.urls),
+    path('login/', LoginView.as_view(template_name='login.html'), name='login'),
+    url(r'^logout/$', views.logoutView, name = 'logout'),
+    url(r'^register/$', views.register, name = 'register'),
+
+
+
 ]

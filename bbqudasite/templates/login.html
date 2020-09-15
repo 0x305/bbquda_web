@@ -1,0 +1,186 @@
+<!-- Bootstrap CSS-->
+{% load static %}
+<title>
+  Register 
+  </title>
+
+    <link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/obaju/2-1-1/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/obaju/2-1-1/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700">
+    <!-- owl carousel-->
+    <link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/obaju/2-1-1/vendor/owl.carousel/assets/owl.carousel.css">
+    <link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/obaju/2-1-1/vendor/owl.carousel/assets/owl.theme.default.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/obaju/2-1-1/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/obaju/2-1-1/css/custom.css">
+    
+  <div><style>
+  
+.errorlist
+    {
+        color: red;
+    }
+
+</style>
+  <div data-section-id="header" data-section-type="header-section">
+  <div class="header-bar">
+    <div class="wrapper medium-down--hide">
+      <div class="post-large--display-table">
+
+        
+          <div class="header-bar__left post-large--display-table-cell">
+
+          </div>
+        
+
+        <div class="header-bar__right post-large--display-table-cell">
+
+
+          <div class="header-bar__module">
+            <span class="header-bar__sep" aria-hidden="true"></span>
+            
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  <body>
+    <!-- navbar-->
+    <header class="header"> 
+      <!-- Top Bar-->
+      <div class="wrapper">
+
+      
+        <div class="grid--full">
+          <div class="grid__item">
+            
+              <h1 class="site-header__logo" itemscope itemtype="http://schema.org/Organization">
+            
+            
+              </h1>
+            
+          </div>
+        </div>
+        <div class="grid--full medium-down--hide">
+          <div class="grid__item">
+            
+<nav>
+  <ul class="site-nav" id="AccessibleNav">
+    
+      
+        <li class="site-nav--active">
+          <a
+            href=""
+            class="site-nav__link"
+            data-meganav-type="child"
+            >
+              Home
+          </a>
+        </li>
+        <li>
+          <a
+            href=""
+            class="site-nav__link"
+            data-meganav-type="child"
+            >
+              Missions
+          </a>
+        </li>
+         <li>
+          <a
+            href=""
+            class="site-nav__link"
+            data-meganav-type="child"
+            >
+              Account
+          </a>
+        </li>
+        
+  </ul>
+</nav>
+
+          </div>
+        </div>
+      
+
+    </div>
+    </header>
+
+{% load static %}
+     
+      <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+      <link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}">
+
+{% if not user.is_authenticated %}
+
+ <div id="content">
+                            
+<form method="post" action="" id="form-login" class="login"><div class="signin form-fields-section kaxsdc" data-event="load">
+             {% csrf_token %}
+
+                        <h1> Sign in or Register  </h1>
+                        
+
+
+
+
+<div class="returningCustomer bg-form">
+                            <h2>I'm a Returning Customer</h2>
+                            
+                            <fieldset>
+                            
+                                <ol>
+                                    <li class="field field--content">
+                                        {{ form.username.errors }}
+                                        {{ form.username.label_tag }}
+                                        {{ form.username }}
+                                   </li>
+
+                                    <li class="field field--content">
+                                        {{ form.password.errors }}
+                                        {{ form.password.label_tag }}
+                                        {{ form.password }}
+                                    </li>
+                                       
+                                      
+                                    <li>
+                                        <a id="forgotPassword" href="{% url 'forgot_pass'%}" class="js-forgot-password">Forgot your password?</a></li>
+              
+                                    </ol>
+                                    <button type="submit" class="btn btn-default btn-lg btn-block">Login</button>
+                        </div>
+                         
+                        </form>
+
+                        <div class="newCustomer">
+                            <h2>I'm a New User</h2>
+                            <p>Creating an account is fast, easy, and free! </p>
+
+                            <a href="{%url 'register'%}" class="cw-btn cw-btn--default js-create-account">Create Account</a>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+          
+          {%else%}
+
+          <div class="bg-form">
+                   <center> <h2>You are already logged in! </h2>
+                    <form class = "logout-link" action = "{% url 'logout' %}" method = "post">
+												{% csrf_token %}
+												<button type = "submit" class="btn btn-default">Logout Here</button>
+											</center> </form>
+           </div>
+
+        {%endif%}
+
+    <footer>
+     
+</footer>

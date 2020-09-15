@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'vremenagrotesk';
+    src: url('vremenagroteskbook-webfont.6d202c86.woff2') format('woff2'),
+         url('vremenagroteskbook-webfont.854f692f.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'vremenagrotesk';
+    src: url('vremenagrotesk-webfont.475e8e90.woff2') format('woff2'),
+         url('vremenagrotesk-webfont.3ac5e80e.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'vremenagrotesk';
+    src: url('vremenagroteskbold-webfont.fab05fbc.woff2') format('woff2'),
+         url('vremenagroteskbold-webfont.bd41c7ee.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
