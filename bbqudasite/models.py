@@ -11,6 +11,8 @@ from django.contrib.auth import get_user_model
 import uuid
 import datetime
 from django.utils.translation import gettext as _
+from django.core.exceptions import ValidationError
+
 
 
 
@@ -34,10 +36,10 @@ def csv_file_validator(value):
     
 class CSVUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
-    file = models.FileField(upload_to=upload_csv_file, validators=[csv_file_validator])
+    file = models.FileField(upload_to= 'media/csv/', validators=[csv_file_validator])
     name = models.CharField("File Name", max_length=50, null=True)
     date = models.DateField(_("Date"), default=datetime.date.today)
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return self.user.username

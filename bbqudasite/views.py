@@ -1,12 +1,16 @@
-from django.shortcuts import render, reverse, get_object_or_404
+from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 import pandas as pd
 import os
 from users.forms import RegistrationForm
+from bbquda.forms import CSVForm
+from .models import CSVUpload
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
+from django.contrib.admin.views.decorators import staff_member_required
+
 # Create your views here.
 
 #Currently playing with the latitude paramter to make sure i can read a csv file properly
@@ -87,3 +91,38 @@ def logoutView(request):
     if request.method == 'POST':
         logout(request)
         return redirect('home')
+
+@login_required
+def upload_csv(request):
+    if request.user.is_authenticated:
+        user = request.user
+    
+        if request.method =='POST':
+            form = CSVForm(request.POST, request.FILES)
+        
+        
+            if form.is_valid():
+                csv = form.save(commit=False) 
+                csv.user = request.user
+                csv.save()
+            
+                return redirect('')
+        else:
+            form = CSVForm()
+
+        return render(request, 'upload_csv.html', {'form': form, 'user':user}) 
+    return render(request, 'login.html') 
+
+@staff_member_required
+def mission_admin(request):
+    missionss = CSVUpload.objects.all()
+    return render(request, 'mission_admin.html', {'missions': missions} )
+
+@login_required #need to add hyperlink to download csv
+def my_missions(request):
+    if request.user.is_authenticated:
+        user = request.user
+        missions = CSVUpload.objects.filter(user = user)
+       
+        return render(request, 'my_missions.html', { 'user': user,'missions': missions})
+    return redirect('login')

@@ -112,75 +112,48 @@
     </div>
     </header>
 
-{% load static %}
-     
-      <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
-      <link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}">
+</div>
 
-{% if not user.is_authenticated %}
+  <main class="wrapper main-content" role="main">
+    <div class="grid">
+        <div class="grid__item">
+          <div class="grid">
 
- <div id="content">
-                            
-<form method="post" action="" id="form-login" class="login"><div class="signin form-fields-section kaxsdc" data-event="load">
-             {% csrf_token %}
+  <div class="grid__item post-large--two-thirds push--post-large--one-sixth">
 
-                        <h1> Sign in or Register  </h1>
-                        
+    <div class="section-header">
+      <h1 class="section-header--title">Upload CSV File</h1>
+    </div>
 
 
+  </div>
+  <br>
+  <br>
+  <br>
+  <form method="post"  enctype='multipart/form-data'>
+                            {% csrf_token %}
 
+                            {{ form.non_field_errors }}
 
-<div class="returningCustomer bg-form">
-                            <h2>I'm a Returning Customer</h2>
-                            
-                            <fieldset>
-                            
-                                <ol>
-                                    <li class="field field--content">
-                                        {{ form.username.errors }}
-                                        {{ form.username.label_tag }}
-                                        {{ form.username }}
-                                   </li>
-
-                                    <li class="field field--content">
-                                        {{ form.password.errors }}
-                                        {{ form.password.label_tag }}
-                                        {{ form.password }}
+                            {{ form.source.errors }}
+                            {{ form.source }}
+                            <ul>
+                                <li class="field">
+                                    {{ form.name.errors }}{{form.name}}
+                                        
+                                </li>
+                                <li class="field">
+                                    {{ form.file.errors }}{{form.file}}
                                     </li>
-                                       
-                                      
-                                    <li>
-                                        <a id="forgotPassword" href="" class="js-forgot-password">Forgot your password?</a></li>
-              
-                                    </ol>
-                                    <button type="submit" class="btn btn-default btn-lg btn-block">Login</button>
-                        </div>
-                         
-                        </form>
+                                
+                                
+                                </ul>
+                      
+                     <button type="submit" class="btn btn-default btn-lg btn-block">Upload File</button>
+                     
+                     </form>
 
-                        <div class="newCustomer">
-                            <h2>I'm a New User</h2>
-                            <p>Creating an account is fast, easy, and free! </p>
+</div>
 
-                            <a href="{%url 'register'%}" class="cw-btn cw-btn--default js-create-account">Create Account</a>
-                        </div>
-                    </div>
-
-                    </div>
-                </div>
-          
-          {%else%}
-
-          <div class="bg-form">
-                   <center> <h2>You are already logged in! </h2>
-                    <form class = "logout-link" action = "{% url 'logout' %}" method = "post">
-												{% csrf_token %}
-												<button type = "submit" class="btn btn-default">Logout Here</button>
-											</center> </form>
-           </div>
-
-        {%endif%}
-
-    <footer>
-     
-</footer>
+        </div>
+    </div>

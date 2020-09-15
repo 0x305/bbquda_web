@@ -27,6 +27,10 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^logout/$', views.logoutView, name = 'logout'),
     url(r'^register/$', views.register, name = 'register'),
+    url(r'^upload_csv/$', views.upload_csv, name ='upload_csv'),
+    url(r'^mission_admin/$', views.mission_admin, name = 'mission_admin'),
+    url(r'^my_missions/$', views.my_missions, name ='my_missions'),
+
 
 
 

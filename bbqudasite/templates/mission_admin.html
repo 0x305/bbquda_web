@@ -1,0 +1,154 @@
+<head> 
+{% load static %}
+    <meta charset="utf-8">
+
+    <title> All Missions</title>
+   
+    
+    <link rel="shortcut icon" type="image/png" href="{% static "css/Logo.ico" %}">
+   
+    <link rel="stylesheet" href="https://static.gilt.com/0067de00ee5d921b0ea4d36faa467f471ee640b7/css/rue_slim.css"/>
+    
+
+    
+    <link rel="stylesheet" href="https://static.gilt.com/0067de00ee5d921b0ea4d36faa467f471ee640b7/css/account.css"/>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+</head>
+
+
+
+    
+  <body>
+    <!-- navbar-->
+    <header class="site-header" role="banner">
+      <div class="wrapper">
+
+      
+        
+        <div class="grid--full medium-down--hide">
+          <div class="grid__item">
+            
+<nav>
+  <ul class="site-nav" id="AccessibleNav">
+    
+      
+        <li >
+          <a
+            href=""
+            class="site-nav__link"
+            data-meganav-type="child"
+            >
+              Home
+          </a>
+        </li>
+        <li>
+          <a
+            href=""
+            class="site-nav__link"
+            data-meganav-type="child"
+            >
+              Missions
+          </a>
+        </li>
+        <li>
+          <a
+            href=""
+            class="site-nav__link"
+            data-meganav-type="child"
+            >
+              Account
+          </a>
+        </li>
+        
+  </ul>
+</nav>
+
+          </div>
+        </div>
+      
+
+    </div>
+  </header>
+
+<body class="account has-carousel">
+   
+
+    <div class="main-content" style="" role="main" aria-label="page content">
+        
+<div class="content-wrapper">
+    <div class="container content">
+     
+
+
+        <h2 class="account-header">Missions</h2>
+                
+        
+        <section class="account-info-section" id="member_password">
+           
+<!------ Include the above in your HEAD tag ---------->
+<div class = "scroll">
+ {% for mission in missions%}
+
+<section class="content content_content" style="width: 70%; margin: auto;">
+                    <section class="invoice">
+                        <!-- title row -->
+                       
+                        
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h2 class="page-header">
+                                    <i class="fa fa-globe"></i> Mission Name: {{mission.name}}
+                                    
+                                </h2>
+                            </div><!-- /.col -->
+                        </div>
+                        <!-- info row -->
+                        <div class="row invoice-info">
+                            <!-- /.col -->
+                            
+                            <div class="col-sm-4 invoice-col">
+                                <b>Date Uploaded: {{mission.date}} </b><br>
+                                
+                            </div><!-- /.col -->
+                            <div class="col-sm-4 invoice-col">
+                                <b>User: </b><br>
+                                Name: {{mission.user.first_name}} {{mission.user.last_name}} <br>
+                                Email: {{mission.user.email}}<br>
+
+                                
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                       
+                        
+                        </div><!-- /.row -->
+
+                        <div class="row">
+                           
+                            {%endfor%}
+
+                        </div><!-- /.row -->
+                       
+                        
+                    </section>
+                </section>
+        
+
+        
+    </div> <!-- /container -->
+</div>
+
+
+
+
+    </div>
+
+    
+</body>
+</html>
