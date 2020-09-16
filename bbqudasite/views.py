@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.contrib.admin.views.decorators import staff_member_required
+from django.http import FileResponse
 
 # Create your views here.
 
@@ -115,7 +116,7 @@ def upload_csv(request):
 
 @staff_member_required
 def mission_admin(request):
-    missionss = CSVUpload.objects.all()
+    missions = CSVUpload.objects.all()
     return render(request, 'mission_admin.html', {'missions': missions} )
 
 @login_required #need to add hyperlink to download csv
@@ -126,3 +127,9 @@ def my_missions(request):
        
         return render(request, 'my_missions.html', { 'user': user,'missions': missions})
     return redirect('login')
+
+def download(request, pk):
+    mission = CSVUpload.objects.get(id=pk)
+    filename = mission.file.path
+    response = FileResponse(open(filename, 'rb'))
+    return response
