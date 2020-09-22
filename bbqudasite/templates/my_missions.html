@@ -1,157 +1,221 @@
-<head> 
+
+
+<!DOCTYPE html>
 {% load static %}
-    <meta charset="utf-8">
 
-    <title> All Missions</title>
-   
+<html lang="en">
+    <head>
+
+
+    <meta charset="utf-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+<title>
+
+ BBQUDA
+
+</title>
+
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+
+<!--     Fonts and icons     -->
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<!-- CSS Files -->
+
+<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" />
+<link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
+<link href="{% static "css/demo.css" %}" rel="stylesheet" />
+
     
-    <link rel="shortcut icon" type="image/png" href="{% static "css/Logo.ico" %}">
-   
-    <link rel="stylesheet" href="https://static.gilt.com/0067de00ee5d921b0ea4d36faa467f471ee640b7/css/rue_slim.css"/>
+  
+        <div class="wrapper ">
+          
+            <div class="sidebar" data-color="orange">
     
-
-    
-    <link rel="stylesheet" href="https://static.gilt.com/0067de00ee5d921b0ea4d36faa467f471ee640b7/css/account.css"/>
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
-</head>
-
-
-
-    
-  <body>
-    <!-- navbar-->
-    <header class="site-header" role="banner">
-      <div class="wrapper">
-
-      
+    <div class="sidebar-wrapper" id="sidebar-wrapper">
         
-        <div class="grid--full medium-down--hide">
-          <div class="grid__item">
-            
-<nav>
-  <ul class="site-nav" id="AccessibleNav">
-    
-      
-        <li >
-          <a
-            href=""
-            class="site-nav__link"
-            data-meganav-type="child"
-            >
-              Home
-          </a>
-        </li>
-        <li>
-          <a
-            href=""
-            class="site-nav__link"
-            data-meganav-type="child"
-            >
-              Missions
-          </a>
-        </li>
-        <li>
-          <a
-            href=""
-            class="site-nav__link"
-            data-meganav-type="child"
-            >
-              Account
-          </a>
-        </li>
-        
-  </ul>
-</nav>
-
-          </div>
-        </div>
-      
-
+        <ul class="nav">
+          
+              <li >
+                  <a href="./dashboard.html">
+                      
+                        <i class="now-ui-icons design_app"></i>
+                      
+                      <p>Dashboard</p>
+                  </a>
+              </li>
+              
+              
+              
+              <li >
+                  <a href="">
+                      
+                        <i class="now-ui-icons ui-1_bell-53"></i>
+                      
+                      <p>Upload Log</p>
+                  </a>
+              </li>
+              
+              <li  >
+                  <a href="{% url 'upload_csv'%}">
+                      
+                        <i class="now-ui-icons users_single-02"></i>
+                      
+                      <p>Upload CSV</p>
+                  </a>
+              </li>
+              
+              <li  class="active ">
+                  <a href="{% url 'my_missions'%}">
+                      
+                        <i class="now-ui-icons design_bullet-list-67"></i>
+                      
+                      <p>Uploaded Missions</p>
+                  </a>
+              </li>
+             
+        </ul>
     </div>
-  </header>
-
-<body class="account has-carousel">
-   
-
-    <div class="main-content" style="" role="main" aria-label="page content">
-        
-<div class="content-wrapper">
-    <div class="container content">
-     
-
-
-        <h2 class="account-header">Missions</h2>
-                
-        
-        <section class="account-info-section" id="member_password">
-           
-<!------ Include the above in your HEAD tag ---------->
-<div class = "scroll">
- {% for mission in missions%}
-
-<section class="content content_content" style="width: 70%; margin: auto;">
-                    <section class="invoice">
-                        <!-- title row -->
-                       
-                        
-
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h2 class="page-header">
-                                    <i class="fa fa-globe"></i> Mission Name: {{mission.name}}
-                                    
-                                </h2>
-                            </div><!-- /.col -->
-                        </div>
-                        <!-- info row -->
-                        <div class="row invoice-info">
-                            <!-- /.col -->
-                            
-                            <div class="col-sm-4 invoice-col">
-                                <b>Date Uploaded: {{mission.date}} </b><br>
-                                
-                            </div><!-- /.col -->
-                            
-                        </div><!-- /.row -->
-                        <div class="row invoice-info">
-                            <!-- /.col -->
-                            
-                            <div class="col-sm-4 invoice-col">
-                                <b>File: <a href="{% url 'download' id=mission.id %}" >Download</a> </b><br>
-                                
-                            </div><!-- /.col -->
-                            
-                        </div><!-- /.row -->
-
-                       
-                        
-                        </div><!-- /.row -->
-
-                        <div class="row">
-                           
-                            {%endfor%}
-
-                        </div><!-- /.row -->
-                       
-                        
-                    </section>
-                </section>
-        
-
-        
-    </div> <!-- /container -->
 </div>
 
 
+            <div class="main-panel" id="main-panel">
+              <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
+	<div class="container-fluid">
+    <div class="navbar-wrapper">
+      
+			
+      
+			<a class="navbar-brand" href="#pablo">Table List</a>
+		</div>
+
+		
+
+	    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+      
+<ul class="navbar-nav">
+ 
+
+  
+</ul>
+
+        
+	    </div>
+	</div>
+</nav>
+<!-- End Navbar -->
+
+                  <div class="panel-header panel-header-sm">
+  
+  
+</div>
 
 
-    </div>
-
+                  <div class="content">
+                      <div class="row">
+  <div class="col-md-12">
     
-</body>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title"> Uploaded Files</h4>
+        
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead class=" text-primary">
+                    
+<th >
+    
+        Name
+    
+</th>
+<th >
+    
+        Date
+    
+</th>
+<th >
+    
+        File
+    
+</th>
+</thead>
+<tbody>
+
+{% for mission in missions%}
+<tr>
+<td>
+{{mission.name}}
+</td>
+
+<td>
+
+{{mission.date}}
+</td>
+
+
+<td>
+<a href="{% url 'download' pk=mission.pk %}" >Download</a>
+</td>
+</tr>
+{%endfor%}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+  </div>
+  <div class="col-md-12">
+    
+
+  </div>
+</div>
+
+                  </div>
+
+                 
+             </div>
+          
+        </div>
+        
+            <div class="fixed-plugin">
+    <div class="dropdown show-dropdown">
+       
+        <ul class="dropdown-menu">
+			<li class="header-title"> Sidebar Background</li>
+            <li class="adjustments-line">
+                <a href="javascript:void(0)" class="switch-trigger background-color">
+                    <div class="badge-colors text-center">
+						<span class="badge filter badge-yellow" data-color="yellow"></span>
+                        <span class="badge filter badge-blue" data-color="blue"></span>
+                        <span class="badge filter badge-green" data-color="green"></span>
+                        <span class="badge filter badge-orange active" data-color="orange"></span>
+                        <span class="badge filter badge-red" data-color="red"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                </a>
+            </li>
+
+            
+        </ul>
+    </div>
+</div>
+
+    </body>
+
 </html>
+
+
+
+
+

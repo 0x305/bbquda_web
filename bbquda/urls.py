@@ -31,6 +31,8 @@ urlpatterns = [
     url(r'^mission_admin/$', views.mission_admin, name = 'mission_admin'),
     url(r'^my_missions/$', views.my_missions, name ='my_missions'),
     url(r'^download/(?P<pk>[\w-]+)/$', views.download, name ='download'),
+    url(r'^test/$', views.test, name ='test'),
+    
     
 
 

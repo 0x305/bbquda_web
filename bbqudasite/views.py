@@ -119,7 +119,7 @@ def mission_admin(request):
     missions = CSVUpload.objects.all()
     return render(request, 'mission_admin.html', {'missions': missions} )
 
-@login_required #need to add hyperlink to download csv
+@login_required 
 def my_missions(request):
     if request.user.is_authenticated:
         user = request.user
@@ -133,3 +133,12 @@ def download(request, pk):
     filename = mission.file.path
     response = FileResponse(open(filename, 'rb'))
     return response
+
+@login_required
+def test(request):
+    if request.user.is_authenticated:
+        user = request.user
+        missions = CSVUpload.objects.filter(user = user)
+       
+        return render(request, 'test.html', { 'user': user,'missions': missions})
+    return redirect('login')
