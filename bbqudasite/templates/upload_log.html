@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 {% load static %}
 
@@ -50,7 +48,9 @@
                   </a>
               </li>
               
-              <li >
+             
+              
+              <li class="active " >
                   <a href="{% url 'upload_log'%}">
                       
                         <i class="now-ui-icons ui-1_bell-53"></i>
@@ -59,7 +59,7 @@
                   </a>
               </li>
               
-              <li  >
+              <li >
                   <a href="{% url 'upload_csv'%}">
                       
                         <i class="now-ui-icons users_single-02"></i>
@@ -68,7 +68,7 @@
                   </a>
               </li>
               
-              <li  class="active ">
+              <li  >
                   <a href="{% url 'my_missions'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -76,6 +76,7 @@
                       <p>Uploaded Missions</p>
                   </a>
               </li>
+              
              
         </ul>
     </div>
@@ -122,57 +123,36 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"> Uploaded Files</h4>
+        <h4 class="card-title"> Upload Log File</h4>
         
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table">
-                <thead class=" text-primary">
-                    
-<th >
-    
-        Name
-    
-</th>
-<th >
-    
-        Date
-    
-</th>
-<th >
-    
-        File
-    
-</th>
-</thead>
+                
 <tbody>
+<form method="post"  enctype='multipart/form-data'>
+                            {% csrf_token %}
 
-{% for mission in missions%}
-<tr>
-<td>
-{{mission.name}}
-</td>
+                            {{ form.non_field_errors }}
 
-<td>
-
-{{mission.date}}
-</td>
-
-
-<td>
-<a href="{% url 'download' pk=mission.pk %}" >Download</a>
-</td>
-<td>
- <div class="modal-footer">
+                            {{ form.source.errors }}
+                            {{ form.source }}
+                            <ul>
+                                <li class="field">
+                                    {{ form.name.errors }}{{form.name}}
                                         
-         <a href="{% url 'delete_mission' pk=mission.pk %}" class="btn">Delete</a>
-        
-
-                                      </div>
-</td>
-</tr>
-{%endfor%}
+                                </li>
+                                <li class="field">
+                                    {{ form.file.errors }}{{form.file}}
+                                    </li>
+                                
+                                
+                                </ul>
+                      
+                     <button type="submit" class="btn btn-default btn-lg btn-block">Upload File</button>
+                     
+                     </form>
                     
                 </tbody>
             </table>

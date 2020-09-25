@@ -33,13 +33,29 @@ def csv_file_validator(value):
     reader = csv.reader(io_string, delimiter=';', quotechar='|')
     
     return True
+
+def log_file_validator(value):
+    filename, ext = os.path.splitext(value.name)
+    if  str(ext) != '.log':
+         raise ValidationError("Must be a log file")
+    
+    return True
     
 class CSVUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
     file = models.FileField(upload_to= 'media/csv/', validators=[csv_file_validator])
     name = models.CharField("File Name", max_length=50, null=True)
     date = models.DateField(_("Date"), default=datetime.date.today)
-    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return self.user.username
+
+class LogUpload(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
+    file = models.FileField(upload_to= 'media/log/', validators=[log_file_validator])
+    name = models.CharField("File Name", max_length=50, null=True)
+    date = models.DateField(_("Date"), default=datetime.date.today)
+
+    def __str__(self):
+        return self.user.username
+

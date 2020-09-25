@@ -1,5 +1,5 @@
 from django import forms 
-from bbqudasite.models import CSVUpload
+from bbqudasite.models import CSVUpload, LogUpload
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext, gettext_lazy as _
 from django.contrib.auth import (
@@ -10,5 +10,12 @@ class CSVForm(forms.ModelForm):
   
     class Meta: 
         model = CSVUpload 
+        
+        fields = ['name', 'file']
+
+class LogForm(forms.ModelForm): 
+  
+    class Meta: 
+        model = LogUpload 
         
         fields = ['name', 'file']

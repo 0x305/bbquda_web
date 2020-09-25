@@ -4,13 +4,25 @@ from django.contrib import messages
 import pandas as pd
 import os
 from users.forms import RegistrationForm
-from bbquda.forms import CSVForm
-from .models import CSVUpload
+from bbquda.forms import CSVForm, LogForm
+from .models import CSVUpload, LogUpload
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import FileResponse
+import csv
+from io import StringIO
+from django.core.files.base import ContentFile
+from django.core.files import File
+from django.views.generic.edit import DeleteView
+from django.urls import reverse, reverse_lazy
+
+
+
+
+
+
 
 # Create your views here.
 
@@ -114,6 +126,46 @@ def upload_csv(request):
         return render(request, 'upload_csv.html', {'form': form, 'user':user}) 
     return render(request, 'login.html') 
 
+@login_required
+def upload_log(request):
+    df = None
+    if request.user.is_authenticated:
+        user = request.user
+    
+        if request.method =='POST':
+            form = LogForm(request.POST, request.FILES)
+        
+        
+            if form.is_valid():
+                log = form.save(commit=False) 
+                log.user = request.user
+                log.save()
+                new_path = log.name + '.csv'
+                with open(log.file.path, encoding="ISO-8859-1") as f, open(new_path, 'w') as f2: 
+                    writer = csv.writer(f2)
+                    writer.writerow(['Latitude', 'Longitude']) # replace with your custom column header
+
+                    i = 0
+                    for line in f:
+                        writer.writerow([i] + line.rstrip().split('|'))
+                        i += 1
+                        if i == 10000:
+                            break
+                    
+                
+                    new_csv = CSVUpload(user = request.user)
+                    new_file = open(new_path)
+                    new_csv.file = File(new_file)
+                    new_csv.name = log.name
+                    new_csv.save()
+            
+                return redirect('my_missions')
+        else:
+            form = LogForm()
+
+        return render(request, 'upload_log.html', {'form': form, 'user':user}) 
+    return render(request, 'login.html') 
+
 @staff_member_required
 def mission_admin(request):
     missions = CSVUpload.objects.all()
@@ -142,3 +194,11 @@ def test(request):
        
         return render(request, 'test.html', { 'user': user,'missions': missions})
     return redirect('login')
+
+class MissionDelete(DeleteView):
+    model = CSVUpload
+    success_url = reverse_lazy('my_missions')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+

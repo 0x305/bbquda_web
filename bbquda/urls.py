@@ -28,10 +28,12 @@ urlpatterns = [
     url(r'^logout/$', views.logoutView, name = 'logout'),
     url(r'^register/$', views.register, name = 'register'),
     url(r'^upload_csv/$', views.upload_csv, name ='upload_csv'),
+    url(r'^upload_log/$', views.upload_log, name ='upload_log'),
     url(r'^mission_admin/$', views.mission_admin, name = 'mission_admin'),
     url(r'^my_missions/$', views.my_missions, name ='my_missions'),
     url(r'^download/(?P<pk>[\w-]+)/$', views.download, name ='download'),
     url(r'^test/$', views.test, name ='test'),
+    url(r'^delete_mission/(?P<pk>\d+)/$', views.MissionDelete.as_view(), name='delete_mission'),
     
     
 

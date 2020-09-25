@@ -1,0 +1,11 @@
+<div class="my__account__wrapper">
+
+					<h3 class="account__title">Remove Mission</h3>
+					
+						<p>Are you sure you want to delete item:"{{ object.name }}" ?</p>
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Confirm</button>
+                            </form>
+
+			</div>
