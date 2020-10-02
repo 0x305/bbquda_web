@@ -8,7 +8,7 @@ from bbquda.forms import CSVForm, LogForm
 from .models import CSVUpload, LogUpload
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import FileResponse
 import csv
@@ -17,7 +17,7 @@ from django.core.files.base import ContentFile
 from django.core.files import File
 from django.views.generic.edit import DeleteView
 from django.urls import reverse, reverse_lazy
-
+from django.contrib.auth.forms import AuthenticationForm
 
 
 
@@ -26,15 +26,9 @@ from django.urls import reverse, reverse_lazy
 
 # Create your views here.
 
-#Currently playing with the latitude paramter to make sure i can read a csv file properly
+
 def index(request):
-    mission_file = open('20190611_103011_greg_map_loc_surface_modified_IVER2-218.csv')
-    df = pd.read_csv(mission_file)
-    latitude = df['Latitude']
-    print(latitude[0])
-    context = {'latitude': latitude}
-    #return HttpResponse(latitude)
-    return render(request, 'index.html', context)
+    return redirect('login')
 
 #function for removing outliers
 def clean(csv_file):
@@ -85,6 +79,8 @@ def formhtml(request):
         messages.error(request, 'Please provide a .log or .csv formatted file')
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('my_missions')
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -103,7 +99,7 @@ def register(request):
 def logoutView(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('home')
+        return redirect('login')
 
 @login_required
 def upload_csv(request):
@@ -128,7 +124,7 @@ def upload_csv(request):
 
 @login_required
 def upload_log(request):
-    df = None
+    
     if request.user.is_authenticated:
         user = request.user
     
@@ -152,7 +148,6 @@ def upload_log(request):
                         if i == 10000:
                             break
                     
-                
                     new_csv = CSVUpload(user = request.user)
                     new_file = open(new_path)
                     new_csv.file = File(new_file)
@@ -186,14 +181,6 @@ def download(request, pk):
     response = FileResponse(open(filename, 'rb'))
     return response
 
-@login_required
-def test(request):
-    if request.user.is_authenticated:
-        user = request.user
-        missions = CSVUpload.objects.filter(user = user)
-       
-        return render(request, 'test.html', { 'user': user,'missions': missions})
-    return redirect('login')
 
 class MissionDelete(DeleteView):
     model = CSVUpload
@@ -201,4 +188,10 @@ class MissionDelete(DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+@login_required
+def logoutView(request):
+    logout(request)
+    return redirect('login')
+
 
