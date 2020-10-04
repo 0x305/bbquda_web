@@ -48,9 +48,7 @@
                   </a>
               </li>
               
-             
-              
-              <li class="active " >
+              <li >
                   <a href="{% url 'upload_log'%}">
                       
                         <i class="now-ui-icons ui-1_bell-53"></i>
@@ -59,7 +57,7 @@
                   </a>
               </li>
               
-              <li >
+              <li  >
                   <a href="{% url 'upload_csv'%}">
                       
                         <i class="now-ui-icons users_single-02"></i>
@@ -68,7 +66,7 @@
                   </a>
               </li>
               
-              <li  >
+              <li  class="active ">
                   <a href="{% url 'my_missions'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -76,7 +74,7 @@
                       <p>Uploaded Missions</p>
                   </a>
               </li>
-               <li  >
+              <li  >
                   <a href="{% url 'logout'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -84,7 +82,6 @@
                       <p>Logout</p>
                   </a>
               </li>
-              
              
         </ul>
     </div>
@@ -131,37 +128,104 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"> Upload Log File</h4>
+        <h4 class="card-title"> Descriptive Statistics</h4>
         
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table">
-                
-<tbody>
-<form method="post"  enctype='multipart/form-data'>
-                            {% csrf_token %}
-
-                            {{ form.non_field_errors }}
-
-                            {{ form.source.errors }}
-                            {{ form.source }}
-                            <ul>
-                                <li class="field">
-                                    {{ form.name.errors }}{{form.name}}
-                                        
-                                </li>
-                                <li class="field">
-                                    {{ form.file.errors }}{{form.file}}
-                                    </li>
-                                
-                                
-                                </ul>
-                      
-                     <button type="submit" class="btn btn-default btn-lg btn-block">Upload File</button>
-                     
-                     </form>
-                    
+                <thead class=" thead-dark"> <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Total Water Column (m)</th>
+                    <th scope="col">Temperature (c)</th>
+                    <th scope="col">pH</th>
+                    <th scope="col">ODO mg/L</th>
+                    <th scope="col">Salinity (ppt)</th>
+                    <th scope="col">Turbid+ NTU</th>
+                    <th scope="col">BGA-PC cells/mL</th>
+                    </tr>
+                </thead>
+        <tbody>
+            <tr>
+            <th class="table-dark">Count</th>
+            <td>{{water_count}}</td>
+            <td>{{temp_count}}</td>
+            <td>{{pH_count}}</td>
+            <td>{{ODO_count}}</td>
+            <td>{{salinity_count}}</td>
+            <td>{{turbid_count}}</td>
+            <td>{{BGA_count}}</td>
+            </tr>
+            <tr>
+            <th class="table-dark">Mean</th>
+            <td>{{water_mean}}</td>
+            <td>{{temp_mean}}</td>
+            <td>{{pH_mean}}</td>
+            <td>{{ODO_mean}}</td>
+            <td>{{salinity_mean}}</td>
+            <td>{{turbid_mean}}</td>
+            <td>{{BGA_mean}}</td>
+            </tr>
+            <tr>
+            <th class="table-dark">STD</th>
+            <td>{{water_std}}</td>
+            <td>{{temp_std}}</td>
+            <td>{{pH_std}}</td>
+            <td>{{ODO_std}}</td>
+            <td>{{salinity_std}}</td>
+            <td>{{turbid_std}}</td>
+            <td>{{BGA_std}}</td>
+            </tr>
+            <tr>
+            <th class="table-dark">Min</th>
+            <td>{{water_min}}</td>
+            <td>{{temp_min}}</td>
+            <td>{{pH_min}}</td>
+            <td>{{ODO_min}}</td>
+            <td>{{salinity_min}}</td>
+            <td>{{turbid_min}}</td>
+            <td>{{BGA_min}}</td>
+            </tr>
+            <tr>
+            <th class="table-dark">25%</th>
+            <td>{{water_25}}</td>
+            <td>{{temp_25}}</td>
+            <td>{{pH_25}}</td>
+            <td>{{ODO_25}}</td>
+            <td>{{salinity_25}}</td>
+            <td>{{turbid_25}}</td>
+            <td>{{BGA_25}}</td>
+            </tr>
+            <tr>
+            <th class="table-dark">50%</th>
+            <td>{{water_50}}</td>
+            <td>{{temp_50}}</td>
+            <td>{{pH_50}}</td>
+            <td>{{ODO_50}}</td>
+            <td>{{salinity_50}}</td>
+            <td>{{turbid_50}}</td>
+            <td>{{BGA_50}}</td>
+            </tr>
+            <tr>
+            <th class="table-dark">75%</th>
+            <td>{{water_75}}</td>
+            <td>{{temp_75}}</td>
+            <td>{{pH_75}}</td>
+            <td>{{ODO_75}}</td>
+            <td>{{salinity_75}}</td>
+            <td>{{turbid_75}}</td>
+            <td>{{BGA_75}}</td>
+            </tr>
+            <tr>
+            <th class="table-dark">Max</th>
+            <td>{{water_max}}</td>
+            <td>{{temp_max}}</td>
+            <td>{{pH_max}}</td>
+            <td>{{ODO_max}}</td>
+            <td>{{salinity_max}}</td>
+            <td>{{turbid_max}}</td>
+            <td>{{BGA_max}}</td>
+            </tr>
                 </tbody>
             </table>
         </div>

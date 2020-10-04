@@ -98,7 +98,7 @@
       
 			
       
-			<a class="navbar-brand" href="#pablo">Table List</a>
+			<a class="navbar-brand" href="#pablo">BBQUDA</a>
 		</div>
 
 		
@@ -138,49 +138,24 @@
             <table class="table">
                 <thead class=" text-primary">
                     
-<th >
-    
-        Name
-    
-</th>
-<th >
-    
-        Date
-    
-</th>
-<th >
-    
-        File
-    
-</th>
-</thead>
-<tbody>
-
-{% for mission in missions%}
-<tr>
-<td>
-{{mission.name}}
-</td>
-
-<td>
-
-{{mission.date}}
-</td>
-
-
-<td>
-<a href="{% url 'download' pk=mission.pk %}" >Download</a>
-</td>
-<td>
- <div class="modal-footer">
-                                        
-         <a href="{% url 'delete_mission' pk=mission.pk %}" class="btn">Delete</a>
-        
-
-                                      </div>
-</td>
-</tr>
-{%endfor%}
+                    <th > Name</th>
+                    <th >Date</th>
+                    <th >File</th>
+                    <th >Statistics</th>
+                </thead>
+                <tbody>
+                {% for mission in missions%}
+                <tr>
+                <td>{{mission.name}}</td>
+                <td>{{mission.date}}</td>
+                <td><a href="{% url 'download' pk=mission.pk %}" >Download</a></td>
+                <td><a href="{% url 'mission_stats' pk=mission.pk %}" >View Stats</a></td>
+                <td><div class="modal-footer">
+                    <a href="{% url 'delete_mission' pk=mission.pk %}" class="btn">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {%endfor%}
                     
                 </tbody>
             </table>
