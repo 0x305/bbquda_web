@@ -16,6 +16,7 @@ from django.core.exceptions import ValidationError
 
 
 
+
 def upload_csv_file(instance, filename):
     qs = instance.__class__.objects.filter(user=instance.user)
     if qs.exists():
@@ -59,3 +60,14 @@ class LogUpload(models.Model):
     def __str__(self):
         return self.user.username
 
+class Coordinate(models.Model):
+    csv_file = models.ForeignKey(CSVUpload, on_delete=models.CASCADE,  null= True)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
+    water = models.FloatField()
+    temp = models.FloatField()
+    pH = models.FloatField()
+    odo = models.FloatField()
+    salinity = models.FloatField()
+    turbid = models.FloatField()
+    bga = models.FloatField()

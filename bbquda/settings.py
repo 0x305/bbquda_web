@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'bbqudasite',
+    'leaflet',
+ 
+    
 ]
 AUTH_USER_MODEL = 'users.CustomUser' 
 

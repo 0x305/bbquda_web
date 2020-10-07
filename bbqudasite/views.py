@@ -5,7 +5,7 @@ import pandas as pd
 import os
 from users.forms import RegistrationForm
 from bbquda.forms import CSVForm, LogForm
-from .models import CSVUpload, LogUpload
+from .models import CSVUpload, LogUpload, Coordinate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
@@ -152,13 +152,31 @@ def upload_log(request):
                     new_csv.file = File(new_file)
                     new_csv.name = log.name
                     new_csv.save()
-            
+                    save_coordinate(new_csv)
+
                 return redirect('my_missions')
         else:
             form = LogForm()
 
         return render(request, 'upload_log.html', {'form': form, 'user':user}) 
     return render(request, 'login.html') 
+
+def save_coordinate(input = CSVUpload):
+    path = input.file.path
+    df = pd.read_csv(path)
+    for index, row in df.iterrows():
+        coordinate = Coordinate(csv_file = input)
+        coordinate.longitude = row['Longitude']
+        coordinate.latitude = row['Latitude']
+        coordinate.water = row['Total Water Column (m)']
+        coordinate.temp = row['Temperature (c)']
+        coordinate.pH = row['pH']
+        coordinate.odo = row['ODO mg/L']
+        coordinate.salinity = row['Salinity (ppt)']
+        coordinate.turbid = row['Turbid+ NTU']
+        coordinate.bga = row['BGA-PC cells/mL']
+        coordinate.save()
+
 
 @staff_member_required
 def mission_admin(request):
@@ -198,67 +216,67 @@ def mission_stats(request, pk):
     path = mission.file.path
     df = pd.read_csv(path) 
     water_count = df['Total Water Column (m)'].count()
-    water_mean = df['Total Water Column (m)'].mean()
-    water_std = df['Total Water Column (m)'].std()
-    water_min = df['Total Water Column (m)'].min()
-    water_max = df['Total Water Column (m)'].max()
-    water_25 = df['Total Water Column (m)'].quantile(0.25)
-    water_50 = df['Total Water Column (m)'].quantile(0.50)
-    water_75 = df['Total Water Column (m)'].quantile(0.75)
+    water_mean = df['Total Water Column (m)'].mean().round(2)
+    water_std = df['Total Water Column (m)'].std().round(2)
+    water_min = df['Total Water Column (m)'].min().round(2)
+    water_max = df['Total Water Column (m)'].max().round(2)
+    water_25 = df['Total Water Column (m)'].quantile(0.25).round(2)
+    water_50 = df['Total Water Column (m)'].quantile(0.50).round(2)
+    water_75 = df['Total Water Column (m)'].quantile(0.75).round(2)
 
     temp_count = df['Temperature (c)'].count()
-    temp_mean = df['Temperature (c)'].mean()
-    temp_std = df['Temperature (c)'].std()
-    temp_min = df['Temperature (c)'].min()
-    temp_max = df['Temperature (c)'].max()
-    temp_25 = df['Temperature (c)'].quantile(0.25)
-    temp_50 = df['Temperature (c)'].quantile(0.50)
-    temp_75 = df['Temperature (c)'].quantile(0.75)
+    temp_mean = df['Temperature (c)'].mean().round(2)
+    temp_std = df['Temperature (c)'].std().round(2)
+    temp_min = df['Temperature (c)'].min().round(2)
+    temp_max = df['Temperature (c)'].max().round(2)
+    temp_25 = df['Temperature (c)'].quantile(0.25).round(2)
+    temp_50 = df['Temperature (c)'].quantile(0.50).round(2)
+    temp_75 = df['Temperature (c)'].quantile(0.75).round(2)
 
     pH_count = df['pH'].count()
-    pH_mean = df['pH'].mean()
-    pH_std = df['pH'].std()
-    pH_min = df['pH'].min()
-    pH_max = df['pH'].max()
-    pH_25 = df['pH'].quantile(0.25)
-    pH_50 = df['pH'].quantile(0.50)
-    pH_75 = df['pH'].quantile(0.75)
+    pH_mean = df['pH'].mean().round(2)
+    pH_std = df['pH'].std().round(2)
+    pH_min = df['pH'].min().round(2)
+    pH_max = df['pH'].max().round(2)
+    pH_25 = df['pH'].quantile(0.25).round(2)
+    pH_50 = df['pH'].quantile(0.50).round(2)
+    pH_75 = df['pH'].quantile(0.75).round(2)
 
     ODO_count = df['ODO mg/L'].count()
-    ODO_mean = df['ODO mg/L'].mean()
-    ODO_std = df['ODO mg/L'].std()
-    ODO_min = df['ODO mg/L'].min()
-    ODO_max = df['ODO mg/L'].max()
-    ODO_25 = df['ODO mg/L'].quantile(0.25)
-    ODO_50 = df['ODO mg/L'].quantile(0.50)
-    ODO_75 = df['ODO mg/L'].quantile(0.75)
+    ODO_mean = df['ODO mg/L'].mean().round(2)
+    ODO_std = df['ODO mg/L'].std().round(2)
+    ODO_min = df['ODO mg/L'].min().round(2)
+    ODO_max = df['ODO mg/L'].max().round(2)
+    ODO_25 = df['ODO mg/L'].quantile(0.25).round(2)
+    ODO_50 = df['ODO mg/L'].quantile(0.50).round(2)
+    ODO_75 = df['ODO mg/L'].quantile(0.75).round(2)
 
-    salinity_count = df['Salinity (ppt)'].count()
-    salinity_mean = df['Salinity (ppt)'].mean()
-    salinity_std = df['Salinity (ppt)'].std()
-    salinity_min = df['Salinity (ppt)'].min()
-    salinity_max = df['Salinity (ppt)'].max()
-    salinity_25 = df['Salinity (ppt)'].quantile(0.25)
-    salinity_50 = df['Salinity (ppt)'].quantile(0.50)
-    salinity_75 = df['Salinity (ppt)'].quantile(0.75)
+    salinity_count = df['Salinity (ppt)'].count().round(2)
+    salinity_mean = df['Salinity (ppt)'].mean().round(2)
+    salinity_std = df['Salinity (ppt)'].std().round(2)
+    salinity_min = df['Salinity (ppt)'].min().round(2)
+    salinity_max = df['Salinity (ppt)'].max().round(2)
+    salinity_25 = df['Salinity (ppt)'].quantile(0.25).round(2)
+    salinity_50 = df['Salinity (ppt)'].quantile(0.50).round(2)
+    salinity_75 = df['Salinity (ppt)'].quantile(0.75).round(2)
 
     turbid_count = df['Turbid+ NTU'].count()
-    turbid_mean = df['Turbid+ NTU'].mean()
-    turbid_std = df['Turbid+ NTU'].std()
-    turbid_min = df['Turbid+ NTU'].min()
-    turbid_max = df['Turbid+ NTU'].max()
-    turbid_25 = df['Turbid+ NTU'].quantile(0.25)
-    turbid_50 = df['Turbid+ NTU'].quantile(0.50)
-    turbid_75 = df['Turbid+ NTU'].quantile(0.75)
+    turbid_mean = df['Turbid+ NTU'].mean().round(2)
+    turbid_std = df['Turbid+ NTU'].std().round(2)
+    turbid_min = df['Turbid+ NTU'].min().round(2)
+    turbid_max = df['Turbid+ NTU'].max().round(2)
+    turbid_25 = df['Turbid+ NTU'].quantile(0.25).round(2)
+    turbid_50 = df['Turbid+ NTU'].quantile(0.50).round(2)
+    turbid_75 = df['Turbid+ NTU'].quantile(0.75).round(2)
 
     BGA_count = df['BGA-PC cells/mL'].count()
-    BGA_mean = df['BGA-PC cells/mL'].mean()
-    BGA_std = df['BGA-PC cells/mL'].std()
-    BGA_min = df['BGA-PC cells/mL'].min()
-    BGA_max = df['BGA-PC cells/mL'].max()
-    BGA_25 = df['BGA-PC cells/mL'].quantile(0.25)
-    BGA_50 = df['BGA-PC cells/mL'].quantile(0.50)
-    BGA_75 = df['BGA-PC cells/mL'].quantile(0.75)
+    BGA_mean = df['BGA-PC cells/mL'].mean().round(2)
+    BGA_std = df['BGA-PC cells/mL'].std().round(2)
+    BGA_min = df['BGA-PC cells/mL'].min().round(2)
+    BGA_max = df['BGA-PC cells/mL'].max().round(2)
+    BGA_25 = df['BGA-PC cells/mL'].quantile(0.25).round(2)
+    BGA_50 = df['BGA-PC cells/mL'].quantile(0.50).round(2)
+    BGA_75 = df['BGA-PC cells/mL'].quantile(0.75).round(2)
 
     return render(request, 'mission_stats.html', {'mission': mission, 'water_count': water_count, 'water_mean': water_mean, 'water_std':water_std,
     'water_min':water_min, 'water_max':water_max, 'water_25':water_25, 'water_50':water_50, 'water_75':water_75, 'temp_count':temp_count,
@@ -269,3 +287,9 @@ def mission_stats(request, pk):
     'salinity_max':salinity_max, 'salinity_25':salinity_25, 'salinity_50':salinity_50, 'salinity_75':salinity_75, 'turbid_count':turbid_count,
     'turbid_mean':turbid_mean, 'turbid_std':turbid_std, 'turbid_min':turbid_min, 'turbid_max':turbid_max, 'turbid_25':turbid_25, 'turbid_50':turbid_50, 'turbid_75':turbid_75,
     'BGA_count':BGA_count, 'BGA_mean':BGA_mean, 'BGA_std':BGA_std, 'BGA_min':BGA_min, 'BGA_max':BGA_max, 'BGA_25':BGA_25, 'BGA_50':BGA_50, 'BGA_75':BGA_75} )
+
+def map(request, pk):
+    mission = CSVUpload.objects.get(id=pk)
+    coordinates = Coordinate.objects.filter(csv_file = mission)
+
+    return render(request, 'map.html', {'mission':mission, 'coordinates':coordinates})

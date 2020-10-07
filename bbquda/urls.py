@@ -20,7 +20,6 @@ from bbqudasite import views
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
 
 
-
 urlpatterns = [
     path('', include('bbqudasite.urls')),
     path('admin/', admin.site.urls),
@@ -34,6 +33,8 @@ urlpatterns = [
     url(r'^download/(?P<pk>[\w-]+)/$', views.download, name ='download'),
     url(r'^delete_mission/(?P<pk>\d+)/$', views.MissionDelete.as_view(), name='delete_mission'),
     url(r'^mission_stats/(?P<pk>[\w-]+)/$', views.mission_stats, name ='mission_stats'),
+    url(r'^map/(?P<pk>[\w-]+)/$', views.map, name = 'map'),
+   
     #url(r'^$', views.dash, name='dash'),
     
     

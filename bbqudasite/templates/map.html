@@ -1,11 +1,10 @@
-
-
 <!DOCTYPE html>
 {% load static %}
-
+{% load leaflet_tags %}
 <html lang="en">
     <head>
-
+    {% leaflet_js %}
+    {% leaflet_css %}
 
     <meta charset="utf-8" />
 
@@ -22,7 +21,7 @@
 <!--     Fonts and icons     -->
 
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 <!-- CSS Files -->
@@ -31,6 +30,7 @@
 <link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
 <link href="{% static "css/demo.css" %}" rel="stylesheet" />
 
+    
     
   
         <div class="wrapper ">
@@ -98,7 +98,7 @@
       
 			
       
-			<a class="navbar-brand" href="#pablo">BBQUDA</a>
+			<a class="navbar-brand" href="#pablo"> BBQUDA</a>
 		</div>
 
 		
@@ -130,36 +130,74 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"> Uploaded Files</h4>
+    
+        <h4 class="card-title"> Detailed Map</h4>
+       
         
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table">
-                <thead class=" text-primary">
-                    
-                    <th > Name</th>
-                    <th >Date</th>
-                    <th >File</th>
-                    <th >Statistics</th>
-                    <th >Map</th>
-                </thead>
-                <tbody>
-                {% for mission in missions%}
-                <tr>
-                <td>{{mission.name}}</td>
-                <td>{{mission.date}}</td>
-                <td><a href="{% url 'download' pk=mission.pk %}" >Download</a></td>
-                <td><a href="{% url 'mission_stats' pk=mission.pk %}" >View Stats</a></td>
-                <td><a href="{% url 'map' pk=mission.pk %}" >View Map</a></td>
-                <td><div class="modal-footer">
-                    <a href="{% url 'delete_mission' pk=mission.pk %}" class="btn">Delete</a>
-                    </div>
-                </td>
-            </tr>
-            {%endfor%}
-                    
-                </tbody>
+                <script>
+               
+                        markers = [
+                                    {
+                                        "name": "{{mission.name}}",
+                                        "url": "https://en.wikipedia.org/wiki/Canada",
+                                        "lat": 33.4,
+                                        "lng": -118.346771
+                                    },
+                                    {
+                                        "name": "Anguilla",
+                                        "url": "https://en.wikipedia.org/wiki/Anguilla",
+                                        "lat": 18.220554,
+                                        "lng": -63.068615
+                                    },
+                                    
+                                    {
+                                        "name": "Japan",
+                                        "url": "https://en.wikipedia.org/wiki/Japan",
+                                        "lat": 36.204824,
+                                        "lng": 138.252924
+                                    }
+                                    ];
+                    {%for coordinate in coordinates%}
+                        marker = {
+                            "name": "{{mission.name}}",
+                             "url": "https://en.wikipedia.org/wiki/Canada",
+                            "lat": "{{coordinate.latitude}}",
+                            "lng": "{{coordinate.longitude}}",
+                            "water":"{{coordinate.water}}",
+                            "temp": "{{coordinate.temp}}",
+                            "pH":"{{coordinate.pH}}",
+                            "odo":"{{coordinate.odo}}",
+                            "salinity":"{{coordinate.salinity}}",
+                            "turbid":"{{coordinate.turbid}}",
+                            "bga":"{{coordinate.bga}}",
+                                };
+                        markers.push(marker);
+                    {%endfor%}
+                    function map_init_basic (map, options) {
+                        
+                        for ( var i=0; i < markers.length; ++i ) 
+                                {
+                                L.marker( [markers[i].lat, markers[i].lng] )
+                                    .bindPopup( '<a target="_blank">' + markers[i].lat + '<br>' +
+                                                markers[i].water +'<br>' + markers[i].temp +'<br>' +markers[i].pH +'<br>' +
+                                                markers[i].odo+'<br>' + markers[i].salinity+'<br>' +markers[i].turbid+'<br>' +
+                                                markers[i].bga + '</a>')
+                                    .addTo( map );
+                                }
+                    }
+                </script>
+
+                {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+
+
+
+
+
+
             </table>
         </div>
     </div>
