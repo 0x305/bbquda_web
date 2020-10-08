@@ -30,8 +30,7 @@
 <link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
 <link href="{% static "css/demo.css" %}" rel="stylesheet" />
 
-    
-    
+
   
         <div class="wrapper ">
           
@@ -89,7 +88,7 @@
     </div>
 </div>
 
-
+<body>
             <div class="main-panel" id="main-panel">
               <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
@@ -135,45 +134,54 @@
        
         
     </div>
-    <div class="card-body">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <body>
+    <div id="map"></div>
+    <div class="card-body" >
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" style = "height:500pxs"  >
+            
                 <script>
-               
-                        markers = [
-                                    {
-                                        "name": "{{mission.name}}",
-                                        "url": "https://en.wikipedia.org/wiki/Canada",
-                                        "lat": 33.4,
-                                        "lng": -118.346771
-                                    },
-                                    {
-                                        "name": "Anguilla",
-                                        "url": "https://en.wikipedia.org/wiki/Anguilla",
-                                        "lat": 18.220554,
-                                        "lng": -63.068615
-                                    },
-                                    
-                                    {
-                                        "name": "Japan",
-                                        "url": "https://en.wikipedia.org/wiki/Japan",
-                                        "lat": 36.204824,
-                                        "lng": 138.252924
-                                    }
-                                    ];
+                   
+                        markers = [];
+                        lst_coords = [];
+                        
                     {%for coordinate in coordinates%}
+                     cur_coord = []
+                     lat = parseFloat("{{coordinate.latitude}}");
+                     lng = parseFloat("{{coordinate.longitude}}");
+                     cur_coord.push(lat);
+                     cur_coord.push(lng);
+                     lst_coords.push(cur_coord);
+                     water = parseFloat("{{coordinate.water}}");
+                     temp = parseFloat("{{coordinate.temp}}");
+                     pH = parseFloat("{{coordinate.pH}}");
+                     odo = parseFloat("{{coordinate.odo}}");
+                     salinity = parseFloat("{{coordinate.salinity}}");
+                     turbid = parseFloat("{{coordinate.turbid}}");
+                     bga = parseFloat("{{coordinate.bga}}");
+
                         marker = {
-                            "name": "{{mission.name}}",
-                             "url": "https://en.wikipedia.org/wiki/Canada",
                             "lat": "{{coordinate.latitude}}",
-                            "lng": "{{coordinate.longitude}}",
-                            "water":"{{coordinate.water}}",
-                            "temp": "{{coordinate.temp}}",
-                            "pH":"{{coordinate.pH}}",
-                            "odo":"{{coordinate.odo}}",
-                            "salinity":"{{coordinate.salinity}}",
-                            "turbid":"{{coordinate.turbid}}",
-                            "bga":"{{coordinate.bga}}",
+                            "lat_shown": lat.toFixed(2),
+                            "lng_shown": lng.toFixed(2),
+                            "lng": "{{coordinate.longitude}}" ,
+                            "water": water.toFixed(2),
+                            "temp": temp.toFixed(2),
+                            "pH": pH.toFixed(2),
+                            "odo": odo.toFixed(2),
+                            "salinity": salinity.toFixed(2),
+                            "turbid": turbid.toFixed(2),
+                            "bga": bga.toFixed(2),
                                 };
                         markers.push(marker);
                     {%endfor%}
@@ -181,14 +189,30 @@
                         
                         for ( var i=0; i < markers.length; ++i ) 
                                 {
-                                L.marker( [markers[i].lat, markers[i].lng] )
-                                    .bindPopup( '<a target="_blank">' + markers[i].lat + '<br>' +
-                                                markers[i].water +'<br>' + markers[i].temp +'<br>' +markers[i].pH +'<br>' +
-                                                markers[i].odo+'<br>' + markers[i].salinity+'<br>' +markers[i].turbid+'<br>' +
-                                                markers[i].bga + '</a>')
-                                    .addTo( map );
+                              
+                              var marker =  L.marker( [markers[i].lat, markers[i].lng] )
+                                    .bindPopup( '<a target="_blank">' + 'lat: ' + markers[i].lat_shown + '<br>' + 'long: ' + markers[i].lng_shown + '<br>'
+                                                 + 'Water Column (m): ' + markers[i].water +'<br>' +'Temperature (c): '+ markers[i].temp +'<br>' +'pH: '+markers[i].pH +'<br>' +
+                                                'ODO mg/L: '+ markers[i].odo+'<br>' +'Salinity (ppt): '+ markers[i].salinity+'<br>' +'Turbid+ NTU: '+markers[i].turbid+'<br>' +
+                                                 'BGA-PC cells/mL: ' + markers[i].bga + '</a>').setOpacity(0).addTo( map );
+                                marker.on('mouseover', function (e) {
+                                    this.openPopup();
+                                    });
+                                    marker.on('mouseout', function (e) {
+                                    this.closePopup();
+                                    });
+                               
+                                if (i == markers.length/2){
+                                    map.setView(new L.LatLng(markers[i].lat, markers[i].lng), 17);
+
                                 }
+                                }
+                         L.polygon(lst_coords, {color: 'red'}).addTo(map);
+
+                         
                     }
+
+                
                 </script>
 
                 {% leaflet_map "yourmap" callback="window.map_init_basic" %}
