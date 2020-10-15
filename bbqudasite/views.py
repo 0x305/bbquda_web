@@ -114,8 +114,9 @@ def upload_csv(request):
                 csv = form.save(commit=False) 
                 csv.user = request.user
                 csv.save()
+                save_coordinate(csv)
             
-                return redirect('')
+                return redirect('my_missions')
         else:
             form = CSVForm()
 
@@ -164,7 +165,7 @@ def upload_log(request):
 def save_coordinate(input = CSVUpload):
     path = input.file.path
     df = pd.read_csv(path)
-    for index, row in df.iloc[::100].iterrows():
+    for index, row in df.iloc[::50].iterrows():
         coordinate = Coordinate(csv_file = input)
         coordinate.longitude = row['Longitude']
         coordinate.latitude = row['Latitude']
