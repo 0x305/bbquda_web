@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 {% load static %}
-{% load leaflet_tags %}
+
 <html lang="en">
     <head>
-    {% leaflet_js %}
-    {% leaflet_css %}
+
 
     <meta charset="utf-8" />
 
@@ -21,7 +20,7 @@
 <!--     Fonts and icons     -->
 
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 <!-- CSS Files -->
@@ -30,7 +29,7 @@
 <link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
 <link href="{% static "css/demo.css" %}" rel="stylesheet" />
 
-
+    
   
         <div class="wrapper ">
           
@@ -40,7 +39,7 @@
         
         <ul class="nav">
           
-              <li >
+              <li class="active">
                   <a href="{% url 'dashboard'%}">
                       
                         <i class="now-ui-icons design_app"></i>
@@ -49,8 +48,10 @@
                   </a>
               </li>
               
+             
+              
               <li >
-                  <a href="{% url 'upload_log'%}">
+                  <a href={% url 'upload_log'%}>
                       
                         <i class="now-ui-icons ui-1_bell-53"></i>
                       
@@ -67,7 +68,7 @@
                   </a>
               </li>
               
-              <li  class="active ">
+              <li  >
                   <a href="{% url 'my_missions'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -88,7 +89,7 @@
     </div>
 </div>
 
-<body>
+
             <div class="main-panel" id="main-panel">
               <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
@@ -97,7 +98,7 @@
       
 			
       
-			<a class="navbar-brand" href="#pablo"> BBQUDA</a>
+			<a class="navbar-brand" href="#pablo">BBQUDA</a>
 		</div>
 
 		
@@ -129,86 +130,37 @@
 
 <div class="card">
     <div class="card-header">
-    
-        <h4 class="card-title"> Detailed Map</h4>
-       
+        <h4 class="card-title"> Dashboard</h4>
         
     </div>
-   
-    <body>
-    <div id="map"></div>
-    <div class="card-body" >
+    <div class="card-body">
         <div class="table-responsive">
-            <table class="table" style = "height:500pxs"  >
-            
-                <script>
-                   
-                        markers = [];
-                        lst_coords = [];
-                        
-                    {%for coordinate in coordinates%}
-                     cur_coord = []
-                     lat = parseFloat("{{coordinate.latitude}}");
-                     lng = parseFloat("{{coordinate.longitude}}");
-                     cur_coord.push(lat);
-                     cur_coord.push(lng);
-                     lst_coords.push(cur_coord);
-                     water = parseFloat("{{coordinate.water}}");
-                     temp = parseFloat("{{coordinate.temp}}");
-                     pH = parseFloat("{{coordinate.pH}}");
-                     odo = parseFloat("{{coordinate.odo}}");
-                     salinity = parseFloat("{{coordinate.salinity}}");
-                     turbid = parseFloat("{{coordinate.turbid}}");
-                     bga = parseFloat("{{coordinate.bga}}");
-
-                        marker = {
-                            "lat": "{{coordinate.latitude}}",
-                            "lat_shown": lat.toFixed(2),
-                            "lng_shown": lng.toFixed(2),
-                            "lng": "{{coordinate.longitude}}" ,
-                            "water": water.toFixed(2),
-                            "temp": temp.toFixed(2),
-                            "pH": pH.toFixed(2),
-                            "odo": odo.toFixed(2),
-                            "salinity": salinity.toFixed(2),
-                            "turbid": turbid.toFixed(2),
-                            "bga": bga.toFixed(2),
-                                };
-                        markers.push(marker);
-                    {%endfor%}
-                    function map_init_basic (map, options) {
-                        
-                        for ( var i=0; i < markers.length; ++i ) 
-                                {
-                              
-                              var marker =  L.marker( [markers[i].lat, markers[i].lng] )
-                                    .bindPopup( '<a target="_blank">' + 'lat: ' + markers[i].lat_shown + '<br>' + 'long: ' + markers[i].lng_shown + '<br>'
-                                                 + 'Water Column (m): ' + markers[i].water +'<br>' +'Temperature (c): '+ markers[i].temp +'<br>' +'pH: '+markers[i].pH +'<br>' +
-                                                'ODO mg/L: '+ markers[i].odo+'<br>' +'Salinity (ppt): '+ markers[i].salinity+'<br>' +'Turbid+ NTU: '+markers[i].turbid+'<br>' +
-                                                 'BGA-PC cells/mL: ' + markers[i].bga + '</a>').setOpacity(0).addTo( map );
-                                marker.on('mouseover', function (e) {
-                                    this.openPopup();
-                                    });
-                                    marker.on('mouseout', function (e) {
-                                    this.closePopup();
-                                    });
-                               
-                                if (i == markers.length/2){
-                                    map.setView(new L.LatLng(markers[i].lat, markers[i].lng), 17);
-
-                                }
-                                }
-                         L.polygon(lst_coords, {color: 'red'}).addTo(map);
-
-                         
-                    }
-
+            <table class="table">
                 
-                </script>
-
-                {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-
-
+<tbody>
+    <div>
+        <h2>FIU - Marine Robotics Lab</h2>
+        <h3>Rescuing Biscayne Bay Project</h3>
+        <p>This project aims at developing algorithms to effectively 
+            and efficiently collect water data using autonomous underwater 
+            and surface robots. Professor Gregory Murad Reis (gregoryreis.com) 
+            is leading a team of students and researchers to collect, analyze 
+            and develop visualization tools for the data collected in 
+            Biscayne Bay, FL. This effort is motivated by the environmental 
+            issues that have been happening in the bay area in the last months. 
+            Please select a mission in the top left menu to visualize the dataset.
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-12 mb-4">
+            <img src="{%static "heron.jpg" %}" class="img-fluid mb-4" alt="">
+            <img src="{%static "standingMapper.jpeg" %}" class="img-fluid mb-4" alt="">
+            <img src="{%static "mapperTurtle.jpeg" %}" class="img-fluid mb-4" alt="">
+        </div>
+    </div>
+    
+                    
+                </tbody>
             </table>
         </div>
     </div>
@@ -216,7 +168,6 @@
 
   </div>
   <div class="col-md-12">
-    
 
   </div>
 </div>
@@ -254,8 +205,6 @@
     </body>
 
 </html>
-
-
 
 
 

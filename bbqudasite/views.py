@@ -193,6 +193,10 @@ def my_missions(request):
         return render(request, 'my_missions.html', { 'user': user,'missions': missions})
     return redirect('login')
 
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
 def download(request, pk):
     mission = CSVUpload.objects.get(id=pk)
     filename = mission.file.path

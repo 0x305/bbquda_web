@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^delete_mission/(?P<pk>\d+)/$', views.MissionDelete.as_view(), name='delete_mission'),
     url(r'^mission_stats/(?P<pk>[\w-]+)/$', views.mission_stats, name ='mission_stats'),
     url(r'^map/(?P<pk>[\w-]+)/$', views.map, name = 'map'),
+    url(r'^dashboard/$', views.dashboard, name ='dashboard'),
    
     #url(r'^$', views.dash, name='dash'),
     
