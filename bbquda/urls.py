@@ -31,11 +31,15 @@ urlpatterns = [
     url(r'^mission_admin/$', views.mission_admin, name = 'mission_admin'),
     url(r'^my_missions/$', views.my_missions, name ='my_missions'),
     url(r'^download/(?P<pk>[\w-]+)/$', views.download, name ='download'),
+    url(r'^download_custom/(?P<pk>[\w-]+)/$', views.download_custom, name ='download_custom'),
     url(r'^delete_mission/(?P<pk>\d+)/$', views.MissionDelete.as_view(), name='delete_mission'),
     url(r'^mission_stats/(?P<pk>[\w-]+)/$', views.mission_stats, name ='mission_stats'),
     url(r'^map/(?P<pk>[\w-]+)/$', views.map, name = 'map'),
+    url(r'^trail_generator/$', views.trail_generator, name = 'trail_generator'),
+    url(r'^custom_trails/$', views.custom_trails, name ='custom_trails'),
+    url(r'^delete_trail/(?P<pk>\d+)/$', views.TrailDelete.as_view(), name='delete_trail'),
    
-    #url(r'^$', views.dash, name='dash'),
+   
     
     
     

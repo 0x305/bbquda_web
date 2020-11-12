@@ -48,9 +48,7 @@
                   </a>
               </li>
               
-             
-              
-              <li class="active " >
+              <li >
                   <a href="{% url 'upload_log'%}">
                       
                         <i class="now-ui-icons ui-1_bell-53"></i>
@@ -59,7 +57,7 @@
                   </a>
               </li>
               
-              <li >
+              <li  >
                   <a href="{% url 'upload_csv'%}">
                       
                         <i class="now-ui-icons users_single-02"></i>
@@ -68,7 +66,7 @@
                   </a>
               </li>
               
-              <li  >
+              <li >
                   <a href="{% url 'my_missions'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -84,7 +82,7 @@
                       <p>Trail Generator</p>
                   </a>
               </li>
-              <li >
+              <li  class="active ">
                   <a href="{% url 'custom_trails'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -92,7 +90,7 @@
                       <p>Custom Trails</p>
                   </a>
               </li>
-               <li  >
+              <li  >
                   <a href="{% url 'logout'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -100,7 +98,6 @@
                       <p>Logout</p>
                   </a>
               </li>
-              
              
         </ul>
     </div>
@@ -147,36 +144,32 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"> Upload Log File</h4>
+        <h4 class="card-title"> Uploaded Files</h4>
         
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table">
+                <thead class=" text-primary">
+                    
+                    <th > Name</th>
+                    <th >Date</th>
+                    <th >File</th>
+                   
+                </thead>
+                <tbody>
+                {% for trail in trails%}
+                <tr>
+                <td>{{trail.name}}</td>
+                <td>{{trail.date}}</td>
+                <td><a href="{% url 'download_custom' pk=trail.pk %}" >Download</a></td>
                 
-<tbody>
-<form method="post"  enctype='multipart/form-data'>
-                            {% csrf_token %}
-
-                            {{ form.non_field_errors }}
-
-                            {{ form.source.errors }}
-                            {{ form.source }}
-                            <ul>
-                                <li class="field">
-                                    {{ form.name.errors }}{{form.name}}
-                                        
-                                </li>
-                                <li class="field">
-                                    {{ form.file.errors }}{{form.file}}
-                                    </li>
-                                
-                                
-                                </ul>
-                      
-                     <button type="submit" class="btn btn-default btn-lg btn-block">Upload File</button>
-                     
-                     </form>
+                <td><div class="modal-footer">
+                    <a href="{% url 'delete_trail' pk=trail.pk %}" class="btn">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {%endfor%}
                     
                 </tbody>
             </table>
@@ -198,29 +191,7 @@
           
         </div>
         
-            <div class="fixed-plugin">
-    <div class="dropdown show-dropdown">
-       
-        <ul class="dropdown-menu">
-			<li class="header-title"> Sidebar Background</li>
-            <li class="adjustments-line">
-                <a href="javascript:void(0)" class="switch-trigger background-color">
-                    <div class="badge-colors text-center">
-						<span class="badge filter badge-yellow" data-color="yellow"></span>
-                        <span class="badge filter badge-blue" data-color="blue"></span>
-                        <span class="badge filter badge-green" data-color="green"></span>
-                        <span class="badge filter badge-orange active" data-color="orange"></span>
-                        <span class="badge filter badge-red" data-color="red"></span>
-                    </div>
-                    <div class="clearfix"></div>
-                </a>
-            </li>
-
             
-        </ul>
-    </div>
-</div>
-
     </body>
 
 </html>

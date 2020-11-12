@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 {% load static %}
-
+{% load leaflet_tags %}
 <html lang="en">
     <head>
-
+    {% leaflet_js %}
+    {% leaflet_css %}
 
     <meta charset="utf-8" />
 
@@ -20,17 +21,15 @@
 <!--     Fonts and icons     -->
 
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-
+ 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <!-- CSS Files -->
 
 <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" />
 <link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
 <link href="{% static "css/demo.css" %}" rel="stylesheet" />
 
-    
-  
         <div class="wrapper ">
           
             <div class="sidebar" data-color="orange">
@@ -48,9 +47,7 @@
                   </a>
               </li>
               
-             
-              
-              <li class="active " >
+              <li >
                   <a href="{% url 'upload_log'%}">
                       
                         <i class="now-ui-icons ui-1_bell-53"></i>
@@ -59,7 +56,7 @@
                   </a>
               </li>
               
-              <li >
+              <li  >
                   <a href="{% url 'upload_csv'%}">
                       
                         <i class="now-ui-icons users_single-02"></i>
@@ -68,7 +65,7 @@
                   </a>
               </li>
               
-              <li  >
+              <li >
                   <a href="{% url 'my_missions'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -76,7 +73,7 @@
                       <p>Uploaded Missions</p>
                   </a>
               </li>
-              <li  >
+              <li  class="active ">
                   <a href="{% url 'trail_generator'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -84,7 +81,7 @@
                       <p>Trail Generator</p>
                   </a>
               </li>
-              <li >
+              <li  >
                   <a href="{% url 'custom_trails'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -92,7 +89,7 @@
                       <p>Custom Trails</p>
                   </a>
               </li>
-               <li  >
+              <li  >
                   <a href="{% url 'logout'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -100,13 +97,12 @@
                       <p>Logout</p>
                   </a>
               </li>
-              
              
         </ul>
     </div>
 </div>
 
-
+<body>
             <div class="main-panel" id="main-panel">
               <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
@@ -115,7 +111,7 @@
       
 			
       
-			<a class="navbar-brand" href="#pablo">BBQUDA</a>
+			<a class="navbar-brand" href="#pablo"> BBQUDA</a>
 		</div>
 
 		
@@ -147,39 +143,81 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"> Upload Log File</h4>
+    
+        <h4 class="card-title"> Detailed Map</h4>
+       
         
     </div>
-    <div class="card-body">
+   
+    <body>
+    <div id="map"></div>
+    <div class="card-body" >
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" style = "height:500pxs"  >
+            
+                <script>
                 
-<tbody>
-<form method="post"  enctype='multipart/form-data'>
-                            {% csrf_token %}
+                
+                    var lst_coords = new Array;
+                    markers = [];
+                   
+                         function map_init_basic (map, options) {
+                             
+                            map.setView(new L.LatLng(39.5, -98.35), 4);
+                            var theMarker = {};
 
-                            {{ form.non_field_errors }}
+                            map.on('click',function(e){
+                                cur_coord = [];
+                                lat = e.latlng.lat;
+                                lon = e.latlng.lng;
+                                lst_coords.push(lat);
+                                lst_coords.push(lon);
+                                cur_coord.push(lat);
+                                cur_coord.push(lon);
+                                markers.push(cur_coord);
 
-                            {{ form.source.errors }}
-                            {{ form.source }}
-                            <ul>
-                                <li class="field">
-                                    {{ form.name.errors }}{{form.name}}
+
+
+                                console.log("You clicked the map at LAT: "+ lat+" and LONG: "+lon );
+                                  
+                                //Add a marker to show where you clicked.
+                                theMarker = L.marker([lat,lon]).setOpacity(50).addTo(map);
+                                 L.polygon(markers, {color: 'red'}).addTo(map); 
+                            });
+                            
+                            
+                         }
+
+                                $(document).ready(function() {
+                                    $("#trail").click(function() {
+        
+                                        $.ajax({
+                                            type: "POST",
+                                            dataType: "json",
+                                            data: {
+                                                list: lst_coords
+                                            
+                                                },
+                                           
+                                        });
+                                    });
+                                });
+                            
                                         
-                                </li>
-                                <li class="field">
-                                    {{ form.file.errors }}{{form.file}}
-                                    </li>
-                                
-                                
-                                </ul>
-                      
-                     <button type="submit" class="btn btn-default btn-lg btn-block">Upload File</button>
-                     
-                     </form>
-                    
-                </tbody>
+                </script>
+
+
+
+                {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+        <form > 
+
+            <button name="trail" value=trail  class="btn btn-primary btn-large"  id = "trail">Save Coordinates</button>
+</form>
             </table>
+
+
+<div id="info"></div>
+
         </div>
     </div>
 </div>
@@ -198,28 +236,7 @@
           
         </div>
         
-            <div class="fixed-plugin">
-    <div class="dropdown show-dropdown">
-       
-        <ul class="dropdown-menu">
-			<li class="header-title"> Sidebar Background</li>
-            <li class="adjustments-line">
-                <a href="javascript:void(0)" class="switch-trigger background-color">
-                    <div class="badge-colors text-center">
-						<span class="badge filter badge-yellow" data-color="yellow"></span>
-                        <span class="badge filter badge-blue" data-color="blue"></span>
-                        <span class="badge filter badge-green" data-color="green"></span>
-                        <span class="badge filter badge-orange active" data-color="orange"></span>
-                        <span class="badge filter badge-red" data-color="red"></span>
-                    </div>
-                    <div class="clearfix"></div>
-                </a>
-            </li>
-
-            
-        </ul>
-    </div>
-</div>
+         
 
     </body>
 
