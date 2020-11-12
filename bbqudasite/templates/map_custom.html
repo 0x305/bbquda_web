@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 {% load static %}
-
+{% load leaflet_tags %}
 <html lang="en">
     <head>
-
+    {% leaflet_js %}
+    {% leaflet_css %}
 
     <meta charset="utf-8" />
 
@@ -20,7 +21,7 @@
 <!--     Fonts and icons     -->
 
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 <!-- CSS Files -->
@@ -29,8 +30,6 @@
 <link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
 <link href="{% static "css/demo.css" %}" rel="stylesheet" />
 
-    
-  
         <div class="wrapper ">
           
             <div class="sidebar" data-color="orange">
@@ -66,7 +65,7 @@
                   </a>
               </li>
               
-              <li >
+              <li  >
                   <a href="{% url 'my_missions'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -74,7 +73,7 @@
                       <p>Uploaded Missions</p>
                   </a>
               </li>
-              <li  >
+              <li >
                   <a href="{% url 'trail_generator'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -82,7 +81,7 @@
                       <p>Trail Generator</p>
                   </a>
               </li>
-              <li  class="active ">
+              <li class="active " >
                   <a href="{% url 'custom_trails'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -103,7 +102,7 @@
     </div>
 </div>
 
-
+<body>
             <div class="main-panel" id="main-panel">
               <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
@@ -112,7 +111,7 @@
       
 			
       
-			<a class="navbar-brand" href="#pablo">BBQUDA</a>
+			<a class="navbar-brand" href="#pablo"> BBQUDA</a>
 		</div>
 
 		
@@ -144,36 +143,72 @@
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title"> Custom Trails</h4>
+    
+        <h4 class="card-title"> Custom Trail Map</h4>
+       
         
     </div>
-    <div class="card-body">
+   
+    <body>
+    <div id="map"></div>
+    <div class="card-body" >
         <div class="table-responsive">
-            <table class="table">
-                <thead class=" text-primary">
-                    
-                    <th > Name</th>
-                    <th >Date</th>
-                    <th >File</th>
-                    <th >Map</th>
+            <table class="table" style = "height:500pxs"  >
+            
+                <script>
                    
-                </thead>
-                <tbody>
-                {% for trail in trails%}
-                <tr>
-                <td>{{trail.name}}</td>
-                <td>{{trail.date}}</td>
-                <td><a href="{% url 'download_custom' pk=trail.pk %}" >Download</a></td>
-                <td><a href="{% url 'map_custom' pk=trail.pk %}" >View Map</a></td>
-                
-                <td><div class="modal-footer">
-                    <a href="{% url 'delete_trail' pk=trail.pk %}" class="btn">Delete</a>
-                    </div>
-                </td>
-            </tr>
-            {%endfor%}
+                        markers = [];
+                        lst_coords = [];
+                        latitudes =[];
+                        longitudes =[];
+                        
+                    {%for lat in lats%}
+                        latitudes.push("{{lat}}");
+                    {%endfor%}
+                    {%for lon in lons%}
+                        longitudes.push("{{lon}}")
+                    {%endfor%}
+
+                     for ( var i=0; i < latitudes.length; ++i ) {
+                        cur_coord = [];
+                        cur_coord.push(latitudes[i]);
+                        cur_coord.push(longitudes[i]);
+                        lst_coords.push(cur_coord);
+                        marker = {
+                            "lat": latitudes[i],
+                            "lng": longitudes[i],
+                                };
+                        markers.push(marker);
+
+
+                     }
+                     
+                     
                     
-                </tbody>
+                    function map_init_basic (map, options) {
+                        
+                        for ( var i=0; i < markers.length; ++i ) 
+                                {
+                               if (i == markers.length/2){
+                                    map.setView(new L.LatLng(markers[i].lat, markers[i].lng), 17);
+
+                                }
+                              var marker =  L.marker( [markers[i].lat, markers[i].lng] ).setOpacity(0).addTo( map );
+                                
+                               
+                               
+                                }
+                         L.polyline(lst_coords, {color: 'red'}).addTo(map);
+
+                         
+                    }
+
+                
+                </script>
+
+                {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+
+
             </table>
         </div>
     </div>
@@ -193,7 +228,8 @@
           
         </div>
         
-            
+           
+
     </body>
 
 </html>

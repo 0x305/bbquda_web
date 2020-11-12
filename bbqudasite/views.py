@@ -2,6 +2,7 @@ from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 import pandas as pd
+import numpy as np
 import os
 from users.forms import RegistrationForm
 from bbquda.forms import CSVForm, LogForm, TrailForm
@@ -299,6 +300,20 @@ def map(request, pk):
 
     return render(request, 'map.html', {'mission':mission, 'coordinates':coordinates})
 
+def map_custom(request, pk):
+    trail = CustomTrail.objects.get(id = pk)
+    trail_path = trail.file.path
+    df = pd.read_csv(trail_path)
+    lats =[]
+    lons =[]
+    for index, row in df.iterrows():
+        lons.append(row['Longitude'])
+        lats.append(row['Latitude'])
+    
+    return render(request, 'map_custom.html', {'lats':lats, 'lons':lons, 'trail':trail})
+    
+    
+
 @csrf_exempt
 def trail_generator(request):
     user = request.user
@@ -310,16 +325,26 @@ def trail_generator(request):
         trail = CustomTrail(name ="Custom_Trail")
         trail.user = request.user
             
-        new_path = trail.name + '.txt'    
-        with open(new_path, "w") as txt_file:
-            index = 0
-            for line in data:
-                cur = index % 2
-                index += 1
-                if cur == 0:
-                    txt_file.write(" ".join(line) + ", ") 
-                else:
-                    txt_file.write(" ".join(line) + "\n")
+        new_path = trail.name + '.csv'    
+        lat = []
+        lon =[]
+        
+        index = 0
+        for line in data:
+            cur = index % 2
+            index += 1
+            if cur == 0:
+                #txt_file.write(" ".join(line) + ", ") 
+                lat.append(line)
+
+            else:
+                #txt_file.write(" ".join(line) + "\n")
+                lon.append(line)
+        with open(new_path, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Latitude', 'Longitude'])
+            writer.writerows(zip(lat, lon))
+        
         new_file = open(new_path)
         trail.file = File(new_file)
         trail.save()

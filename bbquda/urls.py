@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^delete_mission/(?P<pk>\d+)/$', views.MissionDelete.as_view(), name='delete_mission'),
     url(r'^mission_stats/(?P<pk>[\w-]+)/$', views.mission_stats, name ='mission_stats'),
     url(r'^map/(?P<pk>[\w-]+)/$', views.map, name = 'map'),
+    url(r'^map_custom/(?P<pk>[\w-]+)/$', views.map_custom, name = 'map_custom'),
     url(r'^trail_generator/$', views.trail_generator, name = 'trail_generator'),
     url(r'^custom_trails/$', views.custom_trails, name ='custom_trails'),
     url(r'^delete_trail/(?P<pk>\d+)/$', views.TrailDelete.as_view(), name='delete_trail'),
