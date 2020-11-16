@@ -44,7 +44,7 @@ def log_file_validator(value):
     
 class CSVUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
-    file = models.FileField(upload_to= 'media/csv/', validators=[csv_file_validator])
+    file = models.FileField(upload_to= 'csv/', validators=[csv_file_validator])
     name = models.CharField("File Name", max_length=50, null=True)
     date = models.DateField(_("Date"), default=datetime.date.today)
 
@@ -53,7 +53,7 @@ class CSVUpload(models.Model):
 
 class LogUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
-    file = models.FileField(upload_to= 'media/log/', validators=[log_file_validator])
+    file = models.FileField(upload_to= 'log/', validators=[log_file_validator])
     name = models.CharField("File Name", max_length=50, null=True)
     date = models.DateField(_("Date"), default=datetime.date.today)
 
@@ -71,3 +71,9 @@ class Coordinate(models.Model):
     salinity = models.FloatField()
     turbid = models.FloatField()
     bga = models.FloatField()
+
+class CustomTrail(models.Model):
+    file = models.FileField(upload_to= 'custom_trails/')
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
+    date = models.DateField(_("Date"), default=datetime.date.today)
+    name = models.CharField("File Name", max_length=50, null=True)

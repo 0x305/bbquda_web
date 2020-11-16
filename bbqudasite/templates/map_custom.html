@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+{% load static %}
+{% load leaflet_tags %}
+<html lang="en">
+    <head>
+    {% leaflet_js %}
+    {% leaflet_css %}
+
+    <meta charset="utf-8" />
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+<title>
+
+ BBQUDA
+
+</title>
+
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+
+<!--     Fonts and icons     -->
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<!-- CSS Files -->
+
+<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" />
+<link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
+<link href="{% static "css/demo.css" %}" rel="stylesheet" />
+
+        <div class="wrapper ">
+          
+            <div class="sidebar" data-color="orange">
+    
+    <div class="sidebar-wrapper" id="sidebar-wrapper">
+        
+        <ul class="nav">
+          
+              <li >
+                  <a href="./dashboard.html">
+                      
+                        <i class="now-ui-icons design_app"></i>
+                      
+                      <p>Dashboard</p>
+                  </a>
+              </li>
+              
+              <li >
+                  <a href="{% url 'upload_log'%}">
+                      
+                        <i class="now-ui-icons ui-1_bell-53"></i>
+                      
+                      <p>Upload Log</p>
+                  </a>
+              </li>
+              
+              <li  >
+                  <a href="{% url 'upload_csv'%}">
+                      
+                        <i class="now-ui-icons users_single-02"></i>
+                      
+                      <p>Upload CSV</p>
+                  </a>
+              </li>
+              
+              <li  >
+                  <a href="{% url 'my_missions'%}">
+                      
+                        <i class="now-ui-icons design_bullet-list-67"></i>
+                      
+                      <p>Uploaded Missions</p>
+                  </a>
+              </li>
+              <li >
+                  <a href="{% url 'trail_generator'%}">
+                      
+                        <i class="now-ui-icons design_bullet-list-67"></i>
+                      
+                      <p>Trail Generator</p>
+                  </a>
+              </li>
+              <li class="active " >
+                  <a href="{% url 'custom_trails'%}">
+                      
+                        <i class="now-ui-icons design_bullet-list-67"></i>
+                      
+                      <p>Custom Trails</p>
+                  </a>
+              </li>
+              <li  >
+                  <a href="{% url 'logout'%}">
+                      
+                        <i class="now-ui-icons design_bullet-list-67"></i>
+                      
+                      <p>Logout</p>
+                  </a>
+              </li>
+             
+        </ul>
+    </div>
+</div>
+
+<body>
+            <div class="main-panel" id="main-panel">
+              <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
+	<div class="container-fluid">
+    <div class="navbar-wrapper">
+      
+			
+      
+			<a class="navbar-brand" href="#pablo"> BBQUDA</a>
+		</div>
+
+		
+
+	    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+      
+<ul class="navbar-nav">
+ 
+
+  
+</ul>
+
+        
+	    </div>
+	</div>
+</nav>
+<!-- End Navbar -->
+
+                  <div class="panel-header panel-header-sm">
+  
+  
+</div>
+
+
+                  <div class="content">
+                      <div class="row">
+  <div class="col-md-12">
+    
+
+<div class="card">
+    <div class="card-header">
+    
+        <h4 class="card-title"> Custom Trail Map</h4>
+       
+        
+    </div>
+   
+    <body>
+    <div id="map"></div>
+    <div class="card-body" >
+        <div class="table-responsive">
+            <table class="table" style = "height:500pxs"  >
+            
+                <script>
+                   
+                        markers = [];
+                        lst_coords = [];
+                        latitudes =[];
+                        longitudes =[];
+                        
+                    {%for lat in lats%}
+                        latitudes.push("{{lat}}");
+                    {%endfor%}
+                    {%for lon in lons%}
+                        longitudes.push("{{lon}}")
+                    {%endfor%}
+
+                     for ( var i=0; i < latitudes.length; ++i ) {
+                        cur_coord = [];
+                        cur_coord.push(latitudes[i]);
+                        cur_coord.push(longitudes[i]);
+                        lst_coords.push(cur_coord);
+                        marker = {
+                            "lat": latitudes[i],
+                            "lng": longitudes[i],
+                                };
+                        markers.push(marker);
+
+
+                     }
+                     
+                     
+                    
+                    function map_init_basic (map, options) {
+                        
+                        for ( var i=0; i < markers.length; ++i ) 
+                                {
+                               if (i == markers.length/2){
+                                    map.setView(new L.LatLng(markers[i].lat, markers[i].lng), 17);
+
+                                }
+                              var marker =  L.marker( [markers[i].lat, markers[i].lng] ).setOpacity(0).addTo( map );
+                                
+                               
+                               
+                                }
+                         L.polyline(lst_coords, {color: 'red'}).addTo(map);
+
+                         
+                    }
+
+                
+                </script>
+
+                {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+  </div>
+  <div class="col-md-12">
+    
+
+  </div>
+</div>
+
+                  </div>
+
+                 
+             </div>
+          
+        </div>
+        
+           
+
+    </body>
+
+</html>
+
+
+
+
+

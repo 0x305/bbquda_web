@@ -2,10 +2,11 @@ from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 import pandas as pd
+import numpy as np
 import os
 from users.forms import RegistrationForm
-from bbquda.forms import CSVForm, LogForm
-from .models import CSVUpload, LogUpload, Coordinate
+from bbquda.forms import CSVForm, LogForm, TrailForm
+from .models import CSVUpload, LogUpload, Coordinate, CustomTrail
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
@@ -18,10 +19,9 @@ from django.core.files import File
 from django.views.generic.edit import DeleteView
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm
-
-
-
-
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -203,6 +203,11 @@ def download(request, pk):
     response = FileResponse(open(filename, 'rb'))
     return response
 
+def download_custom(request, pk):
+    trail = CustomTrail.objects.get(id=pk)
+    filename = trail.file.path
+    response = FileResponse(open(filename, 'rb'))
+    return response
 
 class MissionDelete(DeleteView):
     model = CSVUpload
@@ -298,3 +303,73 @@ def map(request, pk):
     coordinates = Coordinate.objects.filter(csv_file = mission)
 
     return render(request, 'map.html', {'mission':mission, 'coordinates':coordinates})
+
+def map_custom(request, pk):
+    trail = CustomTrail.objects.get(id = pk)
+    trail_path = trail.file.path
+    df = pd.read_csv(trail_path)
+    lats =[]
+    lons =[]
+    for index, row in df.iterrows():
+        lons.append(row['Longitude'])
+        lats.append(row['Latitude'])
+    
+    return render(request, 'map_custom.html', {'lats':lats, 'lons':lons, 'trail':trail})
+    
+    
+
+@csrf_exempt
+def trail_generator(request):
+    user = request.user
+    
+    if request.method == 'POST':
+        form = TrailForm(request.POST)
+        data =  request.POST.getlist('list[]')
+      
+        trail = CustomTrail(name ="Custom_Trail")
+        trail.user = request.user
+            
+        new_path = trail.name + '.csv'    
+        lat = []
+        lon =[]
+        
+        index = 0
+        for line in data:
+            cur = index % 2
+            index += 1
+            if cur == 0:
+                #txt_file.write(" ".join(line) + ", ") 
+                lat.append(line)
+
+            else:
+                #txt_file.write(" ".join(line) + "\n")
+                lon.append(line)
+        with open(new_path, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Latitude', 'Longitude'])
+            writer.writerows(zip(lat, lon))
+        
+        new_file = open(new_path)
+        trail.file = File(new_file)
+        trail.save()
+        return redirect('custom_trails')
+        
+
+        
+    return render(request, 'trail_generator.html')
+
+@login_required 
+def custom_trails(request):
+    if request.user.is_authenticated:
+        user = request.user
+        trails = CustomTrail.objects.filter(user = user)
+       
+        return render(request, 'custom_trails.html', { 'user': user,'trails': trails})
+    return redirect('login')
+
+class TrailDelete(DeleteView):
+    model = CustomTrail
+    success_url = reverse_lazy('custom_trails')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
