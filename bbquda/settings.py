@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'users',
     'bbqudasite',
     'leaflet',
+    'django_extensions',
  
     
 ]
