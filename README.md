@@ -11,4 +11,7 @@ Website for visualizing mission logs obtained from the EcoMapper and Heron drone
 
 #### 5. python manage.py createsuperuser
 
-#### 6. python manage.py runserver and log in at http://127.0.0.1:8000/
+#### 6. python manage.py runserver
+
+#### 7. Log in at http://127.0.0.1:8000/
+
