@@ -52,10 +52,9 @@ INSTALLED_APPS = [
     'leaflet',
     'django_extensions',
     'django_rename_app',
- 
-    
+
 ]
-AUTH_USER_MODEL = 'researchers.CustomUser'
+AUTH_USER_MODEL = 'researchers.CustomResearcher'
 
 
 MIDDLEWARE = [

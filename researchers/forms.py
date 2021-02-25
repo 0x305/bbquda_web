@@ -1,18 +1,18 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser
+from .models import CustomResearcher
 from django.utils.translation import gettext_lazy as _
 
-class CustomUserCreationForm(UserCreationForm):
+class CustomResearcherCreationForm(UserCreationForm):
 
     class Meta:
-        model = CustomUser
+        model = CustomResearcher
         fields = ( 'email',)
 
-class CustomUserChangeForm(UserChangeForm):
+class CustomResearcherChangeForm(UserChangeForm):
 
     class Meta:
-        model = CustomUser
+        model = CustomResearcher
         fields = UserChangeForm.Meta.fields
 
 class RegistrationForm(UserCreationForm):
@@ -25,7 +25,7 @@ class RegistrationForm(UserCreationForm):
     password2 = forms.CharField(max_length=32, widget=forms.PasswordInput(attrs={'placeholder': 'Retype Password'}))
 
     class Meta:
-        model = CustomUser
+        model = CustomResearcher
         fields = ( 'first_name','last_name','email',  'username', 'password1', 'password2', )
         help_texts = {
             'first_name': _('First Name'),
