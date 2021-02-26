@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
 class MyAccountManager(BaseUserManager):
-    def create_user_researcher(self, email, password=None):
+    def create_user(self, email, password=None):
         if not email:
             raise ValueError('Users must have an email address')
         
@@ -18,8 +18,8 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
         
-    def create_superuser_researcher(self, email, password, username= None):
-        user = self.create_user_researcher(
+    def create_superuser(self, email, password, username= None):
+        user = self.create_user(
             email=self.normalize_email(email),
             password=password,
             
