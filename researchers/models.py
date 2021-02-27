@@ -4,6 +4,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
+# BRIAN NOTE:  Was unable to refactor function names for MyAccountManager.
+# Otherwise, it would cause problems when creating new researcher accounts or super users.
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
