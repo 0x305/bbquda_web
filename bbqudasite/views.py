@@ -28,7 +28,8 @@ from django.http import JsonResponse
 
 
 def index(request):
-    return redirect('login')
+    return render(request, 'homepage.html')
+
 
 #function for removing outliers
 def clean(csv_file):
