@@ -38,14 +38,14 @@ def clean(csv_file):
 def getName(strArr):
     name = ''
     for i in range(0, len(strArr) - 2):
-        name = name + i 
+        name = name + i
     return name
 
 def formhtml(request):
     #user just landed for the first time so show them the upload html
     if request.method == "GET":
         return render(request, 'form.html')
-    
+
     #in the html called the uploaded file 'file'
     csv_file = request.FILES['file']
 
@@ -84,12 +84,12 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            profile = form.save(commit=False) 
+            profile = form.save(commit=False)
             profile.save()
             login(request, profile)
             next = request.POST.get('next', '/') #redirect to where user wanted to go
 
-            return HttpResponseRedirect(next)           
+            return HttpResponseRedirect(next)
     else:
         form = RegistrationForm()
 
@@ -105,49 +105,49 @@ def logoutView(request):
 def upload_csv(request):
     if request.user.is_authenticated:
         user = request.user
-    
+
         if request.method =='POST':
             form = CSVForm(request.POST, request.FILES)
-        
-        
+
+
             if form.is_valid():
-                csv = form.save(commit=False) 
+                csv = form.save(commit=False)
                 csv.user = request.user
                 csv.save()
                 save_coordinate(csv)
-            
+
                 return redirect('my_missions')
         else:
             form = CSVForm()
 
-        return render(request, 'upload_csv.html', {'form': form, 'user':user}) 
-    return render(request, 'login.html') 
+        return render(request, 'upload_csv.html', {'form': form, 'user':user})
+    return render(request, 'login.html')
 
 @login_required
 def upload_log(request):
-    
+
     if request.user.is_authenticated:
         user = request.user
-    
+
         if request.method =='POST':
             form = LogForm(request.POST, request.FILES)
-        
-        
+
+
             if form.is_valid():
-                log = form.save(commit=False) 
+                log = form.save(commit=False)
                 log.user = request.user
                 log.save()
                 new_path = log.name + '.csv'
-                with open(log.file.path, encoding="ISO-8859-1") as f, open(new_path, 'w') as f2: 
+                with open(log.file.path, encoding="ISO-8859-1") as f, open(new_path, 'w') as f2:
                     writer = csv.writer(f2)
-                   
+
                     i = 0
                     for line in f:
                         writer.writerow([i] + line.rstrip().split(';'))
                         i += 1
                         if i == 10000:
                             break
-                    
+
                     new_csv = CSVUpload(user = request.user)
                     new_file = open(new_path)
                     new_csv.file = File(new_file)
@@ -159,8 +159,8 @@ def upload_log(request):
         else:
             form = LogForm()
 
-        return render(request, 'upload_log.html', {'form': form, 'user':user}) 
-    return render(request, 'login.html') 
+        return render(request, 'upload_log.html', {'form': form, 'user':user})
+    return render(request, 'login.html')
 
 def save_coordinate(input = CSVUpload):
     path = input.file.path
@@ -184,12 +184,12 @@ def mission_admin(request):
     missions = CSVUpload.objects.all()
     return render(request, 'mission_admin.html', {'missions': missions} )
 
-@login_required 
+@login_required
 def my_missions(request):
     if request.user.is_authenticated:
         user = request.user
         missions = CSVUpload.objects.filter(user = user)
-       
+
         return render(request, 'my_missions.html', { 'user': user,'missions': missions})
     return redirect('login')
 
@@ -224,7 +224,7 @@ def logoutView(request):
 def mission_stats(request, pk):
     mission = CSVUpload.objects.get(id=pk)
     path = mission.file.path
-    df = pd.read_csv(path) 
+    df = pd.read_csv(path)
     water_count = df['Total Water Column (m)'].count()
     water_mean = df['Total Water Column (m)'].mean().round(2)
     water_std = df['Total Water Column (m)'].std().round(2)
@@ -313,32 +313,32 @@ def map_custom(request, pk):
     for index, row in df.iterrows():
         lons.append(row['Longitude'])
         lats.append(row['Latitude'])
-    
+
     return render(request, 'map_custom.html', {'lats':lats, 'lons':lons, 'trail':trail})
-    
-    
+
+
 
 @csrf_exempt
 def trail_generator(request):
     user = request.user
-    
+
     if request.method == 'POST':
         form = TrailForm(request.POST)
         data =  request.POST.getlist('list[]')
-      
+
         trail = CustomTrail(name ="Custom_Trail")
         trail.user = request.user
-            
-        new_path = trail.name + '.csv'    
+
+        new_path = trail.name + '.csv'
         lat = []
         lon =[]
-        
+
         index = 0
         for line in data:
             cur = index % 2
             index += 1
             if cur == 0:
-                #txt_file.write(" ".join(line) + ", ") 
+                #txt_file.write(" ".join(line) + ", ")
                 lat.append(line)
 
             else:
@@ -348,22 +348,22 @@ def trail_generator(request):
             writer = csv.writer(f)
             writer.writerow(['Latitude', 'Longitude'])
             writer.writerows(zip(lat, lon))
-        
+
         new_file = open(new_path)
         trail.file = File(new_file)
         trail.save()
         return redirect('custom_trails')
-        
 
-        
+
+
     return render(request, 'trail_generator.html')
 
-@login_required 
+@login_required
 def custom_trails(request):
     if request.user.is_authenticated:
         user = request.user
         trails = CustomTrail.objects.filter(user = user)
-       
+
         return render(request, 'custom_trails.html', { 'user': user,'trails': trails})
     return redirect('login')
 

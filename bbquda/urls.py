@@ -40,11 +40,11 @@ urlpatterns = [
     url(r'^trail_generator/$', views.trail_generator, name = 'trail_generator'),
     url(r'^custom_trails/$', views.custom_trails, name ='custom_trails'),
     url(r'^delete_trail/(?P<pk>\d+)/$', views.TrailDelete.as_view(), name='delete_trail'),
-   
-   
-    
-    
-    
+
+
+
+
+
 
 
 

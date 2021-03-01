@@ -7,5 +7,5 @@ app_name = "bbqudasite"
 urlpatterns = [
     path('', views.index, name='index'),
     path('form/', views.formhtml, name='formhtml'),
-    
+
 ]
