@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'bbqudasite',
     'leaflet',
     'django_extensions',
-    'django_rename_app',
 
 ]
 AUTH_USER_MODEL = 'researchers.CustomResearcher'
