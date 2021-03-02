@@ -47,14 +47,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
+    'researchers',
     'bbqudasite',
     'leaflet',
     'django_extensions',
  
     
 ]
-AUTH_USER_MODEL = 'users.Researcher'
+AUTH_USER_MODEL = 'researchers.Researcher'
 
 
 MIDDLEWARE = [

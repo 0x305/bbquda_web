@@ -4,7 +4,7 @@ from django.contrib import messages
 import pandas as pd
 import numpy as np
 import os
-from users.forms import RegistrationForm
+from researchers.forms import RegistrationForm
 from bbquda.forms import CSVForm, LogForm, TrailForm
 from .models import CSVUpload, LogUpload, Coordinate, CustomTrail
 from django.contrib.auth.decorators import login_required
