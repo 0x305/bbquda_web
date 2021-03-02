@@ -54,7 +54,7 @@ INSTALLED_APPS = [
  
     
 ]
-AUTH_USER_MODEL = 'users.CustomUser' 
+AUTH_USER_MODEL = 'users.Researcher'
 
 
 MIDDLEWARE = [
