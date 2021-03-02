@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'django_extensions',
 
 ]
-AUTH_USER_MODEL = 'researchers.CustomResearcher'
+AUTH_USER_MODEL = 'researchers.Researcher'
 
 
 MIDDLEWARE = [

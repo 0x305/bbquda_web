@@ -2,17 +2,16 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.db import models
-from .models import CustomResearcher
+from .models import Researcher
 from bbqudasite.models import Coordinate, CSVUpload
-from .forms import CustomResearcherCreationForm, CustomResearcherChangeForm
+from .forms import ResearcherCreationForm, ResearcherChangeForm
 
+class ResearcherAdmin(UserAdmin):
+    model = Researcher
+    add_form = ResearcherCreationForm
+    form = ResearcherChangeForm
 
-class CustomUserAdmin(UserAdmin):
-    model = CustomResearcher
-    add_form = CustomResearcherCreationForm
-    form = CustomResearcherChangeForm
-
-admin.site.register(CustomResearcher, CustomUserAdmin)
+admin.site.register(Researcher, ResearcherAdmin)
 
 class CoordinateAdmin(admin.ModelAdmin):
     model = Coordinate

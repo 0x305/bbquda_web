@@ -33,7 +33,7 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class CustomResearcher(AbstractUser):
+class Researcher(AbstractUser):
     email = models.EmailField(verbose_name = "email", max_length=254, unique = True)
     first_name = models.CharField(max_length =30,blank=True, null=True)
     last_name = models.CharField(max_length = 30,blank=True, null=True)
