@@ -44,3 +44,7 @@ class Researcher(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    # Added class to rename default naming for table (via AbstractUser) from 'users' to 'researchers'
+    class Meta:
+        db_table = 'researcher'
+
