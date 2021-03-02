@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'bbqudasite',
     'leaflet',
     'django_extensions',
+    'django_rename_app',
  
     
 ]
