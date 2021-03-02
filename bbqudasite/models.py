@@ -72,8 +72,14 @@ class Coordinate(models.Model):
     turbid = models.FloatField()
     bga = models.FloatField()
 
+    def __str__(self):
+        return str(set(self.csv_file.name))
+
 class CustomTrail(models.Model):
     file = models.FileField(upload_to= 'custom_trails/')
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
     date = models.DateField(_("Date"), default=datetime.date.today)
     name = models.CharField("File Name", max_length=50, null=True)
+
+    def __str__(self):
+        return self.user
