@@ -4,6 +4,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
+# BRIAN NOTE:  Was unable to refactor function names for MyAccountManager.
+# Otherwise, it would cause problems when creating new researcher accounts or super users.
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
@@ -18,7 +20,7 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
         
-    def create_superuser(self, email,  password, username= None):
+    def create_superuser(self, email, password, username= None):
         user = self.create_user(
             email=self.normalize_email(email),
             password=password,
@@ -31,7 +33,7 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class CustomUser(AbstractUser):
+class Researcher(AbstractUser):
     email = models.EmailField(verbose_name = "email", max_length=254, unique = True)
     first_name = models.CharField(max_length =30,blank=True, null=True)
     last_name = models.CharField(max_length = 30,blank=True, null=True)
@@ -41,4 +43,8 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    # Added class to rename default naming for table (via AbstractUser) from 'users' to 'researchers'
+    class Meta:
+        db_table = 'researcher'
 
