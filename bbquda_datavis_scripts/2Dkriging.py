@@ -5,6 +5,12 @@ from pykrige.ok import OrdinaryKriging
 import matplotlib.pyplot as plt
 
 #%%
+x = np.arange(-5, 5, 0.1)
+y = np.arange(-5, 5, 0.1)
+xx, yy = np.meshgrid(x, y, sparse=True)
+print(xx)
+
+#%%
 data = np.array(
     [
         [0.3, 1.2, 0.47],
@@ -30,6 +36,11 @@ OK = OrdinaryKriging(
 z, ss = OK.execute("grid", gridx, gridy)
 # %%
 fig = plt.figure()
-plt.pcolor(xg, yg, z)
+plt.pcolor(gridx, gridy, z)
 plt.colorbar()
 plt.show()
+
+# %%
+print(z[0][0])
+
+# %%
