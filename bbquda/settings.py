@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'bbqudasite',
     'leaflet',
     'django_extensions',
+    'django_cleanup.apps.CleanupConfig',
+
  
     
 ]

@@ -1,20 +1,14 @@
 from __future__ import unicode_literals
 import csv
-import os
-import io
-from django.db import models
-from django.conf import settings
-from django.db import models
-from django.db.models.signals import post_save, pre_save
-from django.utils.text import slugify
-from django.contrib.auth import get_user_model
-import uuid
 import datetime
-from django.utils.translation import gettext as _
+import io
+import os
+from datetime import datetime, timedelta
+import django.utils
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-
-
-
+from django.db import models
+from django.utils.translation import gettext as _
 
 
 def upload_csv_file(instance, filename):
@@ -46,7 +40,7 @@ class CSVUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
     file = models.FileField(upload_to= 'csv/', validators=[csv_file_validator])
     name = models.CharField("File Name", max_length=50, null=True)
-    date = models.DateField(_("Date"), default=datetime.date.today)
+    date = models.DateField(_("Date"), default=django.utils.timezone.now)
 
     def __str__(self):
         return self.user.username
@@ -55,7 +49,7 @@ class LogUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
     file = models.FileField(upload_to= 'log/', validators=[log_file_validator])
     name = models.CharField("File Name", max_length=50, null=True)
-    date = models.DateField(_("Date"), default=datetime.date.today)
+    date = models.DateField(_("Date"), default=django.utils.timezone.now)
 
     def __str__(self):
         return self.user.username
@@ -75,5 +69,12 @@ class Coordinate(models.Model):
 class CustomTrail(models.Model):
     file = models.FileField(upload_to= 'custom_trails/')
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
-    date = models.DateField(_("Date"), default=datetime.date.today)
+    date = models.DateField(_("Date"), default=django.utils.timezone.now)
     name = models.CharField("File Name", max_length=50, null=True)
+
+class Cleanup(models.Model):
+    help = 'Delete objects older than 10 days'
+
+    def handle(self, *args, **options):
+        LogUpload.objects.filter(posting_date__lte=datetime.now()-timedelta(years>5)).delete()
+        self.stdout.write('Deleted objects older than 5 years')
