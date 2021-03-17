@@ -47,5 +47,10 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['username', 'organization']
 
     def __str__(self):
-        return self.first_name +" "+self.last_name
+        if self.first_name:
+            return self.first_name+" "+self.last_name
+        elif self.last_name:
+            return "unamed_first "+self.last_name
+        else:
+            return "Nonetyped naming"
 
