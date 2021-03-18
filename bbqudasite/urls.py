@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('form/', views.formhtml, name='formhtml'),
     path('getData/', views.get_data)
+
 ]

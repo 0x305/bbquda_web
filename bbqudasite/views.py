@@ -109,9 +109,8 @@ def upload_csv(request):
         user = request.user
 
         if request.method =='POST':
-            print(f"FILES??? => {request.FILES}")
             form = CSVForm(request.POST, request.FILES)
-
+            
             if form.is_valid():
                 csv = form.save(commit=False)
                 csv.user = request.user
@@ -382,7 +381,7 @@ def get_data(request):
     #get a list of all csv files and store its contents
     csvs = {}
     datasets = CSVUpload.objects.all()
-    print(f"Datasets: {datasets[0]}")
+
     for data in datasets:
         #media directory
         media_dir = os.path.join(os.path.dirname(__file__), "..", "media")
