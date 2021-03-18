@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'users',
     'bbqudasite',
     'leaflet',
-    'datasets_api',
     'django_extensions',
  
     

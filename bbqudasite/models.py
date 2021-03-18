@@ -43,13 +43,16 @@ def log_file_validator(value):
     return True
     
 class CSVUpload(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True) #username
-    file = models.FileField(upload_to= 'csv/', validators=[csv_file_validator]) 
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True) #username 
     name = models.CharField("File Name", max_length=50, null=True)
+    file = models.FileField(upload_to= f"csv/{user}/", validators=[csv_file_validator])
     date = models.DateField(_("Date"), default=datetime.date.today)
-
+    #helper to get file name
+    def filename(self):
+        return os.path.basename(self.file.name)
+    #returns the file location of each csv
     def __str__(self):
-        return self.user.username
+        return self.file.name
 
 class LogUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
