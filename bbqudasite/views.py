@@ -13,6 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import FileResponse
 import csv
+from rest_framework.decorators import api_view
 from io import StringIO
 from django.core.files.base import ContentFile
 from django.core.files import File
@@ -109,8 +110,7 @@ def upload_csv(request):
 
         if request.method =='POST':
             form = CSVForm(request.POST, request.FILES)
-
-
+            
             if form.is_valid():
                 csv = form.save(commit=False)
                 csv.user = request.user
@@ -374,3 +374,20 @@ class TrailDelete(DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+#get request for csv data
+@api_view(["GET"])
+def get_data(request):
+    #get a list of all csv files and store its contents
+    csvs = {}
+    datasets = CSVUpload.objects.all()
+
+    for data in datasets:
+        #media directory
+        media_dir = os.path.join(os.path.dirname(__file__), "..", "media")
+        #store csv contents into dataframe
+        df = pd.read_csv(os.path.join(media_dir, str(data)))
+        #append dataframe into list
+        csvs[str(data)] = df.to_json()
+    
+    return JsonResponse(csvs)

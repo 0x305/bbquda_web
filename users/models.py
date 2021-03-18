@@ -31,14 +31,26 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+#All logged in users would be researchers
 class CustomUser(AbstractUser):
     email = models.EmailField(verbose_name = "email", max_length=254, unique = True)
     first_name = models.CharField(max_length =30,blank=True, null=True)
     last_name = models.CharField(max_length = 30,blank=True, null=True)
-    username = models.CharField( max_length=30, unique = True)
-    
+    username = models.CharField( max_length=30, blank=True, null=True)
+    organization = models.CharField( max_length=50, blank=True, null=True)
+    #let's make this dropdown option in future commits
+    research_area = models.CharField( max_length=30, blank=True, null=True)
+
     objects = MyAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'organization']
+
+    def __str__(self):
+        if self.first_name:
+            return self.first_name+" "+self.last_name
+        elif self.last_name:
+            return "unamed_first "+self.last_name
+        else:
+            return "Nonetyped naming"
 
