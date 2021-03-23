@@ -11,9 +11,9 @@
      <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
-    <script src="webgl-heatmap.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/leaflet-webgl-heatmap@0.2.7/dist/leaflet-webgl-heatmap.min.js" integrity="sha256-wz6Wm2bEl0mr5QI3cHRDlNlcch5wgcUfsaJzcVGUM5s=" crossorigin="anonymous"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-webgl-heatmap@0.2.7/dist/leaflet-webgl-heatmap.min.js" integrity="sha256-wz6Wm2bEl0mr5QI3cHRDlNlcch5wgcUfsaJzcVGUM5s=" crossorigin="anonymous"></script>
+    <script src="../static/webgl-heatmap.js"></script>
+        
     <style> 
         
         #mapid { height: 100vh; }
@@ -23,36 +23,48 @@
 </head>
 
 <body>
+    <script
+       src="http://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js">
+    </script>
     <div id="mapid"></div>
 
     <script type="text/javascript">
-
-        var base = L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png' );
-        var map = L.map('mapid', {
-	                    layers : [base],
-	                    center : [44.65, -63.57],
-	                    zoom: 12 
-                    });
-        var heatmap = new L.webGLHeatmap({
-            size: 1000
-        });
-        //var mymap = L.map('mapid').setView([44.65, -63.57], 12);
-
-        //var osm = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(mymap);
-
-        //var heatmap = new L.TileLayer.webGLHeatMap({size: 1000}); 
- 
-        // dataPoints is an array of arrays: [[lat, lng, intensity]...]
-        var dataPoints = [[44.6674, -63.5703, 2], [44.6826, -63.7552, 2], [44.6325, -63.5852, 41], [44.6467, -63.4696, 2], [44.6804, -63.487, 64], [44.6622, -63.5364, 40], [44.603, - 63.743, 52]];
-        /*for (var i = 0, len = dataPoints.length; i < len; i++) {
-            var point = dataPoints[i];
-            heatmap.addDataPoint(point[0], point[1], point[2]);
-        }*/
-        heatmap.setData(dataPoints);
-        map.addLayer( heatmap );
-// alternatively, you can skip the for loop and add the whole dataset with heatmap.setData(dataPoints)
- 
-        //mymap.addLayer(heatmap);
+        function getHeatMapData() {
+                return fetch( "http://127.0.0.1:5000/main/get-heatmap", { method: "GET"})
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        return json;
+                });
+}
+        (async function () {
+            // add everything here
+            var base = L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png' );
+            var map = L.map('mapid', {
+                            layers : [base],
+                            center :[33.44500433, -118.4845288],
+                            zoom: 12 
+                        });
+            var heatmap = new L.webGLHeatmap({
+                size: 12,
+                units: 'm',
+                alphaRange: .4       
+            });
+            
+            const heatMapData = await getHeatMapData();
+            // dataPoints is an array of arrays: [[lat, lng, intensity]...]
+            heatmap.setData(heatMapData);
+            heatmap.multiply(0.60)
+            //var heat = L.heatLayer(heatMapData,{
+            //radius: 8,
+            //blur: 0, 
+            //maxZoom: 8,
+           // }).addTo(map);
+            map.addLayer( heatmap );
+            // alternatively, you can skip the for loop and add the whole dataset with heatmap.setData(dataPoints)
+    
+            //mymap.addLayer(heatmap);
+        })();
 
     </script>
 </body>
