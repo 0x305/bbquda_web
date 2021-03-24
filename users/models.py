@@ -5,7 +5,9 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
 class MyAccountManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email, username, password=None):
+        if not username:
+            raise ValueError('Users must have a username')
         if not email:
             raise ValueError('Users must have an email address')
         
@@ -18,11 +20,11 @@ class MyAccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
         
-    def create_superuser(self, email,  password, username= None):
+    def create_superuser(self, email,  password, username=None, organization=None):
         user = self.create_user(
             email=self.normalize_email(email),
             password=password,
-            
+            username=username,
            
         )
         user.is_admin = True
