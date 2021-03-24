@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.utils.translation import gettext as _
+
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -32,10 +30,13 @@ class MyAccountManager(BaseUserManager):
         return user
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(verbose_name = "email", max_length=254, unique = True)
-    first_name = models.CharField(max_length =30,blank=True, null=True)
-    last_name = models.CharField(max_length = 30,blank=True, null=True)
-    username = models.CharField( max_length=30, unique = True)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
+    email = models.EmailField(verbose_name="email", max_length=254, unique=True)
+    username = models.CharField(max_length=30, unique=True)
+
+
+
     
     objects = MyAccountManager()
 

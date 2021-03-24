@@ -26,7 +26,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ( 'first_name','last_name','email',  'username', 'password1', 'password2', )
+        fields = ('first_name','last_name','email',  'username', 'password1', 'password2',)
         help_texts = {
             'first_name': _('First Name'),
         }

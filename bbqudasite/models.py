@@ -73,8 +73,8 @@ class CustomTrail(models.Model):
     name = models.CharField("File Name", max_length=50, null=True)
 
 class Cleanup(models.Model):
-    help = 'Delete objects older than 10 days'
+    help = 'Delete objects older than 5 years'
 
     def handle(self, *args, **options):
-        LogUpload.objects.filter(posting_date__lte=datetime.now()-timedelta(years>5)).delete()
+        LogUpload.objects.filter(posting_date__lte=datetime.now()-timedelta(weeks>261)).delete()
         self.stdout.write('Deleted objects older than 5 years')
