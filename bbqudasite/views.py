@@ -27,19 +27,6 @@ from django.http import JsonResponse
 
 # Create your views here.
 
-config = {
-    'apiKey': "AIzaSyD8Ak65O7ieZYokn6D1jQh9EBv6hYqVn6o",
-    'authDomain': "bbquda.firebaseapp.com",
-    'databaseURL': "https://bbquda-default-rtdb.firebaseio.com",
-    'projectId': "bbquda",
-    'storageBucket': "bbquda.appspot.com",
-    'messagingSenderId': "1033247107045",
-    'appId': "1:1033247107045:web:e63b851cc1c8ebda48710c",
-    'measurementId': "G-CX55R2E1F1"
-  }
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
-
 
 def index(request):
     return render(request, 'homepage.html')
