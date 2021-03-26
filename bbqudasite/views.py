@@ -62,9 +62,7 @@ def formhtml(request):
         filtered_list = df[['Latitude', 'Longitude', 'Total Water Column (m)',
             'Temperature (c)', 'pH', 'ODO mg/L', 'Salinity (ppt)',
             'Turbid+ NTU', 'BGA-PC cells/mL']]
-        #print(filtered_list) #just a check
         latitude = filtered_list['Latitude']
-        print(df)
         return HttpResponse(latitude[0])
 
     elif csv_file.name.endswith('.csv'):
@@ -74,7 +72,6 @@ def formhtml(request):
             'Turbid+ NTU', 'BGA-PC cells/mL']]
         #print(filtered_list) #just a check
         latitude = filtered_list['Latitude']
-        print(df)
         return HttpResponse(latitude[0])
 
     else:
@@ -110,7 +107,6 @@ def upload_csv(request):
 
         if request.method =='POST':
             form = CSVForm(request.POST, request.FILES)
-            
             if form.is_valid():
                 csv = form.save(commit=False)
                 csv.user = request.user
