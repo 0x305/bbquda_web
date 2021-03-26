@@ -38,7 +38,7 @@ def delete_researcher(request, researcher_id):
         researcher_item.update(**payload)
         researcher = CustomUser.objects.get(id=researcher_id)
         serializer = ResearcherSerializer(researcher)
-        return JsonResponse({'researcher:'serializer.data}, safe=False, status.HTTP_200_OK)
+        return JsonResponse({'researcher:' serializer.data}, safe=False, status.HTTP_200_OK)
     except ObjectDoesNotExist as e:
         return JsonResponse({'error:' srt(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
     except Exception:
