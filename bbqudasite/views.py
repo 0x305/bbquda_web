@@ -23,7 +23,9 @@ from django.contrib.auth.forms import AuthenticationForm
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import authentication_classes, permission_classes
 
 # Create your views here.
 
@@ -373,7 +375,9 @@ class TrailDelete(DeleteView):
 
 #get request for csv data
 @api_view(["GET"])
-def get_data(request):
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_data(request, pk):
     #get a list of all csv files and store its contents
     csvs = {}
     datasets = CSVUpload.objects.all()
