@@ -22,7 +22,7 @@ from django.contrib.auth.forms import AuthenticationForm
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
+from data_visuals.kriging2D import *
 
 # Create your views here.
 
@@ -307,6 +307,7 @@ def map(request, pk):
 def map_custom(request, pk):
     trail = CustomTrail.objects.get(id = pk)
     trail_path = trail.file.path
+    print(trail_path)
     df = pd.read_csv(trail_path)
     lats =[]
     lons =[]
@@ -316,7 +317,29 @@ def map_custom(request, pk):
     
     return render(request, 'map_custom.html', {'lats':lats, 'lons':lons, 'trail':trail})
     
+def kriging_heatmap(request):
+    #mission = CSVUpload.objects.get(id=pk)
+    #path = mission.file.path
+    path = "C:/Users/aerod/Desktop/CapstoneII/bbquda_web/mission.csv"
+    filtered_data = selectParameterToKrige(path, 'pH') #Using 'pH' until I can properly choose which parameter
     
+    min_lat = filtered_data['Latitude'].min() #Defaults for now
+    max_lat = filtered_data['Latitude'].max()
+    min_lon = filtered_data['Longitude'].min()
+    max_lon = filtered_data['Longitude'].max()
+     
+    fil_region_data = filterForKrigingRegion(filtered_data, min_lat, max_lat, min_lon, max_lon)
+
+    gridx, gridy = createXYGrid(min_lat, max_lat, min_lon, max_lon)
+     
+    lat, lon, pH = convertDFtoNP(fil_region_data, 'pH')
+
+    OK = createKrigingObject(lat, lon, pH)
+    z,ss = executeKrigging(OK, gridx, gridy)
+
+    formatted_heatmap = formatInterpolatedData(z, gridx, gridy)
+
+    return render(request, 'kriging_heatmap.html', {'heatmap_vals': formatted_heatmap, 'lat': max_lat, 'long': max_lon, 'zoom': 16})
 
 @csrf_exempt
 def trail_generator(request):

@@ -19,9 +19,11 @@ class LogForm(forms.ModelForm):
         model = LogUpload 
         
         fields = ['name', 'file']
+
 class TrailForm(forms.ModelForm): 
   
     class Meta: 
         model = CustomTrail 
         
         fields = ['name']
+

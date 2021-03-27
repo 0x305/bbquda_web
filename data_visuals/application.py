@@ -16,7 +16,6 @@ def homepage():
 
 @app.route("/main/get-heatmap", methods=["GET"])
 def get_heatmap_default(csv = "C:/Users/aerod/Desktop/CapstoneII/bbquda_web/mission.csv", parameter ="pH"):
-     print(csv, parameter)
      filtered_data = selectParameterToKrige(csv, parameter)
     
      min_lat = filtered_data['Latitude'].min()

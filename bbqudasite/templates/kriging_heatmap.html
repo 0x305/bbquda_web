@@ -24,7 +24,12 @@
  
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet-webgl-heatmap@0.2.7/dist/leaflet-webgl-heatmap.min.js" integrity="sha256-wz6Wm2bEl0mr5QI3cHRDlNlcch5wgcUfsaJzcVGUM5s=" crossorigin="anonymous"></script>
+<script src="../static/webgl-heatmap.js"></script>
 <!-- CSS Files -->
+
+
 
 <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" />
 <link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
@@ -71,6 +76,14 @@
                         <i class="now-ui-icons design_bullet-list-67"></i>
                       
                       <p>Uploaded Missions</p>
+                  </a>
+              </li>
+              <li  >
+                  <a href="{% url 'kriging_heatmap'%}">
+                      
+                        <i class="now-ui-icons design_bullet-list-67"></i>
+                      
+                      <p>Heatmap</p>
                   </a>
               </li>
               <li  class="active ">
@@ -144,66 +157,33 @@
 <div class="card">
     <div class="card-header">
     
-        <h4 class="card-title"> Trail Generator</h4>
+        <h4 class="card-title"> Heatmap</h4>
        
         
     </div>
    
     <body>
     <div id="map"></div>
+
     <div class="card-body" >
         <div class="table-responsive">
             <table class="table" style = "height:500pxs"  >
             
                 <script>
-                
-                
-                    var lst_coords = new Array;
-                    markers = [];
-                   
+                                   
                          function map_init_basic (map, options) {
                              
-                            map.setView(new L.LatLng(39.5, -98.35), 4);
-                            var theMarker = {};
-
-                            map.on('click',function(e){
-                                cur_coord = [];
-                                lat = e.latlng.lat;
-                                lon = e.latlng.lng;
-                                lst_coords.push(lat);
-                                lst_coords.push(lon);
-                                cur_coord.push(lat);
-                                cur_coord.push(lon);
-                                markers.push(cur_coord);
-
-
-
-                                console.log("You clicked the map at LAT: "+ lat+" and LONG: "+lon );
-                                  
-                                //Add a marker to show where you clicked.
-                                theMarker = L.marker([lat,lon]).setOpacity(50).addTo(map);
-                                 L.polyline(markers, {color: 'red'}).addTo(map); 
+                            map.setView(new L.LatLng({{lat}}, {{long}}), {{zoom}});
+                            
+                            var heatmap = new L.webGLHeatmap({
+                            size: 12,
+                            units: 'm',
+                            alphaRange: .4       
                             });
                             
-                            
-                         }
-
-                                $(document).ready(function() {
-                                    $("#trail").click(function() {
-        
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            data: {
-                                                list: lst_coords
-                                            
-                                                },
-                                           
-                                        });
-                                    });
-                                });
-                            
-                                        
+                            heatmap.setData({{heatmap_vals}});
+                            map.addLayer( heatmap );
+                         }                      
                 </script>
 
 
