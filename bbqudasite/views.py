@@ -330,24 +330,21 @@ def kriging_heatmap(request):
     lng1 = request.GET.get('min_long', None)
     lat2 = request.GET.get('min_lat', None)
     lng2 = request.GET.get('max_long', None)
-    if parameter == "Turbid NTU":
-                parameter = "Turbid+ NTU"
-    form = HeatmapCSVForm(request.POST, request=request, initial={'file':'csv/adrian_mission_yt15iJw.csv','id_parameter':'pH' }) 
+    
+    form = HeatmapCSVForm(request.POST, request=request, initial={'file': file,'id_parameter':parameter }) 
 
     if file:
 
-        path = "C:/Users/Adrian/Desktop/CapstoneII/bbquda_web/mission.csv"
+        path = "media/" + file 
         filtered_data = selectParameterToKrige(path, parameter) #Using 'pH' until I can properly choose which parameter
     
         min_lat = filtered_data['Latitude'].min() #Defaults for now
         max_lat = filtered_data['Latitude'].max()
         min_lon = filtered_data['Longitude'].min()
         max_lon = filtered_data['Longitude'].max()
-        
+     
         if lat1 and lat2 and lng1 and lng2:
-            print(lat1, lat2, lng1, lng2)
-            if parameter == "Turbid%2B NTU":
-                parameter = "Turbid+ NTU"
+            
             fil_region_data = filterForKrigingRegion(filtered_data, min_lat, max_lat, min_lon, max_lon)
 
             gridx, gridy = createXYGrid(float(lat2), float(lat1), float(lng1), float(lng2))
