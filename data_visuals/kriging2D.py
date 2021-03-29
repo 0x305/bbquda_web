@@ -37,6 +37,7 @@ def createXYGrid(min_lat, max_lat, min_lon, max_lon, lat_step_size=6/364000, lon
     # conversion from 6ft to the respective degree values.
     gridx = np.arange(min_lon, max_lon, lon_step_size)
     gridy = np.arange(min_lat, max_lat, lat_step_size)
+    print(gridx)
     return gridx, gridy
 
 def convertDFtoNP(df, parameter):
@@ -67,7 +68,7 @@ def formatInterpolatedData(z, gridx, gridy):
     scaler = MinMaxScaler()
     scaler.fit(z)
     z = scaler.transform(z)
-    print(z)
+    #print(z)
     for i in range(len(gridx)):
         for j in range(len(gridy)):
             formatted_heatmap.append([gridy[j], gridx[i], z[j][i]])

@@ -5,8 +5,8 @@ import pandas as pd
 import numpy as np
 import os
 from users.forms import RegistrationForm
-from bbquda.forms import CSVForm, LogForm, TrailForm
-from .models import CSVUpload, LogUpload, Coordinate, CustomTrail
+from bbquda.forms import CSVForm, LogForm, TrailForm, HeatmapCSVForm
+from .models import CSVUpload, LogUpload, Coordinate, CustomTrail, HeatmapCSVSelection
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
@@ -317,29 +317,51 @@ def map_custom(request, pk):
     
     return render(request, 'map_custom.html', {'lats':lats, 'lons':lons, 'trail':trail})
     
+
+
+
 def kriging_heatmap(request):
     #mission = CSVUpload.objects.get(id=pk)
     #path = mission.file.path
-    path = "C:/Users/aerod/Desktop/CapstoneII/bbquda_web/mission.csv"
-    filtered_data = selectParameterToKrige(path, 'pH') #Using 'pH' until I can properly choose which parameter
     
-    min_lat = filtered_data['Latitude'].min() #Defaults for now
-    max_lat = filtered_data['Latitude'].max()
-    min_lon = filtered_data['Longitude'].min()
-    max_lon = filtered_data['Longitude'].max()
+    file =  request.GET.get("file", None)
+    parameter = request.GET.get('parameter', None)
+    lat1 = request.GET.get('max_lat', None)
+    lng1 = request.GET.get('min_long', None)
+    lat2 = request.GET.get('min_lat', None)
+    lng2 = request.GET.get('max_long', None)
+    if parameter == "Turbid NTU":
+                parameter = "Turbid+ NTU"
+    form = HeatmapCSVForm(request.POST, request=request, initial={'file':'csv/adrian_mission_yt15iJw.csv','id_parameter':'pH' }) 
+
+    if file:
+
+        path = "C:/Users/Adrian/Desktop/CapstoneII/bbquda_web/mission.csv"
+        filtered_data = selectParameterToKrige(path, parameter) #Using 'pH' until I can properly choose which parameter
+    
+        min_lat = filtered_data['Latitude'].min() #Defaults for now
+        max_lat = filtered_data['Latitude'].max()
+        min_lon = filtered_data['Longitude'].min()
+        max_lon = filtered_data['Longitude'].max()
+        
+        if lat1 and lat2 and lng1 and lng2:
+            print(lat1, lat2, lng1, lng2)
+            if parameter == "Turbid%2B NTU":
+                parameter = "Turbid+ NTU"
+            fil_region_data = filterForKrigingRegion(filtered_data, min_lat, max_lat, min_lon, max_lon)
+
+            gridx, gridy = createXYGrid(float(lat2), float(lat1), float(lng1), float(lng2))
      
-    fil_region_data = filterForKrigingRegion(filtered_data, min_lat, max_lat, min_lon, max_lon)
+            lat, lon, param = convertDFtoNP(fil_region_data, parameter)
 
-    gridx, gridy = createXYGrid(min_lat, max_lat, min_lon, max_lon)
-     
-    lat, lon, pH = convertDFtoNP(fil_region_data, 'pH')
+            OK = createKrigingObject(lat, lon, param)
+            z,ss = executeKrigging(OK, gridx, gridy)
 
-    OK = createKrigingObject(lat, lon, pH)
-    z,ss = executeKrigging(OK, gridx, gridy)
+            formatted_heatmap = formatInterpolatedData(z, gridx, gridy)
 
-    formatted_heatmap = formatInterpolatedData(z, gridx, gridy)
-
-    return render(request, 'kriging_heatmap.html', {'heatmap_vals': formatted_heatmap, 'lat': max_lat, 'long': max_lon, 'zoom': 16})
+            return render(request, 'kriging_heatmap.html', {'heatmap_vals': formatted_heatmap, 'max_lat': max_lat, 'max_long': max_lon, 'min_lat': min_lat, 'min_long': min_lon, 'zoom': 15, 'form':form})
+        return render(request, 'kriging_heatmap.html', {'heatmap_vals': [], 'max_lat': max_lat, 'max_long': max_lon, 'min_lat': min_lat, 'min_long': min_lon, 'zoom': 15, 'form':form})
+    return render(request, 'kriging_heatmap.html', {'heatmap_vals': [], 'lat': 0, 'long': 0, 'zoom': 7, 'form':form})
 
 @csrf_exempt
 def trail_generator(request):
