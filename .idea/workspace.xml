@@ -3,14 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="cdc290f3-429c-4090-a6ef-1687c54d1b92" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bbquda/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/bbquda/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bbquda/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/bbquda/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bbquda/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bbquda/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bbqudasite/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/bbqudasite/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/groups.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,9 +54,21 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="719" y="323" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1615703574335" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1615706968057">
+    <state x="954" y="16" width="972" height="1031" key="dock-window-1" timestamp="1617415640518">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1615706968057" />
+    <state x="954" y="16" width="972" height="1031" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1617415640518" />
+    <state x="953" y="0" width="974" height="1047" key="dock-window-2" timestamp="1617413519304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="953" y="0" width="974" height="1047" key="dock-window-2/0.0.1920.1040@0.0.1920.1040" timestamp="1617413519304" />
+    <state x="953" y="0" width="974" height="1047" maximized="true" key="dock-window-3" timestamp="1617416581983">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="953" y="0" width="974" height="1047" maximized="true" key="dock-window-3/0.0.1920.1040@0.0.1920.1040" timestamp="1617416581983" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1616720324627">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1616720324627" />
   </component>
 </project>

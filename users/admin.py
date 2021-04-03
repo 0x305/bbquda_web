@@ -1,24 +1,20 @@
-from .models import CustomUser
 from django.contrib import admin
-from django.contrib.auth.models import Group
-
 from django.contrib.auth.admin import UserAdmin
+
 from bbqudasite.models import Coordinate, CSVUpload
 from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .models import CustomUser
 
 admin.site.site_header = "Administrative Portal"
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('date_joined', 'email', 'first_name', 'last_name',  'is_active', 'is_staff',
+    list_display = ('date_joined', 'email', 'first_name', 'last_name', 'is_active', 'is_staff',
                     'is_superuser', 'last_login', 'username', 'password')
 
     model = CustomUser
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
-
-
-admin.site.register(CustomUser, CustomUserAdmin)
 
 
 class CoordinateAdmin(admin.ModelAdmin):

@@ -94,14 +94,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bbquda.wsgi.application'
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_authtoken.auth.AuthTokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-            'rest_framework.permissions.IsAuthenticated'
-        )
-}
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -158,3 +150,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MEDIA_URL = "/media/"
+
