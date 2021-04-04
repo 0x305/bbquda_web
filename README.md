@@ -9,6 +9,8 @@ Website for visualizing mission logs obtained from the EcoMapper and Heron drone
 
 #### 4. python manage.py migrate
 
+#### NOTE FOR WINDOWS USERS: If you encounter the error Directory does not exist: C:\OSGeo4W64, you're going to have to manually create the folder C:\OSGeo4W64, install the 64bit OSGeo4W network installer from https://trac.osgeo.org/osgeo4w/ and be sure to select the Desktop install option from the wizard. After this you should be good to go! For some reason gdal did not make the folder for you from step 2.
+
 #### 5. python manage.py createsuperuser
 
 #### 6. python manage.py runserver
