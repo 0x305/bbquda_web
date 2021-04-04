@@ -17,3 +17,10 @@ Website for visualizing mission logs obtained from the EcoMapper and Heron drone
 
 #### 7. Log in at http://127.0.0.1:8000/
 
+#### 8. Switch to your team's branch:
+
+##### (a) git branch -r (to see all remote branches)
+
+##### (b) git checkout branch-name (for example, if you want to pull UI, do "git checkout UI" and do not include remotes/origin part)
+
+##### (c) git checkout -b new-branch-name (if you want to make a new local branch to work on your own changes)

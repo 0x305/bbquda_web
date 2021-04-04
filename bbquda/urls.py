@@ -24,6 +24,10 @@ urlpatterns = [
     path('', include('bbqudasite.urls')),
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='login.html', redirect_authenticated_user=True), name='login'),
+    url(r'^homepage/$', views.index, name = 'homepage'),
+    path('bbqudasite_api/', include('bbqudasite.urls')),
+    path('bbqudasite_api/', include('bbqudasite.urls')),
+    url(r'^homepage/$', views.index, name = 'homepage'),
     url(r'^logout/$', views.logoutView, name = 'logout'),
     url(r'^register/$', views.register, name = 'register'),
     url(r'^upload_csv/$', views.upload_csv, name ='upload_csv'),
@@ -42,11 +46,5 @@ urlpatterns = [
     url(r'^delete_trail/(?P<pk>\d+)/$', views.TrailDelete.as_view(), name='delete_trail'),
     url(r'^kriging_heatmap/$', views.kriging_heatmap, name='kriging_heatmap'),
    
-    
-    
-    
-
-
-
 
 ]

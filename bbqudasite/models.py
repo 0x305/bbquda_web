@@ -43,13 +43,16 @@ def log_file_validator(value):
     return True
     
 class CSVUpload(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
-    file = models.FileField(upload_to= 'csv/', validators=[csv_file_validator])
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True) #username 
     name = models.CharField("File Name", max_length=50, null=True)
+    file = models.FileField(upload_to= f"csv/{user}/", validators=[csv_file_validator])
     date = models.DateField(_("Date"), default=datetime.date.today)
-
+    #helper to get file name
+    def filename(self):
+        return os.path.basename(self.file.name)
+    #returns the file location of each csv
     def __str__(self):
-        return self.user.username
+        return self.file.name
 
 class LogUpload(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
@@ -72,12 +75,17 @@ class Coordinate(models.Model):
     turbid = models.FloatField()
     bga = models.FloatField()
 
+    def __str__(self):
+        return str(set(self.csv_file.name))
+
 class CustomTrail(models.Model):
     file = models.FileField(upload_to= 'custom_trails/')
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
     date = models.DateField(_("Date"), default=datetime.date.today)
     name = models.CharField("File Name", max_length=50, null=True)
-
+    
+    def __str__(self):
+      return self.user
 
 class HeatmapCSVSelection(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
@@ -99,3 +107,4 @@ class HeatmapCSVSelection(models.Model):
 
     def __str__(self):
         return self.user.username
+ 
