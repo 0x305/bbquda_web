@@ -391,3 +391,6 @@ def get_data(request, pk):
         csvs[str(data)] = df.to_json()
     
     return JsonResponse(csvs)
+#api page request 
+def api_page(request):
+    return render(request, 'developer_api.html')
