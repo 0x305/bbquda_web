@@ -84,7 +84,7 @@
                       <p>Uploaded Missions</p>
                   </a>
               </li>
-              <li  >
+              <li  class="active ">
                   <a href="{% url 'kriging_heatmap'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -92,7 +92,7 @@
                       <p>Heatmap</p>
                   </a>
               </li>
-              <li  class="active ">
+              <li >
                   <a href="{% url 'trail_generator'%}">
                       
                         <i class="now-ui-icons design_bullet-list-67"></i>
@@ -189,7 +189,7 @@
                             console.log(file, "HAS FILE")
                             map.setView(new L.LatLng({{max_lat}}, {{max_long}}), {{zoom}});
                             var heatmap = new L.webGLHeatmap({
-                            size: 12,
+                            size: 8,
                             units: 'm',
                             alphaRange: 0.4       
                             });
