@@ -23,6 +23,9 @@ from django.contrib.auth.forms import AuthenticationForm
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import authentication_classes, permission_classes
 from data_visuals.kriging2D import *
 
 # Create your views here.
@@ -414,7 +417,9 @@ class TrailDelete(DeleteView):
 
 #get request for csv data
 @api_view(["GET"])
-def get_data(request):
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_data(request, pk):
     #get a list of all csv files and store its contents
     csvs = {}
     datasets = CSVUpload.objects.all()
@@ -426,5 +431,9 @@ def get_data(request):
         df = pd.read_csv(os.path.join(media_dir, str(data)))
         #append dataframe into list
         csvs[str(data)] = df.to_json()
-
+    
     return JsonResponse(csvs)
+#api page request 
+def api_page(request):
+    return render(request, 'developer_api.html')
+
