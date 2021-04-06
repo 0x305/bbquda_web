@@ -27,6 +27,7 @@ urlpatterns = [
     path("developer_api/", views.api_page, name="api_page"),
     url(r'^homepage/$', views.index, name = 'homepage'),
     url(r'^bbqudasite_api/(?P<pk>[\w-]+)/$', views.get_data, name='get_data'),
+    url(r'^contact/$', views.contact, name = 'contact'),
     url(r'^homepage/$', views.index, name = 'homepage'),
     url(r'^logout/$', views.logoutView, name = 'logout'),
     url(r'^register/$', views.register, name = 'register'),
@@ -44,13 +45,6 @@ urlpatterns = [
     url(r'^trail_generator/$', views.trail_generator, name = 'trail_generator'),
     url(r'^custom_trails/$', views.custom_trails, name ='custom_trails'),
     url(r'^delete_trail/(?P<pk>\d+)/$', views.TrailDelete.as_view(), name='delete_trail'),
-
-
-
-
-
-
-
-
+    url(r'^kriging_heatmap/$', views.kriging_heatmap, name='kriging_heatmap'),
 
 ]
