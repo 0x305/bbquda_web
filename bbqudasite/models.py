@@ -32,20 +32,20 @@ def csv_file_validator(value):
     decoded_file = value.read().decode('utf-8')
     io_string = io.StringIO(decoded_file)
     reader = csv.reader(io_string, delimiter=';', quotechar='|')
-    
+
     return True
 
 def log_file_validator(value):
     filename, ext = os.path.splitext(value.name)
     if  str(ext) != '.log':
          raise ValidationError("Must be a log file")
-    
+
     return True
-    
+
 class CSVUpload(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True) #username 
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True) #username
     name = models.CharField("File Name", max_length=50, null=True)
-    file = models.FileField(upload_to= f"csv/{user}/", validators=[csv_file_validator])
+    file = models.FileField(upload_to= "csv/", validators=[csv_file_validator])
     date = models.DateField(_("Date"), default=datetime.date.today)
     #helper to get file name
     def filename(self):
@@ -83,7 +83,7 @@ class CustomTrail(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,  null= True)
     date = models.DateField(_("Date"), default=datetime.date.today)
     name = models.CharField("File Name", max_length=50, null=True)
-    
+
     def __str__(self):
       return self.user
 
@@ -107,4 +107,4 @@ class HeatmapCSVSelection(models.Model):
 
     def __str__(self):
         return self.user.username
- 
+

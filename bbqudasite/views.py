@@ -31,6 +31,8 @@ from data_visuals.kriging2D import *
 def index(request):
     return render(request, 'homepage.html')
 
+def contact(request):
+    return render(request, 'contact.html')
 
 #function for removing outliers
 def clean(csv_file):
@@ -317,32 +319,32 @@ def map_custom(request, pk):
 def kriging_heatmap(request):
     #mission = CSVUpload.objects.get(id=pk)
     #path = mission.file.path
-    
+
     file =  request.GET.get("file", None)
     parameter = request.GET.get('parameter', None)
     lat1 = request.GET.get('max_lat', None)
     lng1 = request.GET.get('min_long', None)
     lat2 = request.GET.get('min_lat', None)
     lng2 = request.GET.get('max_long', None)
-    
-    form = HeatmapCSVForm(request.POST, request=request, initial={'file': file,'id_parameter':parameter }) 
+
+    form = HeatmapCSVForm(request.POST, request=request, initial={'file': file,'id_parameter':parameter })
 
     if file:
 
-        path = "media/" + file 
+        path = "media/" + file
         filtered_data = selectParameterToKrige(path, parameter) #Using 'pH' until I can properly choose which parameter
-    
+
         min_lat = filtered_data['Latitude'].min() #Defaults for now
         max_lat = filtered_data['Latitude'].max()
         min_lon = filtered_data['Longitude'].min()
         max_lon = filtered_data['Longitude'].max()
-     
+
         if lat1 and lat2 and lng1 and lng2:
-            
+
             fil_region_data = filterForKrigingRegion(filtered_data, min_lat, max_lat, min_lon, max_lon)
 
             gridx, gridy = createXYGrid(float(lat2), float(lat1), float(lng1), float(lng2))
-     
+
             lat, lon, param = convertDFtoNP(fil_region_data, parameter)
 
             OK = createKrigingObject(lat, lon, param)
@@ -424,5 +426,5 @@ def get_data(request):
         df = pd.read_csv(os.path.join(media_dir, str(data)))
         #append dataframe into list
         csvs[str(data)] = df.to_json()
-    
+
     return JsonResponse(csvs)

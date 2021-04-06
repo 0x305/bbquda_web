@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='login.html', redirect_authenticated_user=True), name='login'),
     url(r'^homepage/$', views.index, name = 'homepage'),
+    url(r'^contact/$', views.contact, name = 'contact'),
     path('bbqudasite_api/', include('bbqudasite.urls')),
     path('bbqudasite_api/', include('bbqudasite.urls')),
     url(r'^homepage/$', views.index, name = 'homepage'),
@@ -45,6 +46,6 @@ urlpatterns = [
     url(r'^custom_trails/$', views.custom_trails, name ='custom_trails'),
     url(r'^delete_trail/(?P<pk>\d+)/$', views.TrailDelete.as_view(), name='delete_trail'),
     url(r'^kriging_heatmap/$', views.kriging_heatmap, name='kriging_heatmap'),
-   
+
 
 ]
