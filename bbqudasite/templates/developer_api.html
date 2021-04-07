@@ -112,8 +112,10 @@
 
       <div class="container">
               <h1 class="title"> Instructions on how to access the API </h1>
-              <p class="description"> Step 1: login and retrive public authentication token<br>
-                Step 2: create a GET request to localhost:8000/getData/<token> to retrueve datasets</p><br><br>
+              <p class="description"> Step 1: login to generate public authentication token<br>
+                Step 2: Using djanog manage.py command obtain your user token using the following command:<br>
+                        ./manage.py drf_create_token <email> <br>
+                Step 3: create a GET request to localhost:8000/getData/<token> to retrueve datasets</p><br><br>
         </div>
     </section>
 
