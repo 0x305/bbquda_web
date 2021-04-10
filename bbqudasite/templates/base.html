@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en">
+
+{% include 'base/head.html' %}
+<title>{% block title %}{% endblock title %}</title>
+
+<body>
+    {% block content %}
+    {% endblock content %}
+
+    {% include 'base/footer.html' %}
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    {% include 'base/scripts.html' %}
+</body>
+
+</html>

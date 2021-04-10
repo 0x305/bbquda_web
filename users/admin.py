@@ -1,7 +1,7 @@
+from bbqudasite.models import Coordinate, CSVUpload
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from bbqudasite.models import Coordinate, CSVUpload
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
 

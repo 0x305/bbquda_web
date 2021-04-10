@@ -1,15 +1,12 @@
 from django import forms
+from .models import CustomUser
+from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as AbstractUser
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.core.exceptions import ValidationError
-
-from .models import CustomUser
-
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
 
 class CustomUserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
@@ -21,20 +18,35 @@ class CustomUserCreationForm(forms.ModelForm):
         model = CustomUser
         fields = ('email', 'username')
 
+    def clean_username(self):
+        username = self.cleaned_data['username'].upper()
+        r = User.objects.filter(username=username)
+        if r.count():
+            raise ValidationError("Username already exists")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].lower()
+        r = User.objects.filter(email=email)
+        if r.count():
+            raise ValidationError("Email already exists")
+        return email
+
     def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+
         if password1 and password2 and password1 != password2:
-            raise ValidationError("Passwords don't match")
+            raise ValidationError("Password don't match")
+
         return password2
 
     def save(self, commit=True):
-        # Save the provided password in hashed format
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
+        user = User.objects.create_user(
+            self.cleaned_data['username'],
+            self.cleaned_data['email'],
+            self.cleaned_data['password1']
+        )
         return user
 
 
@@ -86,9 +98,6 @@ class UserAdmin(AbstractUser):
 
 # Now register the new UserAdmin...
 admin.site.register(CustomUser, UserAdmin)
-# ... and, since we're not using Django's built-in permissions,
-# unregister the Group model from admin.
-admin.site.unregister(Group)
 
 
 class RegistrationForm(UserCreationForm):

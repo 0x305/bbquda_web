@@ -1,6 +1,9 @@
-from django.contrib.auth.models import (
-    BaseUserManager, AbstractUser)
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 
 class MyAccountManager(BaseUserManager):
@@ -30,27 +33,39 @@ class MyAccountManager(BaseUserManager):
             email,
             password=password,
             username=username,
+
         )
         user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
 
+# All logged in users would be researchers
 class CustomUser(AbstractUser):
+    email = models.EmailField(verbose_name="email", max_length=254, unique=True)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
-    email = models.EmailField(verbose_name="email", max_length=254, unique=True)
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=30, blank=True, null=True)
+    organization = models.CharField(max_length=50, blank=True, null=True)
+    # let's make this dropdown option in future commits
+    research_area = models.CharField(max_length=30, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = MyAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'organization']
 
     def __str__(self):
-        return self.email
+        if self.first_name:
+            return self.first_name + " " + self.last_name
+        elif self.last_name:
+            return "unamed_first " + self.last_name
+        else:
+            return "Nonetyped naming"
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -62,8 +77,9 @@ class CustomUser(AbstractUser):
         # Simplest possible answer: Yes, always
         return True
 
-    #@property
-    #def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
-        #return self.is_admin
+
+# make post_save receiver
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
