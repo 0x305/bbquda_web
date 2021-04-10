@@ -18,8 +18,8 @@
           <li><a href="#">Trail generator</a></li>
           <li><a href="#">Visualizations</a></li>
           </ul>
-      </li>
-        <li><a href="team.html">API</a></li>
+        </li>
+        <li><a href="{% url 'api_page' %}">API</a></li>
         <li><a href="{% url 'contact' %}">Contact Us</a></li>
         <li>{% if request.user.is_authenticated %}
           <a href="{% url 'logout' %}"><button class="login-button">Logout</button></a>
