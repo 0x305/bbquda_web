@@ -362,6 +362,130 @@ h1, h2, h3, h4, h5, h6, .font-primary {
 }
 
 /*--------------------------------------------------------------
+# Login/Logout button Section
+--------------------------------------------------------------*/
+.login-button {
+  background-color: white;
+  border: 1px solid black;
+  padding: 0.4em, 1em, 0.4em, 1em;
+}
+
+/*--------------------------------------------------------------
+# Map Section
+--------------------------------------------------------------*/
+#your-map {
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+/*--------------------------------------------------------------
+# Upload Section
+--------------------------------------------------------------*/
+#upload-boxes {
+  padding-left: 6%;
+  padding-right: 6%;
+}
+
+#submit-button {
+  background-color: gray;
+  font-family: "Roboto", sans-serif;
+}
+
+label {
+  font-family: "Roboto", sans-serif;
+  font-size: 1em;
+  margin-top: 5%;
+  display: block;
+}
+
+select #id_file {
+  width: 120%;
+}
+
+/*--------------------------------------------------------------
+# Second navigation Section
+--------------------------------------------------------------*/
+.nav-2-menu .active {
+  color: #a2cce3;
+}
+#nav-2 {
+  color: black;
+}
+
+#nav-2:hover {
+  color: #a2cce3;
+}
+
+/*--------------------------------------------------------------
+# Missions Section
+--------------------------------------------------------------*/
+
+#mission-stats {
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+#missions-stats .thead-dark tr th{
+  background-color: #68A4C4;
+  border-top-left-radius: 20%;
+  color: #ffffff;
+  text-align: left;
+}
+
+#missions-table {
+  margin-left: 4%;
+  margin-right: 4%;
+}
+
+#missions-table table {
+  border-collapse: collapse;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+#missions-table thead tr {
+    background-color: #68A4C4;
+    border-top-left-radius: 20%;
+    color: #ffffff;
+    text-align: left;
+}
+
+#missions-table th,
+#missions-table td {
+    padding: 12px 15px;
+}
+
+#missions-table tbody tr {
+  border-bottom: thin solid #dddddd;
+}
+
+#missions-table tbody tr:last-of-type {
+  border-bottom: thin solid #68A4C4;
+}
+
+#missions-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+
+#delete-button {
+  background-color: red;
+  color: white;
+}
+
+/*--------------------------------------------------------------
+# Heatmap Section
+--------------------------------------------------------------*/
+
+#heatmap {
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-bottom: 10%;
+}
+
+/*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
 #hero {

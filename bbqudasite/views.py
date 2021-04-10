@@ -34,6 +34,8 @@ def index(request):
 def contact(request):
     return render(request, 'contact.html')
 
+
+
 #function for removing outliers
 def clean(csv_file):
     return
@@ -327,7 +329,7 @@ def kriging_heatmap(request):
     lat2 = request.GET.get('min_lat', None)
     lng2 = request.GET.get('max_long', None)
 
-    form = HeatmapCSVForm(request.POST, request=request, initial={'file': file,'id_parameter':parameter })
+    form = HeatmapCSVForm(request.POST, request=request, initial={'file': file,'id_parameter': parameter })
 
     if file:
 

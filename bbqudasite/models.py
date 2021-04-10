@@ -105,6 +105,7 @@ class HeatmapCSVSelection(models.Model):
 
     parameter = models.CharField(max_length=22, choices=PARAM_CHOICES)
 
+
     def __str__(self):
         return self.user.username
 
