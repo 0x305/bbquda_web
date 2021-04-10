@@ -1,279 +1,168 @@
-<!DOCTYPE html>
-{% load static %}
+{% extends 'base.html' %}
+{% block title %}Uploaded missions - BBQUDA{% endblock title %}
+{% block content %}
 
-<html lang="en">
-    <head>
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center header-transparent">
+  <div class="container d-flex justify-content-between align-items-center">
+    {% include 'base/logo.html' %}
 
-
-    <meta charset="utf-8" />
-
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
-<title>
-
- BBQUDA
-
-</title>
-
-<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-
-<!--     Fonts and icons     -->
-
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
-<!-- CSS Files -->
-
-<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" />
-<link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
-<link href="{% static "css/demo.css" %}" rel="stylesheet" />
-
-    
-  
-        <div class="wrapper ">
-          
-            <div class="sidebar" data-color="orange">
-    
-    <div class="sidebar-wrapper" id="sidebar-wrapper">
-        
-        <ul class="nav">
-          
-              <li >
-                  <a href="{% url 'dashboard'%}">
-                      
-                        <i class="now-ui-icons design_app"></i>
-                      
-                      <p>Dashboard</p>
-                  </a>
-              </li>
-              
-              <li >
-                  <a href="{% url 'upload_log'%}">
-                      
-                        <i class="now-ui-icons ui-1_bell-53"></i>
-                      
-                      <p>Upload Log</p>
-                  </a>
-              </li>
-              
-              <li  >
-                  <a href="{% url 'upload_csv'%}">
-                      
-                        <i class="now-ui-icons users_single-02"></i>
-                      
-                      <p>Upload CSV</p>
-                  </a>
-              </li>
-              
-              <li  class="active ">
-                  <a href="{% url 'my_missions'%}">
-                      
-                        <i class="now-ui-icons design_bullet-list-67"></i>
-                      
-                      <p>Uploaded Missions</p>
-                  </a>
-              </li>
-              <li  >
-                  <a href="{% url 'logout'%}">
-                      
-                        <i class="now-ui-icons design_bullet-list-67"></i>
-                      
-                      <p>Logout</p>
-                  </a>
-              </li>
-             
+  <nav id="navbar" class="navbar">
+      <ul>
+      <li><a href="{% url 'homepage' %}">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="dropdown"><a class="active " href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+        <li><a  href="{% url 'upload_log'%}">Upload a file</a></li>
+        <li><a href="{% url 'my_missions'%}">Uploaded missions</a></li>
+        <li><a href="{% url 'trail_generator'%}">Trail generator</a></li>
+        <li><a href="{% url 'kriging_heatmap'%}">Visualizations</a></li>
         </ul>
-    </div>
-</div>
-
-
-            <div class="main-panel" id="main-panel">
-              <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
-	<div class="container-fluid">
-    <div class="navbar-wrapper">
-      
-			
-      
-			<a class="navbar-brand" href="#pablo">BBQUDA</a>
-		</div>
-
-		
-
-	    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-      
-<ul class="navbar-nav">
- 
-
-  
-</ul>
-
-        
-	    </div>
-	</div>
-</nav>
-<!-- End Navbar -->
-
-                  <div class="panel-header panel-header-sm">
-  
-  
-</div>
-
-
-                  <div class="content">
-                      <div class="row">
-  <div class="col-md-12">
-    
-
-<div class="card">
-    <div class="card-header">
-        <h4 class="card-title"> {{mission.name}} - Descriptive Statistics</h4>
-        
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table">
-                <thead class=" thead-dark"> <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Total Water Column (m)</th>
-                    <th scope="col">Temperature (c)</th>
-                    <th scope="col">pH</th>
-                    <th scope="col">ODO mg/L</th>
-                    <th scope="col">Salinity (ppt)</th>
-                    <th scope="col">Turbid+ NTU</th>
-                    <th scope="col">BGA-PC cells/mL</th>
-                    </tr>
-                </thead>
-        <tbody>
-            <tr>
-            <th class="table-dark">Count</th>
-            <td>{{water_count}}</td>
-            <td>{{temp_count}}</td>
-            <td>{{pH_count}}</td>
-            <td>{{ODO_count}}</td>
-            <td>{{salinity_count}}</td>
-            <td>{{turbid_count}}</td>
-            <td>{{BGA_count}}</td>
-            </tr>
-            <tr>
-            <th class="table-dark">Mean</th>
-            <td>{{water_mean}}</td>
-            <td>{{temp_mean}}</td>
-            <td>{{pH_mean}}</td>
-            <td>{{ODO_mean}}</td>
-            <td>{{salinity_mean}}</td>
-            <td>{{turbid_mean}}</td>
-            <td>{{BGA_mean}}</td>
-            </tr>
-            <tr>
-            <th class="table-dark">STDev</th>
-            <td>{{water_std}}</td>
-            <td>{{temp_std}}</td>
-            <td>{{pH_std}}</td>
-            <td>{{ODO_std}}</td>
-            <td>{{salinity_std}}</td>
-            <td>{{turbid_std}}</td>
-            <td>{{BGA_std}}</td>
-            </tr>
-            <tr>
-            <th class="table-dark">Min</th>
-            <td>{{water_min}}</td>
-            <td>{{temp_min}}</td>
-            <td>{{pH_min}}</td>
-            <td>{{ODO_min}}</td>
-            <td>{{salinity_min}}</td>
-            <td>{{turbid_min}}</td>
-            <td>{{BGA_min}}</td>
-            </tr>
-            <tr>
-            <th class="table-dark">25%</th>
-            <td>{{water_25}}</td>
-            <td>{{temp_25}}</td>
-            <td>{{pH_25}}</td>
-            <td>{{ODO_25}}</td>
-            <td>{{salinity_25}}</td>
-            <td>{{turbid_25}}</td>
-            <td>{{BGA_25}}</td>
-            </tr>
-            <tr>
-            <th class="table-dark">50%</th>
-            <td>{{water_50}}</td>
-            <td>{{temp_50}}</td>
-            <td>{{pH_50}}</td>
-            <td>{{ODO_50}}</td>
-            <td>{{salinity_50}}</td>
-            <td>{{turbid_50}}</td>
-            <td>{{BGA_50}}</td>
-            </tr>
-            <tr>
-            <th class="table-dark">75%</th>
-            <td>{{water_75}}</td>
-            <td>{{temp_75}}</td>
-            <td>{{pH_75}}</td>
-            <td>{{ODO_75}}</td>
-            <td>{{salinity_75}}</td>
-            <td>{{turbid_75}}</td>
-            <td>{{BGA_75}}</td>
-            </tr>
-            <tr>
-            <th class="table-dark">Max</th>
-            <td>{{water_max}}</td>
-            <td>{{temp_max}}</td>
-            <td>{{pH_max}}</td>
-            <td>{{ODO_max}}</td>
-            <td>{{salinity_max}}</td>
-            <td>{{turbid_max}}</td>
-            <td>{{BGA_max}}</td>
-            </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    </li>
+      <li><a href="team.html">API</a></li>
+      <li><a href="{% url 'contact' %}">Contact Us</a></li>
+      <li>{% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}"><button class="login-button">Logout</button></a>
+        {% else %}
+        <a href="{% url 'login' %}"><button class="login-button">Login</button></a>
+        {% endif %}
+    </li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+  </nav><!-- .navbar -->
 
   </div>
-  <div class="col-md-12">
-    
+  </header><!-- End Header -->
 
-  </div>
-</div>
+  <main id="main">
 
-                  </div>
+    <!-- ======= Contact Section ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
 
-                 
-             </div>
-          
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>My missions</h2>
+          <ol class="nav-2-menu">
+            <li><a id="nav-2" href="{% url 'homepage' %}">Home</a></li>
+            <li><a id="nav-2" href="{% url 'upload_log' %}">Upload</a></li>
+            <li><a class="active" href="{% url 'my_missions' %}">My missions</a></li>
+            <li><a id="nav-2" href="{% url 'trail_generator'%}">Trail generator</a></li>
+            <li><a id="nav-2" href="{% url 'kriging_heatmap' %}">Visualizations</a></li>
+          </ol>
         </div>
-        
-            <div class="fixed-plugin">
-    <div class="dropdown show-dropdown">
-       
-        <ul class="dropdown-menu">
-			<li class="header-title"> Sidebar Background</li>
-            <li class="adjustments-line">
-                <a href="javascript:void(0)" class="switch-trigger background-color">
-                    <div class="badge-colors text-center">
-						<span class="badge filter badge-yellow" data-color="yellow"></span>
-                        <span class="badge filter badge-blue" data-color="blue"></span>
-                        <span class="badge filter badge-green" data-color="green"></span>
-                        <span class="badge filter badge-orange active" data-color="orange"></span>
-                        <span class="badge filter badge-red" data-color="red"></span>
-                    </div>
-                    <div class="clearfix"></div>
-                </a>
-            </li>
 
-            
-        </ul>
+      </div>
+    </section><!-- End Contact Section -->
+
+    <br>
+
+    <div class="section-title">
+      <h2>{{mission.name}} - Descriptive Statistics</h2>
+      <p>View all your mission stats here.</p>
     </div>
-</div>
 
-    </body>
+    <div class="card">
+      <div class="card-body" id="mission-stats">
+          <div class="table-responsive">
+              <table class="table">
+                  <thead class=" thead-dark"> <tr>
+                      <th scope="col"></th>
+                      <th scope="col">Total Water Column (m)</th>
+                      <th scope="col">Temperature (c)</th>
+                      <th scope="col">pH</th>
+                      <th scope="col">ODO mg/L</th>
+                      <th scope="col">Salinity (ppt)</th>
+                      <th scope="col">Turbid+ NTU</th>
+                      <th scope="col">BGA-PC cells/mL</th>
+                      </tr>
+                  </thead>
+          <tbody>
+              <tr>
+              <th class="table-dark">Count</th>
+              <td>{{water_count}}</td>
+              <td>{{temp_count}}</td>
+              <td>{{pH_count}}</td>
+              <td>{{ODO_count}}</td>
+              <td>{{salinity_count}}</td>
+              <td>{{turbid_count}}</td>
+              <td>{{BGA_count}}</td>
+              </tr>
+              <tr>
+              <th class="table-dark">Mean</th>
+              <td>{{water_mean}}</td>
+              <td>{{temp_mean}}</td>
+              <td>{{pH_mean}}</td>
+              <td>{{ODO_mean}}</td>
+              <td>{{salinity_mean}}</td>
+              <td>{{turbid_mean}}</td>
+              <td>{{BGA_mean}}</td>
+              </tr>
+              <tr>
+              <th class="table-dark">STDev</th>
+              <td>{{water_std}}</td>
+              <td>{{temp_std}}</td>
+              <td>{{pH_std}}</td>
+              <td>{{ODO_std}}</td>
+              <td>{{salinity_std}}</td>
+              <td>{{turbid_std}}</td>
+              <td>{{BGA_std}}</td>
+              </tr>
+              <tr>
+              <th class="table-dark">Min</th>
+              <td>{{water_min}}</td>
+              <td>{{temp_min}}</td>
+              <td>{{pH_min}}</td>
+              <td>{{ODO_min}}</td>
+              <td>{{salinity_min}}</td>
+              <td>{{turbid_min}}</td>
+              <td>{{BGA_min}}</td>
+              </tr>
+              <tr>
+              <th class="table-dark">25%</th>
+              <td>{{water_25}}</td>
+              <td>{{temp_25}}</td>
+              <td>{{pH_25}}</td>
+              <td>{{ODO_25}}</td>
+              <td>{{salinity_25}}</td>
+              <td>{{turbid_25}}</td>
+              <td>{{BGA_25}}</td>
+              </tr>
+              <tr>
+              <th class="table-dark">50%</th>
+              <td>{{water_50}}</td>
+              <td>{{temp_50}}</td>
+              <td>{{pH_50}}</td>
+              <td>{{ODO_50}}</td>
+              <td>{{salinity_50}}</td>
+              <td>{{turbid_50}}</td>
+              <td>{{BGA_50}}</td>
+              </tr>
+              <tr>
+              <th class="table-dark">75%</th>
+              <td>{{water_75}}</td>
+              <td>{{temp_75}}</td>
+              <td>{{pH_75}}</td>
+              <td>{{ODO_75}}</td>
+              <td>{{salinity_75}}</td>
+              <td>{{turbid_75}}</td>
+              <td>{{BGA_75}}</td>
+              </tr>
+              <tr>
+              <th class="table-dark">Max</th>
+              <td>{{water_max}}</td>
+              <td>{{temp_max}}</td>
+              <td>{{pH_max}}</td>
+              <td>{{ODO_max}}</td>
+              <td>{{salinity_max}}</td>
+              <td>{{turbid_max}}</td>
+              <td>{{BGA_max}}</td>
+              </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
 
-</html>
+</main><!-- End #main -->
 
-
-
-
-
+{% endblock %}

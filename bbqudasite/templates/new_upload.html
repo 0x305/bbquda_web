@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Upload a file - BBQUDA{% endblock title %}
+{% block title %}Contact Us - BBQUDA{% endblock title %}
 {% block content %}
 
 <!-- ======= Header ======= -->
@@ -47,45 +47,45 @@
       </div>
     </section><!-- End Contact Section -->
 
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title"> Upload CSV File</h4>
 
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table">
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title"> Upload Log File</h4>
 
-    <tbody>
-    <form method="post"  enctype='multipart/form-data'>
-                                {% csrf_token %}
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
 
-                                {{ form.non_field_errors }}
+<tbody>
+<form method="post"  enctype='multipart/form-data'>
+                            {% csrf_token %}
 
-                                {{ form.source.errors }}
-                                {{ form.source }}
-                                <ul>
-                                    <li class="field">
-                                        {{ form.name.errors }}{{form.name}}
+                            {{ form.non_field_errors }}
 
+                            {{ form.source.errors }}
+                            {{ form.source }}
+                            <ul>
+                                <li class="field">
+                                    {{ form.name.errors }}{{form.name}}
+
+                                </li>
+                                <li class="field">
+                                    {{ form.file.errors }}{{form.file}}
                                     </li>
-                                    <li class="field">
-                                        {{ form.file.errors }}{{form.file}}
-                                        </li>
 
 
-                                    </ul>
+                                </ul>
 
-                         <button type="submit" class="btn btn-default btn-lg btn-block">Upload File</button>
+                     <button type="submit" class="btn btn-default btn-lg btn-block">Upload File</button>
 
-                         </form>
+                     </form>
 
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
-
+</div>
 
 </main><!-- End #main -->
 
