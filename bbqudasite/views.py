@@ -37,7 +37,7 @@ def index(request):
 def contact(request):
     return render(request, 'contact.html')
 
-#api page request 
+#api page request
 def api_page(request):
     return render(request, 'developer_api.html')
 
@@ -435,7 +435,5 @@ def get_data(request, pk):
         df = pd.read_csv(os.path.join(media_dir, str(data)))
         #append dataframe into list
         csvs[str(data)] = df.to_json()
-    
+
     return JsonResponse(csvs)
-
-
