@@ -136,32 +136,36 @@ def upload_log(request):
         user = request.user
 
         if request.method =='POST':
-            form = LogForm(request.POST, request.FILES)
+            file_name = str(request.FILES['file'])
+            if file_name.endswith("csv"):
+                return upload_csv(request)
+            else:
+                form = LogForm(request.POST, request.FILES)
 
 
-            if form.is_valid():
-                log = form.save(commit=False)
-                log.user = request.user
-                log.save()
-                new_path = log.name + '.csv'
-                with open(log.file.path, encoding="ISO-8859-1") as f, open(new_path, 'w') as f2:
-                    writer = csv.writer(f2)
+                if form.is_valid():
+                    log = form.save(commit=False)
+                    log.user = request.user
+                    log.save()
+                    new_path = log.name + '.csv'
+                    with open(log.file.path, encoding="ISO-8859-1") as f, open(new_path, 'w') as f2:
+                        writer = csv.writer(f2)
 
-                    i = 0
-                    for line in f:
-                        writer.writerow([i] + line.rstrip().split(';'))
-                        i += 1
-                        if i == 10000:
-                            break
+                        i = 0
+                        for line in f:
+                            writer.writerow([i] + line.rstrip().split(';'))
+                            i += 1
+                            if i == 10000:
+                                break
 
-                    new_csv = CSVUpload(user = request.user)
-                    new_file = open(new_path)
-                    new_csv.file = File(new_file)
-                    new_csv.name = log.name
-                    new_csv.save()
-                    save_coordinate(new_csv)
+                        new_csv = CSVUpload(user = request.user)
+                        new_file = open(new_path)
+                        new_csv.file = File(new_file)
+                        new_csv.name = log.name
+                        new_csv.save()
+                        save_coordinate(new_csv)
 
-                return redirect('my_missions')
+                    return redirect('my_missions')
         else:
             form = LogForm()
 
