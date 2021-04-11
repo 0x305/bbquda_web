@@ -8,24 +8,28 @@
     {% include 'base/logo.html' %}
 
     <nav id="navbar" class="navbar">
-      <ul>
-      <li><a href="{% url 'homepage' %}">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li class="dropdown"><a href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
         <ul>
-        <li><a href="{% url 'upload_log'%}">Upload a file</a></li>
-        <li><a href="{% url 'my_missions'%}">Uploaded missions</a></li>
-        <li><a href="#">Trail generator</a></li>
-        <li><a href="#">Visualizations</a></li>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'about'%}">About</a></li>
+        <li class="dropdown"><a href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
+          <ul>
+          <li><a  href="{% url 'upload_log'%}">Upload a file</a></li>
+          <li><a href="{% url 'my_missions'%}">Uploaded missions</a></li>
+          <li><a href="{% url 'trail_generator'%}">Trail generator</a></li>
+          <li><a href="{% url 'kriging_heatmap' %}">Visualizations</a></li>
+          </ul>
+      </li>
+        <li><a href="{% url 'api_page'%}">API</a></li>
+        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+        <li>{% if request.user.is_authenticated %}
+          <a href="{% url 'logout' %}"><button class="login-button">Logout</button></a>
+          {% else %}
+          <a href="{% url 'login' %}"><button class="login-button">Login</button></a>
+          {% endif %}
+      </li>
         </ul>
-    </li>
-      <li><a href="team.html">API</a></li>
-      <li><a href="{% url 'contact' %}">Contact Us</a></li>
-      <li><a class="active " href="{% url 'login' %}"><button class="login-button">Login</button></a></li>
-
-      </ul>
-      <i class="bi bi-list mobile-nav-toggle"></i>
-  </nav><!-- .navbar -->
+        <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
 
   </div>
 
@@ -57,78 +61,65 @@
     </div>
   </section><!-- End Contact Section -->
 
-      <div class="card" style = "width:50%">
-        <div class="card-header">
+    <div class="card-body" id="registration-form" style="text-align: center; margin-left: auto; margin-right: auto;">
+        <div class="table-responsive">
+            <table class="table" >
+                <tbody>
+                    <div class="form-fields-section">
 
+                        <h4 class="login-title">Register</h4>
 
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table">
+                        <div class="registration">
+                            <div class="bg-form">
+                                <form method="post" novalidate>
+                                        {% csrf_token %}
 
-    <tbody>
-    <div class="form-fields-section">
+                                        {{ form.non_field_errors }}
 
-                  <h1>Create an Account</h1>
+                                        {{ form.source.errors }}
+                                        {{ form.source }}
+                                        <ul class="registration-list">
+                                            <li  id= "login-boxes" class="field">
+                                                {{ form.first_name.errors }}{{form.first_name}}
 
+                                            </li>
+                                            <li  id= "login-boxes" class="field">
+                                                {{ form.last_name.errors }}{{form.last_name}}
+                                                </li>
+                                            <li  id= "login-boxes" class="field">
+                                                {{ form.email.errors }}{{form.email}}
+                                                </li>
+                                            <li  id="login-boxes" class="field">
+                                                {{ form.username.errors }}{{form.username}}
+                                                </li>
+                                                <li  id= "login-boxes" class="field">
+                                                {{ form.password1.errors }}{{form.password1}}
+                                                </li>
+                                            <li  id= "login-boxes" class="field">
+                                                {{ form.password2.errors }}{{form.password2}}
+                                                </li>
+                                        </ul>
 
-    <div class="registration">
+                                    <button type="submit" id="submit-button" class="btn btn-default btn-lg btn-block">Register</button>
 
-                    <div class="bg-form">
-
-                        <form method="post" novalidate>
-                                {% csrf_token %}
-
-                                {{ form.non_field_errors }}
-
-                                {{ form.source.errors }}
-                                {{ form.source }}
-                                <ul>
-                                    <li class="field">
-                                        {{ form.first_name.errors }}{{form.first_name}}
-
-                                    </li>
-                                    <li class="field">
-                                        {{ form.last_name.errors }}{{form.last_name}}
-                                        </li>
-                                    <li class="field">
-                                        {{ form.email.errors }}{{form.email}}
-                                        </li>
-                                    <li class="field">
-                                        {{ form.username.errors }}{{form.username}}
-                                        </li>
-                                     <li class="field">
-                                        {{ form.password1.errors }}{{form.password1}}
-                                        </li>
-                                    <li class="field">
-                                        {{ form.password2.errors }}{{form.password2}}
-                                        </li>
-                                    </ul>
-
-                         <button type="submit" class="btn btn-default btn-lg btn-block">Register</button>
-
-                         </form>
+                                </form>
 
                                 <div class="separator">
-
                                     <hr>
-
                                 </div>
+
                                 <a href="{%url 'login'%}" class="cw-btn cw-btn--default cw-btn--full js-sign-in">Already Have an Account? Sign In</a>
 
-                            </fieldset>
+                                </fieldset>
 
-
-
+                                </div>
+                            </div>
                     </div>
-                  </div>
-                </div>
-
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
+
 
 </main>
 

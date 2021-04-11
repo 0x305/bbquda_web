@@ -365,9 +365,53 @@ h1, h2, h3, h4, h5, h6, .font-primary {
 # Login/Logout button Section
 --------------------------------------------------------------*/
 .login-button {
-  background-color: white;
-  border: 1px solid black;
-  padding: 0.4em, 1em, 0.4em, 1em;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 12px 32px;
+    border-radius: 50px;
+    background-color: #d63384;
+    line-height: 1;
+    margin: 10px;
+    color: #fff;
+    border: thin solid #d8217c;
+}
+
+.login-button:hover {
+    background-color: #b8065f;
+    border: thin solid #b8065f;
+}
+
+/*--------------------------------------------------------------
+# API Section
+--------------------------------------------------------------*/
+#numbers-api {
+    display:block;
+    width: 3em;
+    height: 3em;
+    padding: 1%;
+    border-radius: 50%;
+    background-color: #d63384;
+    color: #fff;
+    border: thin solid #d8217c;
+    text-align: center;
+    margin-bottom: 0%;
+}
+
+.text-api {
+  margin-left: 2%;
+  margin-top: 1%;
+}
+
+.api-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: left;
+    align-content: left;
+    align-items: left;
+    padding: 2%;
 }
 
 /*--------------------------------------------------------------
@@ -402,6 +446,25 @@ select #id_file {
   width: 120%;
 }
 
+input#id_name {
+  width: 90%;
+}
+
+#upload-button {
+  color: black;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background-color: #4fa6d5;
+  width: 30%;
+  font-size: 1em;
+}
+
+#upload-button:hover {
+  background-color:  #0f82c0;
+  width: 30%;
+}
 /*--------------------------------------------------------------
 # Second navigation Section
 --------------------------------------------------------------*/
@@ -450,6 +513,9 @@ select #id_file {
     border-top-left-radius: 20%;
     color: #ffffff;
     text-align: left;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
 }
 
 #missions-table th,
@@ -471,9 +537,64 @@ select #id_file {
 }
 
 #delete-button {
-  background-color: red;
-  color: white;
+    margin-top: -4%;
+    background-color: red;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    display: inline-block;
+    line-height: 1;
 }
+
+#delete-button:hover {
+  background-color: rgb(158, 6, 6);
+}
+
+/*--------------------------------------------------------------
+# Trail Generator Section
+--------------------------------------------------------------*/
+button#trail {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background-color: #4fa6d5;
+    color: black;
+    width: 20%;
+    font-size: 1em;
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+}
+
+button#trail:hover {
+    background-color:  #0f82c0;
+    width: 20%;
+}
+
+#submit-button-heatmap {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background-color: #4fa6d5;
+  color: black;
+  width: 20%;
+  font-size: 1em;
+  text-align:center;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+}
+
+#submit-button-heatmap:hover {
+  background-color:  #0f82c0;
+  width: 20%;
+}
+
 
 /*--------------------------------------------------------------
 # Heatmap Section
@@ -845,7 +966,7 @@ section {
 }
 
 .services .icon-box-pink:hover {
-  border-color: #ff689b;
+  border: 3px solid #ff689b;
 }
 
 .services .icon-box-cyan .icon {
@@ -857,7 +978,7 @@ section {
 }
 
 .services .icon-box-cyan:hover {
-  border-color: #3fcdc7;
+  border: 3px solid #3fcdc7;
 }
 
 .services .icon-box-green .icon {
@@ -869,7 +990,7 @@ section {
 }
 
 .services .icon-box-green:hover {
-  border-color: #41cf2e;
+  border: 3px solid #41cf2e;
 }
 
 .services .icon-box-blue .icon {
@@ -881,7 +1002,7 @@ section {
 }
 
 .services .icon-box-blue:hover {
-  border-color: #2282ff;
+  border: 3px solid #2282ff;
 }
 
 /*--------------------------------------------------------------
@@ -1780,6 +1901,130 @@ section {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/*--------------------------------------------------------------
+# Login form
+--------------------------------------------------------------*/
+
+.signin.form-fields-section.kaxsdc {
+  border-collapse: collapse;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  width: 90%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  font-family: "Gudea", sans-serif;
+  text-align: center;
+  width: 30em;
+  height: 50vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-title {
+  font-family: "Gudea", sans-serif;
+  color: #afb1be;
+  height: auto;
+  text-align: center;
+  font-size: 1.5em;
+  color: black;
+  padding: 4%;
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 1.6em;
+  margin-bottom: 0;
+}
+
+input#id_username {
+  margin: 0;
+  width: 100%;
+  padding: 2%;
+  margin-left: 37px;
+  margin-top: 4%;
+  margin-right: 30px;
+}
+
+label {
+  font-weight: 700;
+  font-size: 1em;
+}
+
+input#id_password {
+  margin: 0;
+  width: 100%;
+  padding: 2%;
+  margin-left: 10px;
+  margin-top: 4%;
+  margin-right: 30px;
+}
+
+input#id_username .active {
+  border: none;
+}
+
+li#login-boxes {
+  display: flex;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#login-form-box {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+#login-form {
+  padding-bottom: 4%;
+  padding-top: 4%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#login-form-headings {
+  display: grid;
+
+}
+
+#submit-button {
+  background-color: #4fa6d5;
+  color: black;
+  width: 65%;
+}
+
+#submit-button:hover {
+  background-color: #0f82c0;
+  width: 65%;
+}
+
+#registration-form {
+  border-collapse: collapse;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  width: 90%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  font-family: "Gudea", sans-serif;
+  text-align: center;
+  width: 30em;
+  height: 40em;
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
+input#id_first_name, input#id_last_name, input#id_username, input#id_email, input#id_password1, input#id_password2  {
+  margin: 0;
+  width: 100%;
+  padding: 2%;
+  margin-left: 37px;
+  margin-top: 4%;
+  margin-right: 30px;
+}
+
+ul.registration-list {
+  margin-right: 10%;
 }
 
 /*--------------------------------------------------------------

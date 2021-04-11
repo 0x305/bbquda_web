@@ -1,204 +1,192 @@
 <!DOCTYPE html>
-{% load static %}
-
+{% load static%}
+{% load leaflet_tags %}
 <html lang="en">
     <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link href="{% static 'assets/img/wave-favicon.png' %}" rel="icon">
+        <link href="{% static 'assets/img/wave.png' %}" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-webgl-heatmap@0.2.7/dist/leaflet-webgl-heatmap.min.js" integrity="sha256-wz6Wm2bEl0mr5QI3cHRDlNlcch5wgcUfsaJzcVGUM5s=" crossorigin="anonymous"></script>
+        <script src="../static/webgl-heatmap.js"></script>
+
+        <!-- Vendor CSS Files -->
+        <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+        <!-- =======================================================
+        * Template Name: Moderna - v4.0.1
+        * Template URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
+    </head>
+<title>Trail Generator</title>
+
+<body>
 
 
-    <meta charset="utf-8" />
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center header-transparent">
+  <div class="container d-flex justify-content-between align-items-center">
+    {% include 'base/logo.html' %}
 
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
-<title>
-
- BBQUDA
-
-</title>
-
-<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-
-<!--     Fonts and icons     -->
-
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
-<!-- CSS Files -->
-
-<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" />
-<link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
-<link href="{% static "css/demo.css" %}" rel="stylesheet" />
-
-    
-  
-        <div class="wrapper ">
-          
-            <div class="sidebar" data-color="orange">
-    
-    <div class="sidebar-wrapper" id="sidebar-wrapper">
-        
-        <ul class="nav">
-          
-              <li >
-                  <a href="{% url 'dashboard'%}">
-                      
-                        <i class="now-ui-icons design_app"></i>
-                      
-                      <p>Dashboard</p>
-                  </a>
-              </li>
-              
-              <li >
-                  <a href="{% url 'upload_log'%}">
-                      
-                        <i class="now-ui-icons ui-1_bell-53"></i>
-                      
-                      <p>Upload Log</p>
-                  </a>
-              </li>
-              
-              <li  >
-                  <a href="{% url 'upload_csv'%}">
-                      
-                        <i class="now-ui-icons users_single-02"></i>
-                      
-                      <p>Upload CSV</p>
-                  </a>
-              </li>
-              
-              <li >
-                  <a href="{% url 'my_missions'%}">
-                      
-                        <i class="now-ui-icons design_bullet-list-67"></i>
-                      
-                      <p>Uploaded Missions</p>
-                  </a>
-              </li>
-              <li  >
-                  <a href="{% url 'trail_generator'%}">
-                      
-                        <i class="now-ui-icons design_bullet-list-67"></i>
-                      
-                      <p>Trail Generator</p>
-                  </a>
-              </li>
-              <li  class="active ">
-                  <a href="{% url 'custom_trails'%}">
-                      
-                        <i class="now-ui-icons design_bullet-list-67"></i>
-                      
-                      <p>Custom Trails</p>
-                  </a>
-              </li>
-              <li  >
-                  <a href="{% url 'logout'%}">
-                      
-                        <i class="now-ui-icons design_bullet-list-67"></i>
-                      
-                      <p>Logout</p>
-                  </a>
-              </li>
-             
+  <nav id="navbar" class="navbar">
+      <ul>
+      <li><a href="{% url 'homepage' %}">Home</a></li>
+      <li><a href="{% url 'about' %}">About</a></li>
+      <li class="dropdown"><a class="active "href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+        <li><a  href="{% url 'upload_log'%}">Upload a file</a></li>
+        <li><a href="{% url 'my_missions' %}">Uploaded missions</a></li>
+        <li><a class="active " href="{% url 'trail_generator' %}">Mission generator</a></li>
+        <li><a href="{% url 'kriging_heatmap' %}">Visualizations</a></li>
         </ul>
-    </div>
-</div>
-
-
-            <div class="main-panel" id="main-panel">
-              <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
-	<div class="container-fluid">
-    <div class="navbar-wrapper">
-      
-			
-      
-			<a class="navbar-brand" href="#pablo">BBQUDA</a>
-		</div>
-
-		
-
-	    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-      
-<ul class="navbar-nav">
- 
-
-  
-</ul>
-
-        
-	    </div>
-	</div>
-</nav>
-<!-- End Navbar -->
-
-                  <div class="panel-header panel-header-sm">
-  
-  
-</div>
-
-
-                  <div class="content">
-                      <div class="row">
-  <div class="col-md-12">
-    
-
-<div class="card">
-    <div class="card-header">
-        <h4 class="card-title"> Custom Trails</h4>
-        
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table">
-                <thead class=" text-primary">
-                    
-                    <th > Name</th>
-                    <th >Date</th>
-                    <th >File</th>
-                    <th >Map</th>
-                   
-                </thead>
-                <tbody>
-                {% for trail in trails%}
-                <tr>
-                <td>{{trail.name}}</td>
-                <td>{{trail.date}}</td>
-                <td><a href="{% url 'download_custom' pk=trail.pk %}" >Download</a></td>
-                <td><a href="{% url 'map_custom' pk=trail.pk %}" >View Map</a></td>
-                
-                <td><div class="modal-footer">
-                    <a href="{% url 'delete_trail' pk=trail.pk %}" class="btn">Delete</a>
-                    </div>
-                </td>
-            </tr>
-            {%endfor%}
-                    
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    </li>
+      <li><a href="{% url 'api_page'%}">API</a></li>
+      <li><a href="{% url 'contact' %}">Contact Us</a></li>
+      <li>{% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}"><button class="login-button">Logout</button></a>
+        {% else %}
+        <a href="{% url 'login' %}"><button class="login-button">Login</button></a>
+        {% endif %}
+    </li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+  </nav><!-- .navbar -->
 
   </div>
-  <div class="col-md-12">
-    
+  </header><!-- End Header -->
 
-  </div>
-</div>
+  <main id="main">
 
-                  </div>
+    <!-- ======= Contact Section ======= -->
+    <section class="breadcrumbs">
+        <div class="container">
 
-                 
-             </div>
-          
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>Mission Generator</h2>
+            <ol class="nav-2-menu">
+              <li><a id="nav-2" href="{% url 'homepage' %}">Home</a></li>
+              <li><a id="nav-2" href="{% url 'upload_log' %}">Upload</a></li>
+              <li><a id="nav-2"  href="{% url 'my_missions' %}">My missions</a></li>
+              <li><a class="active" href="{% url 'trail_generator' %}">Mission generator</a></li>
+              <li><a id="nav-2" href="{% url 'kriging_heatmap' %}">Visualizations</a></li>
+            </ol>
+          </div>
+
         </div>
-        
-            
-    </body>
+      </section><!-- End Contact Section -->
+
+      <br>
+
+      <div class="section-title">
+        <h2>Uploaded missions</h2>
+        <p>View all your uploaded mission files here</p>
+      </div>
+
+      <div class="card">
+          <div class="card-body" id="missions-table">
+              <div class="table-responsive">
+                  <table class="table">
+                      <thead class=" text-primary">
+                          <th>Name</th>
+                          <th>Date</th>
+                          <th>File</th>
+                          <th>Statistics</th>
+                          <th>Map</th>
+                          <th></th>
+                      </thead>
+                      <tbody>
+                      {% for mission in missions%}
+                      <tr>
+                      <td>{{mission.name}}</td>
+                      <td>{{mission.date}}</td>
+                      <td><a href="{% url 'download' pk=mission.pk %}" >Download</a></td>
+                      <td><a href="{% url 'mission_stats' pk=mission.pk %}" >View Stats</a></td>
+                      <td><a href="{% url 'map' pk=mission.pk %}" >View Map</a></td>
+                      <td><a href="{% url 'delete_mission' pk=mission.pk %}" id="delete-button" class="btn">Delete</a>
+
+                      </td>
+                  </tr>
+                  {%endfor%}
+
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+
+      <!-- Custom generated missions starts -->
+      <div class="section-title">
+        <h2>Generated missions</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Custom Trails</h4>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class=" text-primary">
+
+                        <th >Name</th>
+                        <th >Date</th>
+                        <th >File</th>
+                        <th >Map</th>
+
+                    </thead>
+                    <tbody>
+                    {% for trail in trails%}
+                    <tr>
+                    <td>{{trail.name}}</td>
+                    <td>{{trail.date}}</td>
+                    <td><a href="{% url 'download_custom' pk=trail.pk %}" >Download</a></td>
+                    <td><a href="{% url 'map_custom' pk=trail.pk %}" >View Map</a></td>
+
+                    <td><div class="modal-footer">
+                        <a href="{% url 'delete_trail' pk=trail.pk %}" class="btn">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {%endfor%}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+      <!-- Custom generated missions ends -->
+
+
+</main><!-- End #main -->
+
+{% include 'base/footer.html' %}
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    {% include 'base/scripts.html' %}
+</body>
 
 </html>
-
-
-
-
-

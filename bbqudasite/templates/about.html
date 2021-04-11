@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}About - BBQUDA{% endblock title %}
+{% block content %}
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center header-transparent">
+  <div class="container d-flex justify-content-between align-items-center">
+    {% include 'base/logo.html' %}
+
+  <nav id="navbar" class="navbar">
+      <ul>
+      <li><a href="{% url 'homepage' %}">Home</a></li>
+      <li><a class="active" href="{% url 'about' %}">About</a></li>
+      <li class="dropdown"><a href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+        <li><a  href="{% url 'upload_log'%}">Upload a file</a></li>
+        <li><a href="{% url 'my_missions'%}">Uploaded missions</a></li>
+        <li><a href="{% url 'trail_generator'%}">Mission generator</a></li>
+        <li><a href="{% url 'kriging_heatmap'%}">Visualizations</a></li>
+        </ul>
+      </li>
+      <li><a href="{% url 'api_page' %}">API</a></li>
+      <li><a href="{% url 'contact' %}">Contact Us</a></li>
+      <li>{% if request.user.is_authenticated %}
+          <a href="{% url 'logout' %}"><button class="login-button">Logout</button></a>
+          {% else %}
+          <a href="{% url 'login' %}"><button class="login-button">Login</button></a>
+          {% endif %}
+      </li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+  </nav><!-- .navbar -->
+
+  </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+      <!-- ======= Contact Section ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>About</h2>
+            <ol>
+              <li><a href="{% url 'homepage' %}">Home</a></li>
+              <li>About</li>
+            </ol>
+         </div>
+      </div>
+    </section><!-- End Contact Section -->
+
+    <br>
+
+    <div class="section-title">
+      <h2>About</h2>
+    </div>
+
+    <!-- ======= Why Us Section ======= -->
+    <section class="why-us section-bg" data-aos="fade-up" date-aos-delay="200">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-6 video-box">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/8mY9jAsUl48" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+          </div>
+
+          <div class="col-lg-6 d-flex flex-column justify-content-center p-5">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-question-mark"></i></div>
+              <h4 class="title"><a href="">Who are we?</a></h4>
+              <p class="description">The FIU Marine Robotics Lab is developing autonomous robots that can be deployed in areas when needed to gather continuous data more effectively than a human researcher would be able to.
+              </p>
+            </div>
+
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Why Us Section -->
+
+    <div class="card-body" id="missions-table">
+        <div class="container">
+          <div class="section-title">
+            <h2>Our mission</h2>
+          </div>
+
+          <div data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+            <p class="description">The purpose of the BBQUDA web app is to provide a site for researchers to be able to plan and view data from missions
+                                  conducted on the health of underwater ecosystems. The web app allows for a place to show all of the data in a easy-to-read manner
+                                  that allows the user to visually see the trajectory of the robot and the data points at each given point along the path. The ability
+                                  for users to have personal logins that they can then upload and save multiple test missions allows them to easily switch between analyzing
+                                  various missions. The web app also allows users to select new points on a global map for a new mission and export these points, making it much
+                                  easier to create new mission plans in the various third-party software solutions. We also provide resources in our dashboard page, should the user
+                                  need to contact anyone to help with the project.</p>
+          </div>
+
+        </div>
+    </div>
+
+
+</main><!-- End #main -->
+
+{% endblock %}

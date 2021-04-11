@@ -60,16 +60,16 @@
   <nav id="navbar" class="navbar">
       <ul>
       <li><a href="{% url 'homepage' %}">Home</a></li>
-      <li><a href="about.html">About</a></li>
+      <li><a href="{% url 'about'%}">About</a></li>
       <li class="dropdown"><a class="active " href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
         <ul>
         <li><a  href="{% url 'upload_log'%}">Upload a file</a></li>
-        <li><a href="#">Uploaded missions</a></li>
-        <li><a href="#">Trail generator</a></li>
+        <li><a href="{% url 'my_missions'%}">Uploaded missions</a></li>
+        <li><a href="{% url 'trail_generator'%}">Mission generator</a></li>
         <li><a href="{% url 'kriging_heatmap' %}">Visualizations</a></li>
         </ul>
     </li>
-      <li><a href="team.html">API</a></li>
+      <li><a href="{% url 'api_page'%}">API</a></li>
       <li><a href="{% url 'contact' %}">Contact Us</a></li>
       <li>{% if request.user.is_authenticated %}
         <a href="{% url 'logout' %}"><button class="login-button">Logout</button></a>
@@ -96,7 +96,7 @@
               <li><a id="nav-2" href="{% url 'homepage' %}">Home</a></li>
               <li><a id="nav-2" href="{% url 'upload_log' %}">Upload</a></li>
               <li><a id="nav-2"  href="{% url 'my_missions' %}">My missions</a></li>
-              <li><a id="nav-2" href="{% url 'trail_generator' %}">Trail generator</a></li>
+              <li><a id="nav-2" href="{% url 'trail_generator' %}">Mission generator</a></li>
               <li><a class="active" href="{url 'kriging_heatmap'}">Visualizations</a></li>
             </ol>
           </div>
@@ -124,11 +124,9 @@
                     {{ form }}
                     <br>
                     <br>
-                    <input type="submit" value="Submit" class="btn btn-md btn-secondary">
+                    <input id="submit-button-heatmap" type="submit" value="Submit" class="btn btn-md btn-secondary">
                 </form>
-
                     <script>
-
                             function f (map, options) {
 
                                 const file = new URLSearchParams(location.search).has("file")
@@ -207,9 +205,6 @@
                     </script>
 
                     {% leaflet_map "yourmap" callback="window.f" %}
-
-
-
 
             </div>
         </div>

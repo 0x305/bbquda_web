@@ -1,6 +1,51 @@
-{% extends 'base.html' %}
-{% block title %}Uploaded missions - BBQUDA{% endblock title %}
-{% block content %}
+<!DOCTYPE html>
+{% load static%}
+{% load leaflet_tags %}
+<html lang="en">
+    <head>
+        {% leaflet_js %}
+        {% leaflet_css %}
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link href="{% static 'assets/img/wave-favicon.png' %}" rel="icon">
+        <link href="{% static 'assets/img/wave.png' %}" rel="apple-touch-icon">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-webgl-heatmap@0.2.7/dist/leaflet-webgl-heatmap.min.js" integrity="sha256-wz6Wm2bEl0mr5QI3cHRDlNlcch5wgcUfsaJzcVGUM5s=" crossorigin="anonymous"></script>
+        <script src="../static/webgl-heatmap.js"></script>
+
+        <!-- Vendor CSS Files -->
+        <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+        <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+        <!-- =======================================================
+        * Template Name: Moderna - v4.0.1
+        * Template URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
+    </head>
+<title>Trail Generator</title>
+
+<body>
+
 
 <!-- ======= Header ======= -->
 <header id="header" class="fixed-top d-flex align-items-center header-transparent">
@@ -10,23 +55,23 @@
   <nav id="navbar" class="navbar">
       <ul>
       <li><a href="{% url 'homepage' %}">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li class="dropdown"><a class="active " href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
+      <li><a href="{% url 'about' %}">About</a></li>
+      <li class="dropdown"><a class="active "href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
         <ul>
         <li><a  href="{% url 'upload_log'%}">Upload a file</a></li>
-        <li><a href="{% url 'my_missions'%}">Uploaded missions</a></li>
-        <li><a href="{% url 'trail_generator'%}">Trail generator</a></li>
-        <li><a href="{% url 'kriging_heatmap'%}">Visualizations</a></li>
+        <li><a href="{% url 'my_missions' %}">Uploaded missions</a></li>
+        <li><a href="{% url 'trail_generator' %}">Mission generator</a></li>
+        <li><a href="{% url 'kriging_heatmap' %}">Visualizations</a></li>
         </ul>
-      </li>
-      <li><a href="team.html">API</a></li>
+    </li>
+      <li><a href="{% url 'api_page'%}">API</a></li>
       <li><a href="{% url 'contact' %}">Contact Us</a></li>
       <li>{% if request.user.is_authenticated %}
-          <a href="{% url 'logout' %}"><button class="login-button">Logout</button></a>
-          {% else %}
-          <a href="{% url 'login' %}"><button class="login-button">Login</button></a>
-          {% endif %}
-      </li>
+        <a href="{% url 'logout' %}"><button class="login-button">Logout</button></a>
+        {% else %}
+        <a href="{% url 'login' %}"><button class="login-button">Login</button></a>
+        {% endif %}
+    </li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
   </nav><!-- .navbar -->
@@ -46,7 +91,7 @@
             <li><a id="nav-2" href="{% url 'homepage' %}">Home</a></li>
             <li><a id="nav-2" href="{% url 'upload_log' %}">Upload</a></li>
             <li><a class="active" href="{% url 'my_missions' %}">My missions</a></li>
-            <li><a id="nav-2" href="{% url 'trail_generator'%}">Trail generator</a></li>
+            <li><a id="nav-2" href="{% url 'trail_generator'%}">Mission generator</a></li>
             <li><a id="nav-2" href="{% url 'kriging_heatmap' %}">Visualizations</a></li>
           </ol>
         </div>
@@ -57,8 +102,8 @@
     <br>
 
     <div class="section-title">
-      <h2>My missions</h2>
-      <p>View all your mission files here</p>
+      <h2>Uploaded missions</h2>
+      <p>View all your uploaded mission files here</p>
     </div>
 
     <div class="card">
@@ -73,6 +118,7 @@
                         <th>Map</th>
                         <th></th>
                     </thead>
+
                     <tbody>
                     {% for mission in missions%}
                     <tr>
@@ -81,9 +127,7 @@
                     <td><a href="{% url 'download' pk=mission.pk %}" >Download</a></td>
                     <td><a href="{% url 'mission_stats' pk=mission.pk %}" >View Stats</a></td>
                     <td><a href="{% url 'map' pk=mission.pk %}" >View Map</a></td>
-                    <td><a href="{% url 'delete_mission' pk=mission.pk %}" id="delete-button" class="btn">Delete</a>
-
-                    </td>
+                    <td><a href="{% url 'delete_mission' pk=mission.pk %}" id="delete-button" class="btn">Delete</a></td>
                 </tr>
                 {%endfor%}
 
@@ -93,6 +137,48 @@
         </div>
     </div>
 
+    <br>
+
+    <!-- Custom generated missions starts -->
+    <div class="section-title">
+      <h2>Custom missions</h2>
+      <p>View all your generated mission files here</p>
+    </div>
+
+    <div class="card">
+      <div class="card-body" id="missions-table">
+          <div class="table-responsive">
+              <table class="table">
+                  <thead class=" text-primary">
+                      <th > Name</th>
+                      <th >Date</th>
+                      <th >File</th>
+                      <th >Map</th>
+                      <th></th>
+                  </thead>
+
+                  <tbody>
+                  {% for trail in trails%}
+                  <tr>
+                  <td>{{trail.name}}</td>
+                  <td>{{trail.date}}</td>
+                  <td><a href="{% url 'download_custom' pk=trail.pk %}" >Download</a></td>
+                  <td><a href="{% url 'map_custom' pk=trail.pk %}" >View Map</a></td>
+                  <td><a href="{% url 'delete_trail' pk=trail.pk %}" id="delete-button" class="btn">Delete</a></td>
+              </tr>
+              {%endfor%}
+
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+
 </main><!-- End #main -->
 
-{% endblock %}
+{% include 'base/footer.html' %}
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    {% include 'base/scripts.html' %}
+</body>
+
+</html>

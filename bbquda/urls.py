@@ -26,6 +26,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='login.html', redirect_authenticated_user=True), name='login'),
     path(r'^api_page/$', views.api_page, name="api_page"),
     url(r'^homepage/$', views.index, name = 'homepage'),
+    url(r'^about/$', views.about, name = 'about'),
     url(r'^bbqudasite_api/(?P<pk>[\w-]+)/$', views.get_data, name='get_data'),
     url(r'^contact/$', views.contact, name = 'contact'),
     url(r'^homepage/$', views.index, name = 'homepage'),

@@ -34,6 +34,9 @@ from data_visuals.kriging2D import *
 def index(request):
     return render(request, 'homepage.html')
 
+def about(request):
+    return render(request, 'about.html')
+
 def contact(request):
     return render(request, 'contact.html')
 
@@ -142,7 +145,6 @@ def upload_log(request):
             else:
                 form = LogForm(request.POST, request.FILES)
 
-
                 if form.is_valid():
                     log = form.save(commit=False)
                     log.user = request.user
@@ -199,8 +201,9 @@ def my_missions(request):
     if request.user.is_authenticated:
         user = request.user
         missions = CSVUpload.objects.filter(user = user)
+        trails = CustomTrail.objects.filter(user = user)
 
-        return render(request, 'my_missions.html', { 'user': user,'missions': missions})
+        return render(request, 'my_missions.html', { 'user': user,'missions': missions,'trails': trails})
     return redirect('login')
 
 @login_required
@@ -401,7 +404,7 @@ def trail_generator(request):
         new_file = open(new_path)
         trail.file = File(new_file)
         trail.save()
-        return redirect('custom_trails')
+        return redirect('my_missions')
 
 
 
@@ -413,12 +416,12 @@ def custom_trails(request):
         user = request.user
         trails = CustomTrail.objects.filter(user = user)
 
-        return render(request, 'custom_trails.html', { 'user': user,'trails': trails})
+        return render(request, 'my_missions.html', { 'user': user,'trails': trails})
     return redirect('login')
 
 class TrailDelete(DeleteView):
     model = CustomTrail
-    success_url = reverse_lazy('custom_trails')
+    success_url = reverse_lazy('my_missions')
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
