@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us - BBQUDA{% endblock title %}
+{% block content %}
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center header-transparent">
+  <div class="container d-flex justify-content-between align-items-center">
+    {% include 'base/logo.html' %}
+
+  <nav id="navbar" class="navbar">
+      <ul>
+      <li><a href="{% url 'homepage' %}">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="dropdown"><a href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+        <li><a  href="{% url 'upload_log'%}">Upload a file</a></li>
+        <li><a href="#">Uploaded missions</a></li>
+        <li><a href="#">Trail generator</a></li>
+        <li><a href="#">Visualizations</a></li>
+        </ul>
+    </li>
+      <li><a href="team.html">API</a></li>
+      <li><a class="active " href="{% url 'contact' %}">Contact Us</a></li>
+      <li><a href="{% url 'login' %}"><button class="login-button">Login</button></a></li>
+
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+  </nav><!-- .navbar -->
+
+  </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Contact Section ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Contact Us</h2>
+          <ol>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li>Contact Us</li>
+          </ol>
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+    <!-- ======= Contact Section ======= -->
+    <section class="contact" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="info-box">
+                  <i class="bx bx-map"></i>
+                  <h3>Our Address</h3>
+                  <p>FIU Biscayne Bay Campus:<br>3000 NE 151st St, North Miami, FL 33181</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bx bx-envelope"></i>
+                  <h3>Email Us</h3>
+                  <p>Gregory Murad Reis, PhD<br>gmuradre@fiu.edu</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bx bx-phone-call"></i>
+                  <h3>Follow Us</h3>
+                  <p>
+                    <a style="font-size: 1.5em; " href="https://www.youtube.com/watch?v=8mY9jAsUl48" class="fa fa-youtube"></a>
+                    <a style="font-size: 1.5em;" href="https://www.linkedin.com/in/gregorymurad/" class="fa fa-linkedin"></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6">
+            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+              </div>
+              <div class="form-group mt-3">
+                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+              </div>
+              <div class="my-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+              </div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Contact Section -->
+
+</main><!-- End #main -->
+
+{% endblock %}

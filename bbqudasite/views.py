@@ -5,14 +5,15 @@ import pandas as pd
 import numpy as np
 import os
 from users.forms import RegistrationForm
-from bbquda.forms import CSVForm, LogForm, TrailForm
-from .models import CSVUpload, LogUpload, Coordinate, CustomTrail
+from bbquda.forms import CSVForm, LogForm, TrailForm, HeatmapCSVForm
+from .models import CSVUpload, LogUpload, Coordinate, CustomTrail, HeatmapCSVSelection
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import FileResponse
 import csv
+from rest_framework.decorators import api_view
 from io import StringIO
 from django.core.files.base import ContentFile
 from django.core.files import File
@@ -22,13 +23,19 @@ from django.contrib.auth.forms import AuthenticationForm
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import authentication_classes, permission_classes
+from data_visuals.kriging2D import *
 
 # Create your views here.
 
 
 def index(request):
-    return redirect('login')
+    return render(request, 'homepage.html')
+
+def contact(request):
+    return render(request, 'contact.html')
 
 #function for removing outliers
 def clean(csv_file):
@@ -38,14 +45,14 @@ def clean(csv_file):
 def getName(strArr):
     name = ''
     for i in range(0, len(strArr) - 2):
-        name = name + i 
+        name = name + i
     return name
 
 def formhtml(request):
     #user just landed for the first time so show them the upload html
     if request.method == "GET":
         return render(request, 'form.html')
-    
+
     #in the html called the uploaded file 'file'
     csv_file = request.FILES['file']
 
@@ -60,9 +67,7 @@ def formhtml(request):
         filtered_list = df[['Latitude', 'Longitude', 'Total Water Column (m)',
             'Temperature (c)', 'pH', 'ODO mg/L', 'Salinity (ppt)',
             'Turbid+ NTU', 'BGA-PC cells/mL']]
-        #print(filtered_list) #just a check
         latitude = filtered_list['Latitude']
-        print(df)
         return HttpResponse(latitude[0])
 
     elif csv_file.name.endswith('.csv'):
@@ -72,7 +77,6 @@ def formhtml(request):
             'Turbid+ NTU', 'BGA-PC cells/mL']]
         #print(filtered_list) #just a check
         latitude = filtered_list['Latitude']
-        print(df)
         return HttpResponse(latitude[0])
 
     else:
@@ -84,12 +88,12 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            profile = form.save(commit=False) 
+            profile = form.save(commit=False)
             profile.save()
             login(request, profile)
             next = request.POST.get('next', '/') #redirect to where user wanted to go
 
-            return HttpResponseRedirect(next)           
+            return HttpResponseRedirect(next)
     else:
         form = RegistrationForm()
 
@@ -105,49 +109,47 @@ def logoutView(request):
 def upload_csv(request):
     if request.user.is_authenticated:
         user = request.user
-    
+
         if request.method =='POST':
             form = CSVForm(request.POST, request.FILES)
-        
-        
             if form.is_valid():
-                csv = form.save(commit=False) 
+                csv = form.save(commit=False)
                 csv.user = request.user
                 csv.save()
                 save_coordinate(csv)
-            
+
                 return redirect('my_missions')
         else:
             form = CSVForm()
 
-        return render(request, 'upload_csv.html', {'form': form, 'user':user}) 
-    return render(request, 'login.html') 
+        return render(request, 'upload_csv.html', {'form': form, 'user':user})
+    return render(request, 'login.html')
 
 @login_required
 def upload_log(request):
-    
+
     if request.user.is_authenticated:
         user = request.user
-    
+
         if request.method =='POST':
             form = LogForm(request.POST, request.FILES)
-        
-        
+
+
             if form.is_valid():
-                log = form.save(commit=False) 
+                log = form.save(commit=False)
                 log.user = request.user
                 log.save()
                 new_path = log.name + '.csv'
-                with open(log.file.path, encoding="ISO-8859-1") as f, open(new_path, 'w') as f2: 
+                with open(log.file.path, encoding="ISO-8859-1") as f, open(new_path, 'w') as f2:
                     writer = csv.writer(f2)
-                   
+
                     i = 0
                     for line in f:
                         writer.writerow([i] + line.rstrip().split(';'))
                         i += 1
                         if i == 10000:
                             break
-                    
+
                     new_csv = CSVUpload(user = request.user)
                     new_file = open(new_path)
                     new_csv.file = File(new_file)
@@ -159,8 +161,8 @@ def upload_log(request):
         else:
             form = LogForm()
 
-        return render(request, 'upload_log.html', {'form': form, 'user':user}) 
-    return render(request, 'login.html') 
+        return render(request, 'upload_log.html', {'form': form, 'user':user})
+    return render(request, 'login.html')
 
 def save_coordinate(input = CSVUpload):
     path = input.file.path
@@ -184,12 +186,12 @@ def mission_admin(request):
     missions = CSVUpload.objects.all()
     return render(request, 'mission_admin.html', {'missions': missions} )
 
-@login_required 
+@login_required
 def my_missions(request):
     if request.user.is_authenticated:
         user = request.user
         missions = CSVUpload.objects.filter(user = user)
-       
+
         return render(request, 'my_missions.html', { 'user': user,'missions': missions})
     return redirect('login')
 
@@ -224,7 +226,7 @@ def logoutView(request):
 def mission_stats(request, pk):
     mission = CSVUpload.objects.get(id=pk)
     path = mission.file.path
-    df = pd.read_csv(path) 
+    df = pd.read_csv(path)
     water_count = df['Total Water Column (m)'].count()
     water_mean = df['Total Water Column (m)'].mean().round(2)
     water_std = df['Total Water Column (m)'].std().round(2)
@@ -307,38 +309,77 @@ def map(request, pk):
 def map_custom(request, pk):
     trail = CustomTrail.objects.get(id = pk)
     trail_path = trail.file.path
+    print(trail_path)
     df = pd.read_csv(trail_path)
     lats =[]
     lons =[]
     for index, row in df.iterrows():
         lons.append(row['Longitude'])
         lats.append(row['Latitude'])
-    
+
     return render(request, 'map_custom.html', {'lats':lats, 'lons':lons, 'trail':trail})
-    
-    
+
+def kriging_heatmap(request):
+    #mission = CSVUpload.objects.get(id=pk)
+    #path = mission.file.path
+
+    file =  request.GET.get("file", None)
+    parameter = request.GET.get('parameter', None)
+    lat1 = request.GET.get('max_lat', None)
+    lng1 = request.GET.get('min_long', None)
+    lat2 = request.GET.get('min_lat', None)
+    lng2 = request.GET.get('max_long', None)
+
+    form = HeatmapCSVForm(request.POST, request=request, initial={'file': file,'id_parameter':parameter })
+
+    if file:
+
+        path = "media/" + file
+        filtered_data = selectParameterToKrige(path, parameter) #Using 'pH' until I can properly choose which parameter
+
+        min_lat = filtered_data['Latitude'].min() #Defaults for now
+        max_lat = filtered_data['Latitude'].max()
+        min_lon = filtered_data['Longitude'].min()
+        max_lon = filtered_data['Longitude'].max()
+
+        if lat1 and lat2 and lng1 and lng2:
+
+            fil_region_data = filterForKrigingRegion(filtered_data, min_lat, max_lat, min_lon, max_lon)
+
+            gridx, gridy = createXYGrid(float(lat2), float(lat1), float(lng1), float(lng2))
+
+            lat, lon, param = convertDFtoNP(fil_region_data, parameter)
+
+            OK = createKrigingObject(lat, lon, param)
+            z,ss = executeKrigging(OK, gridx, gridy)
+
+            formatted_heatmap = formatInterpolatedData(z, gridx, gridy)
+
+            return render(request, 'kriging_heatmap.html', {'heatmap_vals': formatted_heatmap, 'max_lat': max_lat, 'max_long': max_lon, 'min_lat': min_lat, 'min_long': min_lon, 'zoom': 15, 'form':form})
+        return render(request, 'kriging_heatmap.html', {'heatmap_vals': [], 'max_lat': max_lat, 'max_long': max_lon, 'min_lat': min_lat, 'min_long': min_lon, 'zoom': 15, 'form':form})
+    return render(request, 'kriging_heatmap.html', {'heatmap_vals': [], 'lat': 0, 'long': 0, 'zoom': 7, 'form':form})
 
 @csrf_exempt
 def trail_generator(request):
     user = request.user
-    
+
     if request.method == 'POST':
         form = TrailForm(request.POST)
         data =  request.POST.getlist('list[]')
-      
+
         trail = CustomTrail(name ="Custom_Trail")
         trail.user = request.user
-            
-        new_path = trail.name + '.csv'    
+
+        new_path = trail.name + '.csv'
         lat = []
         lon =[]
-        
+
         index = 0
         for line in data:
             cur = index % 2
             index += 1
             if cur == 0:
-                #txt_file.write(" ".join(line) + ", ") 
+                #txt_file.write(" ".join(line) + ", ")
                 lat.append(line)
 
             else:
@@ -348,22 +389,22 @@ def trail_generator(request):
             writer = csv.writer(f)
             writer.writerow(['Latitude', 'Longitude'])
             writer.writerows(zip(lat, lon))
-        
+
         new_file = open(new_path)
         trail.file = File(new_file)
         trail.save()
         return redirect('custom_trails')
-        
 
-        
+
+
     return render(request, 'trail_generator.html')
 
-@login_required 
+@login_required
 def custom_trails(request):
     if request.user.is_authenticated:
         user = request.user
         trails = CustomTrail.objects.filter(user = user)
-       
+
         return render(request, 'custom_trails.html', { 'user': user,'trails': trails})
     return redirect('login')
 
@@ -373,3 +414,26 @@ class TrailDelete(DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+#get request for csv data
+@api_view(["GET"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_data(request, pk):
+    #get a list of all csv files and store its contents
+    csvs = {}
+    datasets = CSVUpload.objects.all()
+
+    for data in datasets:
+        #media directory
+        media_dir = os.path.join(os.path.dirname(__file__), "..", "media")
+        #store csv contents into dataframe
+        df = pd.read_csv(os.path.join(media_dir, str(data)))
+        #append dataframe into list
+        csvs[str(data)] = df.to_json()
+    
+    return JsonResponse(csvs)
+#api page request 
+def api_page(request):
+    return render(request, 'developer_api.html')
+

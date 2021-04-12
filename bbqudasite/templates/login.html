@@ -1,189 +1,102 @@
-<!DOCTYPE html>
-{% load static %}
+{% extends 'base.html' %}
+{% block title %}Login/Registration - BBQUDA{% endblock title %}
+{% block content %}
 
-<html lang="en">
-    <head>
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center header-transparent">
+  <div class="container d-flex justify-content-between align-items-center">
+    {% include 'base/logo.html' %}
 
+    <nav id="navbar" class="navbar">
+      <ul>
+      <li><a href="{% url 'homepage' %}">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="dropdown"><a href="#"><span>Missions</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+        <li><a href="{% url 'upload_log'%}">Upload a file</a></li>
+        <li><a href="{% url 'my_missions'%}">Uploaded missions</a></li>
+        <li><a href="#">Trail generator</a></li>
+        <li><a href="#">Visualizations</a></li>
+        </ul>
+    </li>
+      <li><a href="team.html">API</a></li>
+      <li><a href="{% url 'contact' %}">Contact Us</a></li>
+      <li><a class="active " href="{% url 'login' %}"><button class="login-button">Login</button></a></li>
 
-    <meta charset="utf-8" />
-
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
-<title>
-
- BBQUDA
-
-</title>
-
-<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-
-<!--     Fonts and icons     -->
-
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
-<!-- CSS Files -->
-
-<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" />
-<link href="{% static "css/now-ui-dashboard.min.css" %}" rel="stylesheet" />
-<link href="{% static "css/demo.css" %}" rel="stylesheet" />
-<link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/obaju/2-1-1/vendor/bootstrap/css/bootstrap.min.css">
-  
- 
-  <div><style>
-  
-.errorlist
-    {
-        color: red;
-    }
-
-</style>
-
-    
-  </head>
-        <div class="wrapper " >
-          
-            <div class="sidebar" data-color="orange">
-    
-    <div class="sidebar-wrapper" id="sidebar-wrapper" >
-        
-       
-    </div>
-</div>
-
-
-            <div class="main-panel" id="main-panel" >
-              <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
-	<div class="container-fluid">
-    <div class="navbar-wrapper">
-      
-			
-      
-			<a class="navbar-brand" >BBQUDA - Website for visualizing mission logs obtained from the EcoMapper and Heron drones.</a>
-		</div>
-
-		
-
-	    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-      
-<ul class="navbar-nav">
- 
-
-  
-</ul>
-
-        
-	    </div>
-	</div>
-</nav>
-<!-- End Navbar -->
-
-                  <div class="panel-header panel-header-sm" >
-  
-  
-</div>
-
-
-                  <div class="content" style="background-image: url('{% static "heron.jpg" %}'); background-repeat: no-repeat; background-size: 100% 100%;">
-                      <div class="row">
-  <div class="col-md-12">
-    
-
-<div class="card" style = "width:50%">
-    
-    <div class="card-body" >
-        <div class="table-responsive" >
-            <table class="table" >
-                
-<tbody>
-<div class="form-fields-section" >
-
-
-<div class="registration" >
-
-
-
-                <div class="bg-form" >
-                 
-                   <form method="post" action="" id="form-login" class="login"><div class="signin form-fields-section kaxsdc" data-event="load">
-             {% csrf_token %}
-
-                        <h1> Log In </h1>
-                        
-
-
-
-
-<div class="returningCustomer bg-form">
-                          
-                            
-                            <fieldset>
-                            
-                                <ol>
-                                    <li class="field field--content">
-                                        {{ form.username.errors }}
-                                        {{ form.username.label_tag }}
-                                        {{ form.username }}
-                                   </li>
-
-                                    <li class="field field--content">
-                                        {{ form.password.errors }}
-                                        {{ form.password.label_tag }}
-                                        {{ form.password }}
-                                    </li>
-                                       
-                                      
-                                  
-                                    </ol>
-                                    <button type="submit" class="btn btn-default btn-lg btn-block">Login</button>
-                        </div>
-                         
-                        </form>
-                            <div class="separator">
-                         
-                                <hr>
-                                
-                            </div>
-                            <a href="{%url 'register'%}" class="cw-btn cw-btn--default cw-btn--full js-sign-in">Dont have an account? Register here.</a>
-
-                        </fieldset>
-
-                      
-                        
-                </div>
-              </div>
-            </div>
-                    
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+  </nav><!-- .navbar -->
 
   </div>
-  </div>
-  <div class="col-md-12">
-    
 
-  </div>
-</div>
+  <style>
 
+    .errorlist
+        {
+            color: red;
+        }
+
+    </style>
+</header><!-- End Header -->
+
+<main id="main">
+
+  <!-- ======= Contact Section ======= -->
+  <section class="breadcrumbs">
+      <div class="container">
+
+          <div class="d-flex justify-content-between align-items-center">
+          <h2>Login</h2>
+          <ol>
+              <li><a href="{% url 'homepage' %}">Home</a></li>
+              <li>Login</li>
+          </ol>
+          </div>
+
+      </div>
+      </section><!-- End Contact Section -->
+
+<div class="card-body" >
+          <div class="form-fields-section" >
+              <div class="registration" >
+                  <div class="bg-form" id="login-form">
+                      <form method="post" action="" id="form-login" class="login"><div class="signin form-fields-section kaxsdc" data-event="load">
+                          {% csrf_token %}
+
+                          <h1> Log In </h1>
+
+                          <div class="returningCustomer bg-form">
+                                  <fieldset>
+                                      <ol id="login-form-headings">
+                                          <li class="field field--content">
+                                              {{ form.username.errors }}
+                                              {{ form.username.label_tag }}
+                                              {{ form.username }}
+                                          </li>
+
+                                          <li class="field field--content">
+                                              {{ form.password.errors }}
+                                              {{ form.password.label_tag }}
+                                              {{ form.password }}
+                                          </li>
+                                      </ol>
+                                  </fieldset>
+                                  <button type="submit" id="submit-button" class="btn btn-default btn-lg btn-block">Login</button>
+                          </div>
+
+                      </form>
+                      <div class="separator">
+                          <hr>
+                      </div>
+                      <a href="{%url 'register'%}"
+                         class="cw-btn cw-btn--default cw-btn--full js-sign-in">
+                         Dont have an account? Register here.
+                      </a>
                   </div>
+              </div>
+          </div>
 
-                 
-             </div>
-          
-        </div>
-        
-           
+</div>
+</main>
 
-    </body>
-
-</html>
-
-
-
-
-
+{% endblock %}
